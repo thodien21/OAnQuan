@@ -21,9 +21,7 @@ namespace OAnQuan.IHM
 
         private void BtnSquare_Click(int i)
         {
-            List<int> b = board.CreatNewBoard();
-
-
+            
             /*b = board.Go(i, Direction.LEFT);
             RefreshContentButton(b);
             

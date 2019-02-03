@@ -14,7 +14,6 @@ namespace OAnQuan.Test
             // Setup game
             List<int> mySquares = new List<int>() { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
             Board board = new Board();
-            board.CreatNewBoard();
             Assert.AreEqual(board.Squares, mySquares);
 
             // First turn
@@ -33,7 +32,6 @@ namespace OAnQuan.Test
             //var expectedMessage = "The square selecteed is not valide: it should not be the big square or empty";
             var expectedMessage = "It should not be the big square or empty";
             Board board = new Board();
-            board.CreatNewBoard();
             List<int> squares = board.Squares; //= { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
             Assert.AreEqual(squares, new List<int>() { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 });
 
