@@ -1,4 +1,6 @@
-﻿namespace OAnQuan.Business
+﻿using System.Collections.Generic;
+
+namespace OAnQuan.Business
 {
     /// <summary>
     /// Player.
@@ -16,10 +18,16 @@
         public string Password { get; set; }
 
         /// <summary>
+        /// Pool of player actually earned in the game
+        /// </summary>
+        public List<Token> Pool { get; set; }
+
+        /// <summary>
         /// Constructor for Mock tests.
         /// </summary>
         public Player()
-        { }
+        {
+        }
 
         /// <summary>
         /// Constructor.
@@ -30,6 +38,7 @@
         {
             Pseudo = pseudo;
             Password = password;
+            Pool = new List<Token>();
         }
     }
 }

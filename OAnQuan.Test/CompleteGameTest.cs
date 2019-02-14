@@ -12,74 +12,80 @@ namespace OAnQuan.Test
         public static void SimpleGame_Test()
         {
             // Setup game
-            List<int> mySquares = new List<int>() { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
+            Player player1 = new Player("Player1", "Player1PassWord");
+            
+            Player player2 = new Player("Player2", "Player2PassWord");
+            BigSquare bigSquare = new BigSquare();
+
+            //setup board
             Board board = new Board();
-            Assert.AreEqual(board.Squares, mySquares);
+            
+            var mySquares = board.SquaresList;
+            for(int i=1; i<=5; i++)
+            {
+                mySquares[i+6].Player = player2;
+                mySquares[i].Player = player1;
+            }
+            board.FirstPlayer = player1;
+            board.SecondPlayer = player2;
+            Assert.AreEqual(mySquares.Count, 12);
+            Assert.That(mySquares[2].Player, Is.Not.Null);
+            Assert.That(mySquares[2].Player.Equals(player1));
+
+            for (int i=1; i<=5; i++)
+            {
+                Assert.AreEqual(mySquares[i].Tokens.Count, 5);
+                Assert.AreEqual(mySquares[i+6].Tokens.Count, 5);
+            }
+            Assert.AreEqual(mySquares[0].Tokens.Count, 1);
+            Assert.AreEqual(mySquares[6].Tokens.Count, 1);
+
+            Assert.AreEqual(player1.Pool.Count, 0);
+            Assert.That(mySquares[2].Player.Equals(player1));
 
             // First turn
-            int gainedTokens = board.Go(2, Direction.RIGHT);
-            Assert.AreEqual(gainedTokens, 6);
-            List<int> mySquares2RIGHT = new List<int>() { 6, 6, 0, 0, 6, 6, 6, 6, 0, 6, 6, 6 };
-            Assert.AreEqual(board.Squares, mySquares2RIGHT);
-           
+            board.Go(player1, 1, Direction.RIGHT);
+            
+            Assert.AreEqual(player1.Pool.Count, 6);           
+            Assert.AreEqual(player2.Pool.Count, 0);
+
+            Assert.AreEqual(mySquares[0].Tokens.Count, 2);
+
+            Assert.AreEqual(mySquares[1].Tokens.Count, 0);
+            Assert.AreEqual(mySquares[2].Tokens.Count, 0);
+            Assert.AreEqual(mySquares[3].Tokens.Count, 6);
+            Assert.AreEqual(mySquares[4].Tokens.Count, 6);
+            Assert.AreEqual(mySquares[5].Tokens.Count, 6);
+
+            Assert.AreEqual(mySquares[6].Tokens.Count, 2);
+
+            Assert.AreEqual(mySquares[7].Tokens.Count, 0);
+            Assert.AreEqual(mySquares[8].Tokens.Count, 6);
+            Assert.AreEqual(mySquares[9].Tokens.Count, 6);
+            Assert.AreEqual(mySquares[10].Tokens.Count, 6);
+            Assert.AreEqual(mySquares[10].Tokens.Count, 6);
+
             // Second Turn
-            //Assert.That(board.Go(3, Direction.LEFT), Is.Not.Null);
-        }
+            board.Go(player2, 2, Direction.LEFT);
 
-        [Test]
-        public static void ExceptionTest()
-        {
-            //var expectedMessage = "The square selecteed is not valide: it should not be the big square or empty";
-            var expectedMessage = "It should not be the big square or empty";
-            Board board = new Board();
-            List<int> squares = board.Squares; //= { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
-            Assert.AreEqual(squares, new List<int>() { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 });
+            Assert.AreEqual(player1.Pool.Count, 6);
+            Assert.AreEqual(player2.Pool.Count, 2);
 
+            Assert.AreEqual(mySquares[0].Tokens.Count, 0);
 
-            //Exception null  beacause squares[2] != 0:
-            string exception = null;
-            try
-            {
-                board.Go(2, Direction.RIGHT);
-            }
-            catch(ArgumentOutOfRangeException e)
-            {
-                exception = e.Message;
-            }
-            Assert.That(exception, Is.Null);
-            squares = board.Squares;
-            Assert.AreEqual(squares, new List<int>() { 6, 6, 0, 0, 6, 6, 6, 6, 0, 6, 6, 6 });
+            Assert.AreEqual(mySquares[1].Tokens.Count, 0);
+            Assert.AreEqual(mySquares[2].Tokens.Count, 1);
+            Assert.AreEqual(mySquares[3].Tokens.Count, 7);
+            Assert.AreEqual(mySquares[4].Tokens.Count, 7);
+            Assert.AreEqual(mySquares[5].Tokens.Count, 7);
 
+            Assert.AreEqual(mySquares[6].Tokens.Count, 2);
 
-            //Exception not null with squaredId = 0 or 6:
-            try
-            {
-                board.Go(0, Direction.RIGHT);
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                exception = e.Message;
-            }
-            Assert.That(exception, Is.Not.Null);
-            Assert.That(exception.Contains(expectedMessage));
-
-            squares = board.Squares;
-            Assert.AreEqual(squares, new List<int>() { 6, 6, 0, 0, 6, 6, 6, 6, 0, 6, 6, 6 });//squares don't change because of exception
-
-
-            //Exception not null with squared is empty:
-            try
-            {
-                board.Go(6, Direction.RIGHT);//test with 2, 3, 6
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                exception = e.Message;
-            }
-            Assert.That(exception, Is.Not.Null);
-            Assert.That(exception.Contains(expectedMessage));
-            squares = board.Squares;
-            Assert.AreEqual(squares, new List<int>() { 6, 6, 0, 0, 6, 6, 6, 6, 0, 6, 6, 6 });//squares don't change because of exception
+            Assert.AreEqual(mySquares[7].Tokens.Count, 1);
+            Assert.AreEqual(mySquares[8].Tokens.Count, 0);
+            Assert.AreEqual(mySquares[9].Tokens.Count, 6);
+            Assert.AreEqual(mySquares[10].Tokens.Count, 6);
+            Assert.AreEqual(mySquares[10].Tokens.Count, 6);
         }
     }
 }

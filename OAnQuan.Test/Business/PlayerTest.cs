@@ -17,6 +17,7 @@ namespace OAnQuan.Test.Business
             Assert.That(player, Is.Not.Null);
             Assert.That(player.Pseudo.Equals(pseudo));
             Assert.That(player.Password.Equals(password));
+            Assert.AreEqual(player.Pool.Count, 0);
         }
     }
 }
