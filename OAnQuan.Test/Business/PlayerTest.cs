@@ -10,13 +10,11 @@ namespace OAnQuan.Test.Business
 		public static void Constructor_Test()
         {
             string pseudo = "PseudoTest";
-            string password = "PasswordTest";
 
-            var player = new Player(pseudo, password);
+            var player = new Player(pseudo);
 			
             Assert.That(player, Is.Not.Null);
             Assert.That(player.Pseudo.Equals(pseudo));
-            Assert.That(player.Password.Equals(password));
             Assert.AreEqual(player.Pool.Count, 0);
         }
     }

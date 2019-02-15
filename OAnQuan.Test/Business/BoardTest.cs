@@ -41,12 +41,12 @@ namespace OAnQuan.Test.Business
                 Assert.That(board.SquaresList[i+6].Tokens.Count.Equals(5));
             }
 
-            Assert.That(board.SquaresList[1].Id, Is.Not.Null);
-            Assert.AreEqual(board.SquaresList[1].Id, 5);
-            Assert.AreEqual(board.SquaresList[2].Id, 5);
-            Assert.AreEqual(board.SquaresList[3].Id, 5);
-            Assert.AreEqual(board.SquaresList[4].Id, 5);
-            Assert.AreEqual(board.SquaresList[0].Id, 5);
+            Assert.That(board.SquaresList[1], Is.Not.Null);
+            Assert.AreEqual(board.SquaresList[1].Tokens.Count, 5);
+            Assert.AreEqual(board.SquaresList[2].Tokens.Count, 5);
+            Assert.AreEqual(board.SquaresList[3].Tokens.Count, 5);
+            Assert.AreEqual(board.SquaresList[4].Tokens.Count, 5);
+            Assert.AreEqual(board.SquaresList[0].Tokens.Count, 1);
         }
     }
 }

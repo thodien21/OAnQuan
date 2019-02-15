@@ -20,24 +20,17 @@ namespace OAnQuan.Business
         /// <summary>
         /// Pool of player actually earned in the game
         /// </summary>
-        public List<Token> Pool { get; set; }
-
-        /// <summary>
-        /// Constructor for Mock tests.
-        /// </summary>
-        public Player()
-        {
-        }
+        public List<Token> Pool
+        { get; set; }
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="pseudo">Pseudo.</param>
         /// <param name="password">Password.</param>
-        public Player(string pseudo, string password)
+        public Player(string pseudo)
         {
             Pseudo = pseudo;
-            Password = password;
             Pool = new List<Token>();
         }
     }

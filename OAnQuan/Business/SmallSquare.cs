@@ -12,7 +12,7 @@ namespace OAnQuan.Business
         public SmallSquare()
         {            
             Tokens = new List<Token>() { new SmallToken(), new SmallToken(), new SmallToken(), new SmallToken(), new SmallToken() };
-            Player = new Player();
+            Player = new Player("");
         }
 
         //Distribute the tokens
