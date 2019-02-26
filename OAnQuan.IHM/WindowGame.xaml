@@ -27,17 +27,17 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Button x:Name="btn0" Content="5" Padding="0,0,50,0" HorizontalAlignment="Left" Margin="134,136,0,0" VerticalAlignment="Top" Width="75" Height="142" RenderTransformOrigin="0.752,0.506"/>
-        <Button x:Name="btn1" Content="5" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="209,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn1_Click"/>
-        <Button x:Name="btn2" Content="5" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="284,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn2_Click"/>
-        <Button x:Name="btn3" Content="5" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="359,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn3_Click"/>
-        <Button x:Name="btn4" Content="5" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="434,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn4_Click"/>
-        <Button x:Name="btn5" Content="5" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="509,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn5_Click"/>
-        <Button x:Name="btn6" Content="5" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="584,136,0,0" VerticalAlignment="Top" Width="75" Height="142"/>
-        <Button x:Name="btn7" Content="5" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="509,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
-        <Button x:Name="btn8" Content="5" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="434,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
-        <Button x:Name="btn9" Content="5" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="359,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
-        <Button x:Name="btn10" Content="5" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="284,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
-        <Button x:Name="btn11" Content="5" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="209,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
+        <Button x:Name="btn0" Content ="{Binding Source}" Padding="0,0,50,0" HorizontalAlignment="Left" Margin="134,136,0,0" VerticalAlignment="Top" Width="75" Height="142" RenderTransformOrigin="0.752,0.506"/>
+        <Button x:Name="btn1" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="209,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn1_Click"/>
+        <Button x:Name="btn2" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="284,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn2_Click"/>
+        <Button x:Name="btn3" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="359,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn3_Click"/>
+        <Button x:Name="btn4" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="434,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn4_Click"/>
+        <Button x:Name="btn5" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="509,207,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn5_Click"/>
+        <Button x:Name="btn6" Padding="0,50,-50,0" HorizontalAlignment="Left" Margin="584,136,0,0" VerticalAlignment="Top" Width="75" Height="142"/>
+        <Button x:Name="btn7" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="509,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
+        <Button x:Name="btn8" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="434,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
+        <Button x:Name="btn9" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="359,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
+        <Button x:Name="btn10" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="284,136,0,0" VerticalAlignment="Top" Width="75" Height="71"/>
+        <Button x:Name="btn11" Padding="0,-50,50,0" HorizontalAlignment="Left" Margin="209,136,0,0" VerticalAlignment="Top" Width="75" Height="71" Click="Btn11_Click"/>
     </Grid>
 </Window>

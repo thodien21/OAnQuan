@@ -14,60 +14,63 @@ namespace OAnQuan.IHM
     {
         Board board = new Board();
         Random ran = new Random();
+        Player player1 = new Player("thodien");
+        Player player2 = new Player("maytinh");
+
         public WindowGame()
         {
-            InitializeComponent();    
+            InitializeComponent();
         }
 
         private void BtnSquare_Click(int i)
-        {
-            
-            /*b = board.Go(i, Direction.LEFT);
-            RefreshContentButton(b);
-            
+        {            
+            var listSquare = board.Go(board.PlayersList[0], i, Direction.LEFT);
+            board.PlayersList[0]=player1;
+            board.PlayersList[1]=player2;
+
             //IA joue:
             int ranSquare = 7;
 
             //la case choisie ne doit pas être vide
-            while (b[ranSquare] == 0)
+            while (listSquare[ranSquare].Tokens.Count == 0)
             {
                 ranSquare = ran.Next(7, 12);
             }           
             
-            Direction ranDirection= (ran.Next(Direction.LEFT, 1) == 1) ? true:false;
-            b = board.Go(ranSquare, ranDirection);
+            Direction ranDirection= (ran.Next(0, 2) == 1) ? Direction.RIGHT:Direction.LEFT;
+            listSquare = board.Go(player1, ranSquare, ranDirection);
             
-            RefreshContentButton(b);*/
+            RefreshContentButton(listSquare);
         }
 
-        private void RefreshContentButton(List<int> b)
+        private void RefreshContentButton(List<Square> listSquare)
         {
             
-            btn0.Content = b[0];
+            btn0.Content = listSquare[0];
             
             //Thread.Sleep(100);
-            btn1.Content = b[1];           
+            btn1.Content = listSquare[1];           
             btn1.BorderBrush = Brushes.GreenYellow;
             
             //Thread.Sleep(100);
-            btn2.Content = b[2];
+            btn2.Content = listSquare[2];
             //Thread.Sleep(100);
-            btn3.Content = b[3];
+            btn3.Content = listSquare[3];
             //Thread.Sleep(100);
-            btn4.Content = b[4];
+            btn4.Content = listSquare[4];
             //Thread.Sleep(100);
-            btn5.Content = b[5];
+            btn5.Content = listSquare[5];
             //Thread.Sleep(100);
-            btn6.Content = b[6];
+            btn6.Content = listSquare[6];
             //Thread.Sleep(100);
-            btn7.Content = b[7];
+            btn7.Content = listSquare[7];
             //Thread.Sleep(100);
-            btn8.Content = b[8];
+            btn8.Content = listSquare[8];
             //Thread.Sleep(100);
-            btn9.Content = b[9];
-            btn10.Content = b[10];
+            btn9.Content = listSquare[9];
+            btn10.Content = listSquare[10];
             //Thread.Sleep(100);
-            btn11.Content = b[11];
+            btn11.Content = listSquare[11];
         }
         private void Btn1_Click(object sender, RoutedEventArgs e)
         {

@@ -1,4 +1,6 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
 
 namespace OAnQuan.DataAccess
 {
@@ -11,7 +13,7 @@ namespace OAnQuan.DataAccess
         public void InsertPlayer(string pso, string pass)
         {
             // create a new database connection:
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=DatabaseOAQ.db;Version=3;New=True;Compress=True;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DatabaseOAQ.db;Version=3;New=True;Compress=True;"))
             {
                 // open the connection:
                 conn.Open();
@@ -30,7 +32,7 @@ namespace OAnQuan.DataAccess
         }
 
         // But how do we read something out of our table ?
-        /*public List<string> DisplayPlayerList()
+        public List<string> DisplayPlayerList()
         {
             using (SQLiteConnection conn = new SQLiteConnection("Data Source = DatabaseOAQ.db; version=3; New=True; Compress=true;"))
             {
@@ -55,8 +57,6 @@ namespace OAnQuan.DataAccess
                 conn.Close();
                 return listData;
             }
-
-
-        }*/
+        }
     }
 }

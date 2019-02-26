@@ -10,7 +10,14 @@ namespace OAnQuan.Business
     public class Game
     {
         Board board = new Board();
-        
+        public Player Player1 { get => board.PlayersList[0]; }
+        public Player Player2 { get => board.PlayersList[1]; }
+
+        /// <summary>
+        /// constructor with 2 parameters: the player and second player
+        /// </summary>
+        /// <param name="pseudo1"></param>
+        /// <param name="pseudo2"></param>
         public Game(string pseudo1, string pseudo2)
         {
             board.PlayersList[0].Pseudo = pseudo1;
@@ -23,10 +30,12 @@ namespace OAnQuan.Business
         /// <param name="pseudo"></param>
         /// <param name="squareId"></param>
         /// <param name="direction"></param>
-        public void Play(Player player1, Player player2)
+        public void Play()
         {
-            int squareId = 
-            board.Go(player1, squareId, direction);
+            while(board.SquaresList[0].Tokens.Count != 0 && board.SquaresList[6].Tokens.Count != 0)
+            {
+                //board.Go(Player1, squareId, direction);
+            }
         }
     }
 }
