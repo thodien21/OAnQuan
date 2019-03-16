@@ -14,16 +14,5 @@ namespace OAnQuan.Business
             Tokens = new List<Token>() { new SmallToken(), new SmallToken(), new SmallToken(), new SmallToken(), new SmallToken() };
             Player = new Player("");
         }
-
-        //Distribute the tokens
-        public List<Token> Distribuable()
-        {
-            List<Token> movedTokens = Tokens;
-            Tokens.Clear();
-            return movedTokens;
-        }
-
-        //Start a turn
-        public bool Startable = false;
     }
 }

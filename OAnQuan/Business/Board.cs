@@ -7,7 +7,7 @@ namespace OAnQuan.Business
     public class Board
     {
         /// <summary>
-        /// list of 12 square in the board
+        /// list of squares in the board
         /// </summary>
         public List<Square> SquaresList { get; set; }
 
@@ -17,12 +17,18 @@ namespace OAnQuan.Business
         public List<Player> PlayersList { get; set; }
 
         /// <summary>
+        /// Number of player whose turn is on
+        /// </summary>
+        public int Turn { get; set; }
+
+        /// <summary>
         /// Etablish a new board
         /// </summary>
         public Board()
         {
             SquaresList = new List<Square>();
             PlayersList = new List<Player>() { new Player(""), new Player("") };
+            Turn = new Random().Next(1,2); //Board decides who plays first.
 
             for(int i=0; i<PlayersList.Count; i++)
             {
@@ -77,11 +83,12 @@ namespace OAnQuan.Business
 
                 for (int i = 0; i < tokenQty; i++)
                 {
+                    //move to the next square
                     squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
                     //the next square has 1 token in plus
                     SquaresList[squareId].Tokens.Add(new SmallToken());
                 }
-                //go to the next square
+                //move to the next square
                 squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
                 //the quantity of tokens in the next square
                 tokenQty = SquaresList[squareId].Tokens.Count;
@@ -90,7 +97,7 @@ namespace OAnQuan.Business
             //Some eaten tokens?
             while (tokenQty == 0)
             {
-                //go to the next square
+                //move to the next square
                 squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
                 eatenTokens = SquaresList[squareId].Eaten();
                 if(eatenTokens.Count != 0)
@@ -104,7 +111,7 @@ namespace OAnQuan.Business
                 {
                     break;
                 }
-                //go to the next square
+                //move to the next square
                 squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
                 //the quantity of tokens in the next square
                 tokenQty = SquaresList[squareId].Tokens.Count;
@@ -120,18 +127,18 @@ namespace OAnQuan.Business
 
         public Result GetResult()
         {
-            PlayersList[0].GamesNb++;
+            //PlayersList[0].GamesNb++;
             if (PlayersList[0].Score > PlayersList[1].Score)
             {
-                PlayersList[0].WinNb++;
+                //PlayersList[0].WinNb++;
                 return Result.WIN;
             }
             else if (PlayersList[0].Score == PlayersList[1].Score)
             {
-                PlayersList[0].DrawNb++;
+                //PlayersList[0].DrawNb++;
                 return Result.DRAW;
             }
-            PlayersList[0].LoseNb++;
+            //PlayersList[0].LoseNb++;
             return Result.LOSE;
         }
     }

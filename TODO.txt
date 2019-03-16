@@ -1,0 +1,9 @@
+"taped" -> co tu nao xac dang hon?
+
+        //Creat an account => InsertPlayer()
+        //Display5BestPlayers()
+        //InitializeScores()
+        //Sign in => VerifyLoginAndPassword()
+        //GameInterface
+
+12/3/19: à renforcer password avec salt

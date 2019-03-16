@@ -28,8 +28,15 @@ namespace OAnQuan.IHM
         private void BtnSignUp_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            WindowSignUp signUp = new WindowSignUp();
+            SignUp signUp = new SignUp();
             signUp.ShowDialog();
+        }
+
+        private void BtnSignIn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            SignIn signIn = new SignIn();
+            signIn.ShowDialog();
         }
     }
 }

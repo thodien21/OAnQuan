@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Ô ĂN QUAN" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnSignUp" Content="Créer 1 comtpe" HorizontalAlignment="Left" Height="49" Margin="138,173,0,0" VerticalAlignment="Top" Width="170" Click="BtnSignUp_Click"/>
-        <Button x:Name="btnSignIn" Content="Login" HorizontalAlignment="Left" Height="49" Margin="476,173,0,0" VerticalAlignment="Top" Width="170"/>
+        <Button x:Name="btnSignUp" Content="Créer 1 comtpe" HorizontalAlignment="Left" Height="49" Margin="150,173,0,0" VerticalAlignment="Top" Width="170" Click="BtnSignUp_Click"/>
+        <Button x:Name="btnSignIn" Content="Login" HorizontalAlignment="Left" Height="49" Margin="476,173,0,0" VerticalAlignment="Top" Width="170" Click="BtnSignIn_Click"/>
     </Grid>
 </Window>

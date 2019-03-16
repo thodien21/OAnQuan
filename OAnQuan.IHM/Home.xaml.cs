@@ -5,9 +5,9 @@ namespace OAnQuan.IHM
     /// <summary>
     /// Logique d'interaction pour WindowMainMenu.xaml
     /// </summary>
-    public partial class WindowMainMenu : Window
+    public partial class Home : Window
     {
-        public WindowMainMenu()
+        public Home()
         {
             InitializeComponent();
         }
@@ -15,7 +15,7 @@ namespace OAnQuan.IHM
         private void BtnPlay_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            WindowGame game = new WindowGame();
+            PlayGame game = new PlayGame();
             game.ShowDialog();
         }
     }

@@ -8,15 +8,16 @@ namespace OAnQuan.Business
     /// </summary>
     public class Player
     {
+        private int playerId;
+        private string fullName;
+        private int winGameQty;
+        private int loseGameQty;
+        private int drawGameQty;
+
         /// <summary>
         /// Pseudo.
         /// </summary>
         public string Pseudo { get; set; }
-
-        /// <summary>
-        /// Password.
-        /// </summary>
-        public string Password { get; set; }
 
         /// <summary>
         /// Pool of tokens actually earned in the game
@@ -29,26 +30,6 @@ namespace OAnQuan.Business
         public int Score { get; set; }
 
         /// <summary>
-        /// number of games that player win
-        /// </summary>
-        public int WinNb { get; set; }
-
-        /// <summary>
-        /// number of draw games
-        /// </summary>
-        public int DrawNb { get; set; }
-
-        /// <summary>
-        /// number of lose game
-        /// </summary>
-        public int LoseNb { get; set; }
-
-        /// <summary>
-        /// total number of played games
-        /// </summary>
-        public int GamesNb { get; set; }
-
-        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="pseudo">Pseudo.</param>
@@ -58,6 +39,35 @@ namespace OAnQuan.Business
             Pseudo = pseudo;
             Pool = new List<Token>();            
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pseudo"></param>
+        /// <param name="winGameQty"></param>
+        /// <param name="loseGameQty"></param>
+        /// <param name="drawGameQty"></param>
+        public Player(string pseudo, int winGameQty, int loseGameQty, int drawGameQty) : this(pseudo)
+        {
+            this.winGameQty = winGameQty;
+            this.loseGameQty = loseGameQty;
+            this.drawGameQty = drawGameQty;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="pseudo"></param>
+        /// <param name="fullName"></param>
+        public Player(string pseudo, string fullName) : this(pseudo)
+        {
+            this.fullName = fullName;
+        }
+
+        /// <summary>
+        /// Calculate the score from pool
+        /// </summary>
+        /// <returns></returns>
         public int GetScore()
         {
             var smallToken = new SmallToken();
