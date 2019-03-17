@@ -92,7 +92,7 @@ namespace OAnQuan.DataAccess
                 SQLiteCommand cmd = conn.CreateCommand();
 
                 // First lets build a SQL-Query again:
-                cmd.CommandText = "SELECT * FROM T_Player where Pseudo = @pso and Password = @pass";
+                cmd.CommandText = "SELECT * FROM T_Player WHERE Pseudo = @pso and Password = @pass";
                 cmd.Parameters.AddWithValue("@pso", _pseudo);
                 cmd.Parameters.AddWithValue("@pass", ComputeHash(_password, new SHA256CryptoServiceProvider()));
 
@@ -108,6 +108,34 @@ namespace OAnQuan.DataAccess
                 conn.Close();
                 return _isThisPlayerExist;
             }
+        }
+
+
+        public static long GetPlayerIdFromPseudo(string pseudo)
+        {
+            long playerId = 0;
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+                // create a new SQL command:
+                using (SQLiteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT PlayerId FROM T_Player WHERE Pseudo = @pseudo";
+                    cmd.Parameters.AddWithValue("@pseudo", pseudo);
+
+                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
+                    {
+                        if (dataReader.Read()) // Read() returns true if there is still a result line to read
+                        {
+                            playerId = (long)dataReader["PlayerId"];
+                        }
+                    }
+                }
+
+                // We are ready, now lets cleanup and close our connection:
+                conn.Close();
+            }
+            return playerId;
         }
 
         /// <summary>

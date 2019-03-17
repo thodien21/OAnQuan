@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using OAnQuan.Business;
-using System;
+using OAnQuan.DataAccess;
 using System.Collections.Generic;
 
 namespace OAnQuan.Test
@@ -17,10 +17,10 @@ namespace OAnQuan.Test
         /// <param name="direction">the choosen direction</param>
         /// <param name="listGotten">the expected list of square after turn</param>
         /// <param name="score">score of player after turn</param>
-        static void Turn(Board board, Player player, int squareId, Direction direction, List<int> listGotten, int score)
+        static void Turn(Board board, int playerNumber, int squareId, Direction direction, List<int> listGotten, int score)
         {
-            board.Go(player, squareId, direction);
-            Assert.AreEqual(player.Pool.Count, score);
+            board.Go(playerNumber, squareId, direction);
+            Assert.AreEqual(board.PlayersList[playerNumber -1].Pool.Count, score);
             for (int i = 0; i < 12; i++)
             {
                 Assert.AreEqual(board.SquaresList[i].Tokens.Count, listGotten[i]);
@@ -46,8 +46,8 @@ namespace OAnQuan.Test
             //test player
             for (int i=1; i<=5; i++)
             {
-                Assert.AreEqual(mySquares[i].Player, player1);
-                Assert.AreEqual(mySquares[i+6].Player, board.PlayersList[1]);
+                Assert.AreEqual(mySquares[i].PlayerNumber, 1);
+                Assert.AreEqual(mySquares[i+6].PlayerNumber, 2);
             }
 
             //test number of tokens in each square
@@ -77,16 +77,16 @@ namespace OAnQuan.Test
             var list9 = new List<int> { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0 };
 
             //Assert the list of square after turn and the number of tokens in each player's pool 
-            Turn(board, player1, 1, Direction.RIGHT, list1, 6);
-            Turn(board, player2, 8, Direction.LEFT, list2, 2);
-            Turn(board, player1, 3, Direction.LEFT, list3, 9);
-            Turn(board, player2, 7, Direction.LEFT, list4, 2);
-            Turn(board, player1, 4, Direction.RIGHT, list5, 10);
-            Turn(board, player2, 9, Direction.RIGHT, list6, 3);
-            Turn(board, player1, 5, Direction.LEFT, list7, 17);
-            Turn(board, player2, 7, Direction.RIGHT, list8, 21);
-            Turn(board, player1, 3, Direction.RIGHT, list9, 29);
-
+            Turn(board, 1, 1, Direction.RIGHT, list1, 6);
+            Turn(board, 2, 8, Direction.LEFT, list2, 2);
+            Turn(board, 1, 3, Direction.LEFT, list3, 9);
+            Turn(board, 2, 7, Direction.LEFT, list4, 2);
+            Turn(board, 1, 4, Direction.RIGHT, list5, 10);
+            Turn(board, 2, 9, Direction.RIGHT, list6, 3);
+            Turn(board, 1, 5, Direction.LEFT, list7, 17);
+            Turn(board, 2, 7, Direction.RIGHT, list8, 21);
+            Turn(board, 1, 3, Direction.RIGHT, list9, 29);
+            
             //END OF GAME: Assert the score of each player
             Assert.AreEqual(player1.GetScore(), 33);
             Assert.AreEqual(player2.GetScore(), 25);

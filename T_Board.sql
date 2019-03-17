@@ -1,8 +1,8 @@
-﻿-- Script Date: 12/03/2019 13:29  - ErikEJ.SqlCeScripting version 3.5.2.80
+﻿-- Script Date: 16/03/2019 22:24  - ErikEJ.SqlCeScripting version 3.5.2.80
 CREATE TABLE [T_Board] (
-  [BoardId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  [PlayerId] INTEGER NOT NULL,
-  [Turn] INTEGER NOT NULL,
-  [FullName] text NULL,
-  FOREIGN KEY (PlayerId) REFERENCES T_Player (BoardId)
+  [BoardId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+, [PlayerId] bigint NOT NULL
+, [Turn] bigint NOT NULL
+, [Player2Pseudo] text NULL
+, CONSTRAINT [FK_T_Board_0_0] FOREIGN KEY ([PlayerId]) REFERENCES [T_Player] ([BoardId]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );

@@ -8,7 +8,6 @@ namespace OAnQuan.Business
     /// </summary>
     public class Player
     {
-        private int playerId;
         private string fullName;
         private int winGameQty;
         private int loseGameQty;

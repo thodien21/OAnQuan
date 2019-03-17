@@ -1,9 +1,11 @@
-"taped" -> co tu nao xac dang hon?
+Turn (1 or 2) instead of player in Board.cs and Square.cs?
+app.config: data source (connString)? C# SQLite Tutorial - 7. Connect to SQLite Database without Entity Framework
+portable database
+other video https://www.youtube.com/watch?v=ayp3tHEkRc0
 
-        //Creat an account => InsertPlayer()
-        //Display5BestPlayers()
-        //InitializeScores()
-        //Sign in => VerifyLoginAndPassword()
-        //GameInterface
 
-12/3/19: à renforcer password avec salt
+Code: Pool, SquareList
+
+
+infrastructure
+BDD

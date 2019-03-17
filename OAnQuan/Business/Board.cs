@@ -21,16 +21,24 @@ namespace OAnQuan.Business
         /// </summary>
         public int Turn { get; set; }
 
+        public const int PlayerQty = 2;
+
         /// <summary>
         /// Etablish a new board
         /// </summary>
         public Board()
         {
             SquaresList = new List<Square>();
-            PlayersList = new List<Player>() { new Player(""), new Player("") };
-            Turn = new Random().Next(1,2); //Board decides who plays first.
 
-            for(int i=0; i<PlayersList.Count; i++)
+            PlayersList = new List<Player>();
+            for (int i=0; i< PlayerQty; i++)
+            {
+                PlayersList.Add(new Player(""));
+            }
+
+            Turn = new Random().Next(1,3); //Board decides who plays first (1 or 2).
+
+            for(int i=0; i<PlayerQty; i++)
             {
                 SquaresList.Add(new BigSquare());
                 for (int j = 0; j < 5; j++)
@@ -39,14 +47,13 @@ namespace OAnQuan.Business
                 }
             }
 
-            //Affect player to each small square
+            //Affect player number to each small square
             int n = 1;
-            for(int k=0; k< PlayersList.Count; k++)
+            for(int k=1; k<= PlayerQty; k++)
             {
                 for (int i = n; i < n + 5; i++)
                 {
-                    //Affect player to the square
-                    SquaresList[i].Player = PlayersList[k];
+                    SquaresList[i].PlayerNumber = k;
                 }
                 n = n + 6;
             }
@@ -59,7 +66,7 @@ namespace OAnQuan.Business
         /// <param name="squareId">square identifier (1-5) </param>
         /// <param name="direction">direction to share the tokens</param>
         /// <returns></returns>
-        public List<Square> Go(Player player, int squareId, Direction direction)
+        public List<Square> Go(int playerNumber, int squareId, Direction direction)
         {
             var selectedSquare = SquaresList[squareId];
             List<Token> eatenTokens = new List<Token>();//the list of tokens which would be eaten
@@ -68,9 +75,9 @@ namespace OAnQuan.Business
             var tokenQty = SquaresList[squareId].Tokens.Count;
 
             //Check if the selected square is authorized and the qty of provider square is not null:
-            if (selectedSquare.Player != player || tokenQty == 0)
+            if (selectedSquare.PlayerNumber != playerNumber || tokenQty == 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(squareId), "The selected square should correspond to {0} and not be empty", player.Pseudo);
+                throw new ArgumentOutOfRangeException(nameof(squareId), "The selected square should correspond to {0} and not be empty", PlayersList[playerNumber-1].Pseudo);
             }
 
             //While the provider square is not empty and not be big square, it provide its tokens to next squares
@@ -104,7 +111,7 @@ namespace OAnQuan.Business
                 {
                     foreach (var item in eatenTokens)
                     {
-                        player.Pool.Add(item);
+                        PlayersList[playerNumber - 1].Pool.Add(item);
                     }
                 }
                 else

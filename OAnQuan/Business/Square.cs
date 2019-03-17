@@ -10,6 +10,8 @@ namespace OAnQuan.Business
 
         public Player Player { get; set; }
 
+        public int PlayerNumber { get; set; }
+
         /// <summary>
         /// To be eaten
         /// </summary>
