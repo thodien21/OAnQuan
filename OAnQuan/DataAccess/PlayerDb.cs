@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OAnQuan.DataAccess
 {
-    public static class PlayerDb
+    public class PlayerDb
     {
         // We use the data source:
         const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
@@ -24,8 +24,8 @@ namespace OAnQuan.DataAccess
 
                 String tableCommand = "CREATE TABLE IF NOT EXISTS T_Player " +
                     "(  [PlayerId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, [Pseudo] text NOT NULL" +
-                    ", [Password] text NOT NULL, [isAdmin] bigint NULL, [FullName] text NULL, [WinGameQty] bigint NULL" +
-                    ", [DrawGameQty] bigint NULL, [LoseGameQty] bigint NULL)";
+                    ", [Password] text NOT NULL, [isAdmin] bigint NOT NULL, [FullName] text NOT NULL, [WinGameQty] bigint NOT NULL" +
+                    ", [DrawGameQty] bigint NOT NULL, [LoseGameQty] bigint NOT NULL)";
 
                 SQLiteCommand createTable = new SQLiteCommand(tableCommand, db);
 
@@ -33,6 +33,7 @@ namespace OAnQuan.DataAccess
             }
         }
 
+        #region Sign In/ Sign Up
         /// <summary>
         /// Hash the password
         /// </summary>
@@ -53,7 +54,7 @@ namespace OAnQuan.DataAccess
         /// </summary>
         /// <param name="pso">Pseudo taped by visitor</param>
         /// <param name="pass">Password taped by visitor</param>
-        public static void InsertPlayer(string _pseudo, string _password, string _fullName)
+        public static void InsertPlayer(string pseudo, string password, string fullName)
         {
             // create a new database connection:
             using (SQLiteConnection conn = new SQLiteConnection(connString))
@@ -65,10 +66,15 @@ namespace OAnQuan.DataAccess
                 SQLiteCommand cmd = conn.CreateCommand();
 
                 // Lets insert something into our new table:
-                cmd.CommandText = "INSERT INTO T_Player (Pseudo, Password, FullName) VALUES (@pso, @pass, @fullName);";
-                cmd.Parameters.AddWithValue("@pso", _pseudo);
-                cmd.Parameters.AddWithValue("@pass", ComputeHash(_password, new SHA256CryptoServiceProvider()));
-                cmd.Parameters.AddWithValue("@fullName", _fullName);
+                cmd.CommandText = "INSERT INTO T_Player (Pseudo, Password, FullName, IsAdmin, WinGameQty, DrawGameQty, LoseGameQty) " +
+                    "VALUES (@pso, @pass, @fullName, @isAdmin, @winGameQty, @drawGameQty, @loseGameQty);";
+                cmd.Parameters.AddWithValue("@pso", pseudo);
+                cmd.Parameters.AddWithValue("@pass", ComputeHash(password, new SHA256CryptoServiceProvider()));
+                cmd.Parameters.AddWithValue("@fullName", fullName);
+                cmd.Parameters.AddWithValue("@isAdmin", 0);
+                cmd.Parameters.AddWithValue("@winGameQty", 0);
+                cmd.Parameters.AddWithValue("@drawGameQty", 0);
+                cmd.Parameters.AddWithValue("@loseGameQty", 0);
                 // And execute this again ;D
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -109,8 +115,13 @@ namespace OAnQuan.DataAccess
                 return _isThisPlayerExist;
             }
         }
+        #endregion
 
-
+        /// <summary>
+        /// GetPlayerIdFromPseudo
+        /// </summary>
+        /// <param name="pseudo"></param>
+        /// <returns>playerId</returns>
         public static long GetPlayerIdFromPseudo(string pseudo)
         {
             long playerId = 0;
@@ -136,12 +147,213 @@ namespace OAnQuan.DataAccess
                 conn.Close();
             }
             return playerId;
+        }    
+
+        /// <summary>
+        /// Get best players with ranking
+        /// </summary>
+        /// <param name="limit">number of best players to rank</param>
+        /// <returns>pseudo, winGameQty, drawGameQty, loseGameQty</returns>
+        public static List<Player> GetRanking(int limit)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                // create a new SQL command:
+                SQLiteCommand cmd = conn.CreateCommand();
+
+                // First lets build a SQL-Query again:
+                cmd.CommandText = "SELECT Pseudo, WinGameQty, DrawGameQty, LoseGameQty " +
+                    "FROM T_Player GROUP BY Pseudo " +
+                    "ORDER BY WinGameQty DESC, LoseGameQty, DrawGameQty DESC " +
+                    "LIMIT @limit ";
+                cmd.Parameters.AddWithValue("@limit", limit);
+
+                // Now the SQLiteCommand object can give us a DataReader-Object:
+                SQLiteDataReader dataReader = cmd.ExecuteReader();
+
+                // The SQLiteDataReader allows us to run through the result lines:
+                List<Player> listPlayer = new List<Player>();
+                while (dataReader.Read()) // Read() returns true if there is still a result line to read
+                {
+                    string pseudo = (string)dataReader["Pseudo"];
+                    long winGameQty = (long)dataReader["WinGameQty"];
+                    long loseGameQty = (long)dataReader["LoseGameQty"];
+                    long drawGameQty = (long)dataReader["DrawGameQty"];
+
+                    listPlayer.Add(new Player(pseudo, winGameQty, loseGameQty, drawGameQty));
+                }
+
+                // We are ready, now lets cleanup and close our connection:
+                conn.Close();
+                return listPlayer;
+            }
         }
 
+        /// <summary>
+        /// If it's the first time player saves the game -> Save board, if not -> Update board
+        /// </summary>
+        /// <param name="turn">turn of which player?</param>
+        /// <param name="player2Pseudo">pseudo of player number 2</param>
+        /// <param name="playerId">player identity</param>
+        public static void SaveOrUpdateGame(long turn, string player2Pseudo, long playerId, Board board)
+        {
+            bool contains = BoardDb.CheckIfContainsPlayerId(playerId);
+            if (contains)
+            {
+                BoardDb.Update(turn, player2Pseudo, playerId);
+                SquareListDb.Update(board, playerId);
+                PoolDb.Update(board, playerId);
+            }
+            else
+            {
+                BoardDb.Save(turn, player2Pseudo, playerId);
+                SquareListDb.Save(board, playerId);
+                PoolDb.Save(board, playerId);
+            }
+        }
+
+        #region Update result in database
+        /// <summary>
+        /// Update the quantity of win games of player
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public static long UpdateWinGameQty(long playerId)
+        {
+            long variable = 100;
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+                // create a new SQL command:
+                using (SQLiteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "UPDATE T_Player SET WinGameQty = WinGameQty+1 WHERE PlayerId = @playerId";
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+
+                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
+                    {
+                        if (dataReader.Read()) // Read() returns true if there is still a result line to read
+                        {
+                            variable = (long)dataReader["WinGameQty"];
+                        }
+                    }
+                }
+                // We are ready, now lets cleanup and close our connection:
+                conn.Close();
+
+            }
+            return variable;
+        }
+
+        /// <summary>
+        /// Update the quantity of draw games of player
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public static long UpdateDrawGameQty(long playerId)
+        {
+            long variable = 100;
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+                // create a new SQL command:
+                using (SQLiteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "UPDATE T_Player SET DrawGameQty = DrawGameQty+1 WHERE PlayerId = @playerId";
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+
+                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
+                    {
+                        if (dataReader.Read()) // Read() returns true if there is still a result line to read
+                        {
+                            variable = (long)dataReader["DrawGameQty"];
+                        }
+                    }
+                }
+                // We are ready, now lets cleanup and close our connection:
+                conn.Close();
+            }
+            return variable;
+        }
+
+        /// <summary>
+        /// Update the quantity of lose games of player
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public static long UpdateLoseGameQty(long playerId)
+        {
+            long variable = 100;
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+                // create a new SQL command:
+                using (SQLiteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "UPDATE T_Player SET LoseGameQty = LoseGameQty+1 WHERE PlayerId = @playerId";
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+
+                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
+                    {
+                        if (dataReader.Read()) // Read() returns true if there is still a result line to read
+                        {
+                            variable = (long)dataReader["LoseGameQty"];
+                        }
+                    }
+                }
+                // We are ready, now lets cleanup and close our connection:
+                conn.Close();
+            }
+            return variable;
+        }
+
+        /// <summary>
+        /// Update result in database
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="playerId"></param>
+        public static void UpdateResult(Board board, long playerId)
+        {
+            var result = board.GetResult();
+            switch (result)
+            {
+                case Result.WIN:
+                    UpdateWinGameQty(playerId);
+                    break;
+                case Result.DRAW:
+                    UpdateDrawGameQty(playerId);
+                    break;
+                case Result.LOSE:
+                    UpdateLoseGameQty(playerId);
+                    break;
+            }
+        }
+        #endregion
+
+        #region Funtionnalities reserved for admins: GetAllPlayer, UpgradePlayerToAdmin, DeactivatePlayer, Search Player, SeeInfoOfEveryPlayer 
         /// <summary>
         /// Display the list of all players
         /// </summary>
         /// <returns></returns>
+
+        public static bool IfAdmin(long playerId)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                //create a new SQL command
+                SQLiteCommand cmd = conn.CreateCommand();
+
+                //First lets build a SQL-Query again:
+                cmd.CommandText = "SELECT IsAdmin FROM T_Player";
+
+
+            }
+        }
+
         public static List<Player> GetAllPlayer()
         {
             using (SQLiteConnection conn = new SQLiteConnection(connString))
@@ -163,7 +375,7 @@ namespace OAnQuan.DataAccess
                 {
                     string pseudo = (string)dataReader["Pseudo"];
                     string fullName = (string)dataReader["FullName"];
-                    
+
                     listPlayer.Add(new Player(pseudo, fullName));
                 }
 
@@ -173,42 +385,10 @@ namespace OAnQuan.DataAccess
             }
         }
 
-        public static List<Player> Ranking(int _limit)
+        public static void UpgradePlayerToAdmin(long player)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(connString))
-            {
-                conn.Open();
 
-                // create a new SQL command:
-                SQLiteCommand cmd = conn.CreateCommand();
-
-                // First lets build a SQL-Query again:
-                cmd.CommandText = "SELECT Pseudo, WinGameQty, DrawGameQty, LoseGameQty " +
-                    "FROM T_Player GROUP BY Pseudo " +
-                    "ORDER BY WinGameQty DESC, LoseGameQty, DrawGaeQty DESC " +
-                    "LIMIT @limit ";
-                cmd.Parameters.AddWithValue("@limit", _limit);
-
-                // Now the SQLiteCommand object can give us a DataReader-Object:
-                SQLiteDataReader dataReader = cmd.ExecuteReader();
-
-                // The SQLiteDataReader allows us to run through the result lines:
-                List<Player> listPlayer = new List<Player>();
-                while (dataReader.Read()) // Read() returns true if there is still a result line to read
-                {
-                    string pseudo = (string)dataReader["Pseudo"];
-                    int winGameQty = (int)dataReader["WinGameQty"];
-                    int loseGameQty = (int)dataReader["LoseGameQty"];
-                    int drawGameQty = (int)dataReader["DrawGameQty"];
-
-                    listPlayer.Add(new Player(pseudo, winGameQty, loseGameQty, drawGameQty));
-                }
-
-                // We are ready, now lets cleanup and close our connection:
-                conn.Close();
-                return listPlayer;
-            }
         }
-
+        #endregion
     }
 }

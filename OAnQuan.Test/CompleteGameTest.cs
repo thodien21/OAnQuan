@@ -17,10 +17,10 @@ namespace OAnQuan.Test
         /// <param name="direction">the choosen direction</param>
         /// <param name="listGotten">the expected list of square after turn</param>
         /// <param name="score">score of player after turn</param>
-        static void Turn(Board board, int playerNumber, int squareId, Direction direction, List<int> listGotten, int score)
+        static void Turn(Board board, int playerNumber, int squareId, Direction direction, List<int> listGotten, int earnedtokenQty)
         {
             board.Go(playerNumber, squareId, direction);
-            Assert.AreEqual(board.PlayersList[playerNumber -1].Pool.Count, score);
+            Assert.AreEqual(board.PlayersList[playerNumber -1].Pool.Count, earnedtokenQty);
             for (int i = 0; i < 12; i++)
             {
                 Assert.AreEqual(board.SquaresList[i].Tokens.Count, listGotten[i]);
@@ -34,7 +34,7 @@ namespace OAnQuan.Test
             //setup board   
             Board board = new Board();
             var player1 = board.PlayersList[0];
-            player1.Pseudo = "OurPlayer1";
+            player1.Pseudo = "";
 
             var player2 = board.PlayersList[1];
             player2.Pseudo = "OurPlayer2";
@@ -61,7 +61,7 @@ namespace OAnQuan.Test
 
             Assert.That(board.PlayersList[0], Is.Not.Null);
             Assert.That(board.PlayersList[0].Pseudo, Is.Not.Null);
-            Assert.AreEqual(board.PlayersList[0].Pseudo,"OurPlayer1");
+            Assert.AreEqual(board.PlayersList[0].Pseudo,"");
             Assert.AreEqual(board.PlayersList[0].Pool.Count, 0);
             Assert.AreEqual(player2.Pool.Count, 0);
 
@@ -78,18 +78,36 @@ namespace OAnQuan.Test
 
             //Assert the list of square after turn and the number of tokens in each player's pool 
             Turn(board, 1, 1, Direction.RIGHT, list1, 6);
+            
             Turn(board, 2, 8, Direction.LEFT, list2, 2);
             Turn(board, 1, 3, Direction.LEFT, list3, 9);
             Turn(board, 2, 7, Direction.LEFT, list4, 2);
             Turn(board, 1, 4, Direction.RIGHT, list5, 10);
+            
             Turn(board, 2, 9, Direction.RIGHT, list6, 3);
             Turn(board, 1, 5, Direction.LEFT, list7, 17);
+
             Turn(board, 2, 7, Direction.RIGHT, list8, 21);
+            
             Turn(board, 1, 3, Direction.RIGHT, list9, 29);
             
             //END OF GAME: Assert the score of each player
             Assert.AreEqual(player1.GetScore(), 33);
             Assert.AreEqual(player2.GetScore(), 25);
+
+            board.FinalResult();
+
+            //check score
+            Assert.AreEqual(player1.Score, 35);
+            Assert.AreEqual(player2.Score, 25);
+
+            // check pool (qty of tokens)
+            Assert.AreEqual(player1.Pool.Count, 31);
+            Assert.AreEqual(player2.Pool.Count, 21);
+
+            //check result (win/draw/lose)
+            Assert.AreEqual(board.GetResult(), Result.WIN);
+            PlayerDb.UpdateResult(board, 1);
         }
     }
 }

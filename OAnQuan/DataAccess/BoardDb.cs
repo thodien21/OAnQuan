@@ -7,6 +7,11 @@ namespace OAnQuan.DataAccess
         // We use the data source:
         const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True; ";
 
+        /// <summary>
+        /// Check if the player has saved a game
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
         public static bool CheckIfContainsPlayerId(long playerId)
         {
             bool contains = false;
@@ -31,19 +36,14 @@ namespace OAnQuan.DataAccess
             return contains;
         }
 
-        public static void SaveOrUpdate(long turn, string player2Pseudo, long playerId)
-        {
-            bool contains = CheckIfContainsPlayerId(playerId);
-            if(contains)
-            {
-                Update(turn, player2Pseudo, playerId);
-            }
-            else
-            {
-                Save(turn, player2Pseudo, playerId);
-            }
-        }
 
+
+        /// <summary>
+        /// Save board
+        /// </summary>
+        /// <param name="turn"></param>
+        /// <param name="player2Pseudo"></param>
+        /// <param name="playerId"></param>
         public static void Save(long turn, string player2Pseudo, long playerId)
         {
             // create a new database connection:
@@ -64,6 +64,12 @@ namespace OAnQuan.DataAccess
             }
         }
 
+        /// <summary>
+        /// Update board
+        /// </summary>
+        /// <param name="turn"></param>
+        /// <param name="player2Pseudo"></param>
+        /// <param name="playerId"></param>
         public static void Update(long turn, string player2Pseudo, long playerId)
         {
             // create a new database connection:

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAnQuan.IHM", "OAnQuan.IHM\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAnQuan.Test", "OAnQuan.Test\OAnQuan.Test.csproj", "{2CD5431A-8D0A-4A2C-A5EC-8868A88C06F9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AFE320A2-31DA-40CF-B4E9-DC84BFA5D2D9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E13EDCF-4501-4388-A214-B1D3670F2BBB}"
 	ProjectSection(SolutionItems) = preProject
 		TODO.txt = TODO.txt
 	EndProjectSection

@@ -104,34 +104,52 @@ namespace OAnQuan.Business
             //Some eaten tokens?
             while (tokenQty == 0)
             {
-                //move to the next square
+                //eat the next square
                 squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
                 eatenTokens = SquaresList[squareId].Eaten();
                 if(eatenTokens.Count != 0)
                 {
-                    foreach (var item in eatenTokens)
-                    {
-                        PlayersList[playerNumber - 1].Pool.Add(item);
-                    }
+                    PlayersList[playerNumber - 1].Pool.AddRange(eatenTokens);//add eaten tokens in player's pool
                 }
                 else
                 {
-                    break;
+                    break; //nothing to eat in this case
                 }
-                //move to the next square
+
+                //move to the next square to see if it is also empty
                 squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
-                //the quantity of tokens in the next square
+                //calculate the quantity of tokens in the next square to see if it is empty
                 tokenQty = SquaresList[squareId].Tokens.Count;
             }
-
-            if(SquaresList[0].Tokens.Count == 0 && SquaresList[6].Tokens.Count == 0)
-            {
-                GetResult();
-            }
-
             return SquaresList;
         }
 
+        /// <summary>
+        /// Finalize the results (score, pool of each player; player 1 win/lose/draw)
+        /// </summary>
+        public void FinalResult()
+        {
+            if (SquaresList[0].Tokens.Count == 0 && SquaresList[6].Tokens.Count == 0)//Game finishes
+            {
+                //Add all the tokens on player's side to his pool
+                int n = 1;
+                for (int k = 1; k <= PlayerQty; k++)
+                {
+                    for (int i = n; i < n + 5; i++)
+                    {
+                        PlayersList[k - 1].Pool.AddRange(SquaresList[i].Tokens);
+                    }
+                    n = n + 6;
+                    PlayersList[k - 1].GetScore();
+                }
+            }
+            GetResult();
+        }
+
+        /// <summary>
+        /// Get result of player 1: win, lose or draw
+        /// </summary>
+        /// <returns></returns>
         public Result GetResult()
         {
             //PlayersList[0].GamesNb++;

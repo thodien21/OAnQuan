@@ -1,8 +1,9 @@
-﻿-- Script Date: 12/03/2019 13:29  - ErikEJ.SqlCeScripting version 3.5.2.80
+﻿-- Script Date: 18/03/2019 15:19  - ErikEJ.SqlCeScripting version 3.5.2.80
 CREATE TABLE [T_SquareList] (
-  [SquareId] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  [BoardId] INTEGER NOT NULL,
-  [SmallTokenQty] INTEGER NOT NULL,
-  [BigTokenQty] INTEGER NOT NULL,
-  FOREIGN KEY (BoardId) REFERENCES T_Board (SquareId)
+  [SquareId] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+, [PlayerId] bigint NOT NULL
+, [SquareNumber] bigint NOT NULL
+, [SmallTokenQty] bigint NOT NULL
+, [BigTokenQty] bigint NOT NULL
+, CONSTRAINT [FK_T_SquareList_0_0] FOREIGN KEY ([PlayerId]) REFERENCES [T_Player] ([SquareId]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );

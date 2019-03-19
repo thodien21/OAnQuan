@@ -8,10 +8,11 @@ namespace OAnQuan.Business
     /// </summary>
     public class Player
     {
-        private string fullName;
-        private int winGameQty;
-        private int loseGameQty;
-        private int drawGameQty;
+        public string FullName { get; set; }
+        public long WinGameQty { get; set; }
+        public long DrawGameQty { get; set; }
+        public long LoseGameQty { get; set; }
+
 
         /// <summary>
         /// Pseudo.
@@ -46,11 +47,11 @@ namespace OAnQuan.Business
         /// <param name="winGameQty"></param>
         /// <param name="loseGameQty"></param>
         /// <param name="drawGameQty"></param>
-        public Player(string pseudo, int winGameQty, int loseGameQty, int drawGameQty) : this(pseudo)
+        public Player(string pseudo, long winGameQty, long loseGameQty, long drawGameQty) : this(pseudo)
         {
-            this.winGameQty = winGameQty;
-            this.loseGameQty = loseGameQty;
-            this.drawGameQty = drawGameQty;
+            WinGameQty = winGameQty;
+            LoseGameQty = loseGameQty;
+            DrawGameQty = drawGameQty;
         }
 
         /// <summary>
@@ -60,27 +61,20 @@ namespace OAnQuan.Business
         /// <param name="fullName"></param>
         public Player(string pseudo, string fullName) : this(pseudo)
         {
-            this.fullName = fullName;
+            FullName = fullName;
         }
+       
 
         /// <summary>
-        /// Calculate the score from pool
+        /// Calculate the earned score from player's pool after turn
         /// </summary>
         /// <returns></returns>
-        public int GetScore()
+        public int GetScore ()
         {
+            var nbBigToken = Square.GetBigTokenQtyFromList(Pool);
+            var nbSmallToken = Pool.Count - nbBigToken;
             var smallToken = new SmallToken();
             var bigToken = new BigToken();
-            var nbSmallToken = 0;
-            var nbBigToken = 0;
-            foreach (var item in Pool)
-            {
-                if (item.GetType() == smallToken.GetType())
-                {
-                    nbSmallToken++;
-                }
-                else nbBigToken++;
-            }
             return Score = nbSmallToken * smallToken.Value + nbBigToken * bigToken.Value;
         }
     }
