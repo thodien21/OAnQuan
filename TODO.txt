@@ -12,3 +12,5 @@ MCD: int -> long?
 string-> text?
 
 Logiciel maquettage: BALSAMIQ en noir et blanc 
+
+Envoyer depuis l'ordinateur fix
