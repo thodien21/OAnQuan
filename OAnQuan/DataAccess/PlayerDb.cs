@@ -50,7 +50,7 @@ namespace OAnQuan.DataAccess
         }
 
         /// <summary>
-        /// When the visitor creat a new account (!!!check if this pseudo already existe)
+        /// Insert player when the visitor creat a new account (!!!check if this pseudo already existe)
         /// </summary>
         /// <param name="pso">Pseudo taped by visitor</param>
         /// <param name="pass">Password taped by visitor</param>
@@ -66,30 +66,29 @@ namespace OAnQuan.DataAccess
                 SQLiteCommand cmd = conn.CreateCommand();
 
                 // Lets insert something into our new table:
-                cmd.CommandText = "INSERT INTO T_Player (Pseudo, Password, FullName, IsAdmin, WinGameQty, DrawGameQty, LoseGameQty) " +
-                    "VALUES (@pso, @pass, @fullName, @isAdmin, @winGameQty, @drawGameQty, @loseGameQty);";
+                cmd.CommandText = "INSERT INTO T_Player (Pseudo, Password, FullName, IsAdmin, IsDisabled, WinGameQty, DrawGameQty, LoseGameQty) " +
+                    "VALUES (@pso, @pass, @fullName, @isAdmin, @isDisabled, @winGameQty, @drawGameQty, @loseGameQty);";
                 cmd.Parameters.AddWithValue("@pso", pseudo);
                 cmd.Parameters.AddWithValue("@pass", ComputeHash(password, new SHA256CryptoServiceProvider()));
                 cmd.Parameters.AddWithValue("@fullName", fullName);
                 cmd.Parameters.AddWithValue("@isAdmin", 0);
+                cmd.Parameters.AddWithValue("@isDisabled", 0);
                 cmd.Parameters.AddWithValue("@winGameQty", 0);
                 cmd.Parameters.AddWithValue("@drawGameQty", 0);
                 cmd.Parameters.AddWithValue("@loseGameQty", 0);
                 // And execute this again ;D
                 cmd.ExecuteNonQuery();
-                conn.Close();
             }
-        }        
+        }
 
         /// <summary>
-        /// Check if the couple pseudo/password exist when login
+        /// Get player when user signs in/ or creat a new account
         /// </summary>
-        /// <param name="_pseudo">taped pseudo</param>
-        /// <param name="_password">taped password</param>
+        /// <param name="pseudo"></param>
+        /// <param name="password"></param>
         /// <returns></returns>
-        static public bool IsThisPlayerExist(string _pseudo, string _password)
+        static public Player GetPlayer(string pseudo, string password)
         {
-            var _isThisPlayerExist = false;
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
                 conn.Open();
@@ -99,20 +98,27 @@ namespace OAnQuan.DataAccess
 
                 // First lets build a SQL-Query again:
                 cmd.CommandText = "SELECT * FROM T_Player WHERE Pseudo = @pso and Password = @pass";
-                cmd.Parameters.AddWithValue("@pso", _pseudo);
-                cmd.Parameters.AddWithValue("@pass", ComputeHash(_password, new SHA256CryptoServiceProvider()));
+                cmd.Parameters.AddWithValue("@pso", pseudo);
+                cmd.Parameters.AddWithValue("@pass", ComputeHash(password, new SHA256CryptoServiceProvider()));
 
                 // Now the SQLiteCommand object can give us a DataReader-Object:
                 SQLiteDataReader dataReader = cmd.ExecuteReader();
-
-                while (dataReader.Read()) // Read() returns true if there is still a result line to read
+                if (dataReader.Read())
                 {
-                    _isThisPlayerExist = true;
+                    return new Player()
+                    {
+                        PlayerId = (long)dataReader["PlayerId"],
+                        Pseudo = pseudo,
+                        Password = password,
+                        FullName = (string)dataReader["FullName"],
+                        IsAdmin = (long)dataReader["IsAdmin"],
+                        IsDisabled = (long)dataReader["IsDisabled"],
+                        WinGameQty = (long)dataReader["WinGameQty"],
+                        DrawGameQty = (long)dataReader["DrawGameQty"],
+                        LoseGameQty = (long)dataReader["LoseGameQty"]
+                    };
                 }
-                
-                // We are ready, now lets cleanup and close our connection:
-                conn.Close();
-                return _isThisPlayerExist;
+                else return null;
             }
         }
         #endregion
@@ -142,12 +148,9 @@ namespace OAnQuan.DataAccess
                         }
                     }
                 }
-
-                // We are ready, now lets cleanup and close our connection:
-                conn.Close();
             }
             return playerId;
-        }    
+        }
 
         /// <summary>
         /// Get best players with ranking
@@ -184,33 +187,7 @@ namespace OAnQuan.DataAccess
 
                     listPlayer.Add(new Player(pseudo, winGameQty, loseGameQty, drawGameQty));
                 }
-
-                // We are ready, now lets cleanup and close our connection:
-                conn.Close();
                 return listPlayer;
-            }
-        }
-
-        /// <summary>
-        /// If it's the first time player saves the game -> Save board, if not -> Update board
-        /// </summary>
-        /// <param name="turn">turn of which player?</param>
-        /// <param name="player2Pseudo">pseudo of player number 2</param>
-        /// <param name="playerId">player identity</param>
-        public static void SaveOrUpdateGame(long turn, string player2Pseudo, long playerId, Board board)
-        {
-            bool contains = BoardDb.CheckIfContainsPlayerId(playerId);
-            if (contains)
-            {
-                BoardDb.Update(turn, player2Pseudo, playerId);
-                SquareListDb.Update(board, playerId);
-                PoolDb.Update(board, playerId);
-            }
-            else
-            {
-                BoardDb.Save(turn, player2Pseudo, playerId);
-                SquareListDb.Save(board, playerId);
-                PoolDb.Save(board, playerId);
             }
         }
 
@@ -240,9 +217,6 @@ namespace OAnQuan.DataAccess
                         }
                     }
                 }
-                // We are ready, now lets cleanup and close our connection:
-                conn.Close();
-
             }
             return variable;
         }
@@ -303,43 +277,21 @@ namespace OAnQuan.DataAccess
                         }
                     }
                 }
-                // We are ready, now lets cleanup and close our connection:
-                conn.Close();
             }
             return variable;
-        }
-
-        /// <summary>
-        /// Update result in database
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="playerId"></param>
-        public static void UpdateResult(Board board, long playerId)
-        {
-            var result = board.GetResult();
-            switch (result)
-            {
-                case Result.WIN:
-                    UpdateWinGameQty(playerId);
-                    break;
-                case Result.DRAW:
-                    UpdateDrawGameQty(playerId);
-                    break;
-                case Result.LOSE:
-                    UpdateLoseGameQty(playerId);
-                    break;
-            }
-        }
+        }       
         #endregion
 
-        #region Funtionnalities reserved for admins: GetAllPlayer, UpgradePlayerToAdmin, DeactivatePlayer, Search Player, SeeInfoOfEveryPlayer 
-        /// <summary>
-        /// Display the list of all players
-        /// </summary>
-        /// <returns></returns>
 
+        #region Funtionnalities reserved for admins: GetAllPlayer, UpgradePlayerToAdmin, DeactivatePlayer, ReactivatePlayer, Search Player, SeeInfoOfEveryPlayer 
+        /// <summary>
+        /// Check if this player is Admin
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns>bool</returns>
         public static bool IfAdmin(long playerId)
         {
+            long isAdmin = 0;
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
                 conn.Open();
@@ -348,46 +300,126 @@ namespace OAnQuan.DataAccess
                 SQLiteCommand cmd = conn.CreateCommand();
 
                 //First lets build a SQL-Query again:
-                cmd.CommandText = "SELECT IsAdmin FROM T_Player";
-
-
+                cmd.CommandText = "SELECT IsAdmin FROM T_Player WHERE PlayerId = @playerId";
+                cmd.Parameters.AddWithValue("@playerId", playerId);
+                using(SQLiteDataReader dataReader = cmd.ExecuteReader())
+                {
+                    if(dataReader.Read())
+                    {
+                        isAdmin = (long)dataReader["IsAdmin"];
+                    }
+                }
             }
+            return (isAdmin == 1)? true : false;
         }
 
-        public static List<Player> GetAllPlayer()
+        /// <summary>
+        /// Display the list of all players
+        /// </summary>
+        /// <param name="asAdminId">id of an admin</param>
+        /// <returns></returns>
+        public static List<Player> GetAllPlayer(long asAdminId)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            List<Player> listPlayer = new List<Player>();
+            if (PlayerDb.IfAdmin(asAdminId) == true)//if this is admin
             {
-                conn.Open();
-
-                // create a new SQL command:
-                SQLiteCommand cmd = conn.CreateCommand();
-
-                // First lets build a SQL-Query again:
-                cmd.CommandText = "SELECT Pseudo, FullName FROM T_Player";
-
-                // Now the SQLiteCommand object can give us a DataReader-Object:
-                SQLiteDataReader dataReader = cmd.ExecuteReader();
-
-                // The SQLiteDataReader allows us to run through the result lines:
-                List<Player> listPlayer = new List<Player>();
-                while (dataReader.Read()) // Read() returns true if there is still a result line to read
+                using (SQLiteConnection conn = new SQLiteConnection(connString))
                 {
-                    string pseudo = (string)dataReader["Pseudo"];
-                    string fullName = (string)dataReader["FullName"];
+                    conn.Open();
 
-                    listPlayer.Add(new Player(pseudo, fullName));
+                    // create a new SQL command:
+                    SQLiteCommand cmd = conn.CreateCommand();
+
+                    // First lets build a SQL-Query again:
+                    cmd.CommandText = "SELECT Pseudo, FullName FROM T_Player";
+
+                    // Now the SQLiteCommand object can give us a DataReader-Object:
+                    SQLiteDataReader dataReader = cmd.ExecuteReader();
+
+                    // The SQLiteDataReader allows us to run through the result lines:
+                    while (dataReader.Read()) // Read() returns true if there is still a result line to read
+                    {
+                        string pseudo = (string)dataReader["Pseudo"];
+                        string fullName = (string)dataReader["FullName"];
+
+                        listPlayer.Add(new Player(pseudo, fullName));
+                    }
                 }
-
-                // We are ready, now lets cleanup and close our connection:
-                conn.Close();
                 return listPlayer;
             }
+            else throw new ArgumentOutOfRangeException(nameof(asAdminId), "Cette fonctionnalité n'est réservée qu'au administrateur");
         }
 
-        public static void UpgradePlayerToAdmin(long player)
+        /// <summary>
+        /// Admin upgrade a player to admin
+        /// </summary>
+        /// <param name="asAdminId">id of an admin</param>
+        /// <param name="playerId">id of player</param>
+        public static void UpgradePlayerToAdmin(long asAdminId, long playerId)
         {
+            if (PlayerDb.IfAdmin(asAdminId) == true)//if this is admin
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(connString))
+                {
+                    conn.Open();
+                    // create a new SQL command:
+                    using (SQLiteCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = "UPDATE T_Player SET IsAdmin = 1 WHERE PlayerId = @playerId";
+                        cmd.Parameters.AddWithValue("@playerId", playerId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            else throw new ArgumentOutOfRangeException(nameof(asAdminId), "Cette fonctionnalité n'est réservée qu'au administrateur");
+        }
 
+        /// <summary>
+        /// Admin deactivate a player
+        /// </summary>
+        /// <param name="asAdminId"></param>
+        /// <param name="playerId"></param>
+        public static void DeactivatePlayer(long asAdminId, long playerId)
+        {
+            if (PlayerDb.IfAdmin(asAdminId) == true)//if this is admin
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(connString))
+                {
+                    conn.Open();
+                    // create a new SQL command:
+                    using (SQLiteCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = "UPDATE T_Player SET IsDisabled = 1 WHERE PlayerId = @playerId";
+                        cmd.Parameters.AddWithValue("@playerId", playerId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            else throw new ArgumentOutOfRangeException(nameof(asAdminId), "Cette fonctionnalité n'est réservée qu'au administrateur");
+        }
+
+        /// <summary>
+        /// Admin can reactivate a player
+        /// </summary>
+        /// <param name="asAdminId"></param>
+        /// <param name="playerId"></param>
+        public static void ReactivatePlayer(long asAdminId, long playerId)
+        {
+            if (PlayerDb.IfAdmin(asAdminId) == true)//if this is admin
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(connString))
+                {
+                    conn.Open();
+                    // create a new SQL command:
+                    using (SQLiteCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = "UPDATE T_Player SET IsDisabled = 0 WHERE PlayerId = @playerId";
+                        cmd.Parameters.AddWithValue("@playerId", playerId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            else throw new ArgumentOutOfRangeException(nameof(asAdminId), "Cette fonctionnalité n'est réservée qu'au administrateur");
         }
         #endregion
     }

@@ -17,9 +17,9 @@ namespace OAnQuan.IHM
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
             //Verify if this pseudo already exists
-            if (PlayerDb.IsThisPlayerExist(txbPeuso.Text, txbPassword.Password) == false)
+            if (PlayerDb.GetPlayer(txbPeuso.Text, txbPassword.Password) == null)
             {
-                MessageBox.Show("Pseudo or password is false, plase try again!");
+                MessageBox.Show("Pseudo ou Mot de passe ne sont pas corrects. Réessayez !");
                 this.Hide();
                 SignIn signIn = new SignIn();
                 signIn.ShowDialog();

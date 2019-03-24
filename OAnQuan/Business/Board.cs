@@ -77,7 +77,7 @@ namespace OAnQuan.Business
             //Check if the selected square is authorized and the qty of provider square is not null:
             if (selectedSquare.PlayerNumber != playerNumber || tokenQty == 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(squareId), "The selected square should correspond to {0} and not be empty", PlayersList[playerNumber-1].Pseudo);
+                throw new ArgumentOutOfRangeException(nameof(squareId), "La case choisie doit être dans la rangée de {0} et non vide", PlayersList[playerNumber-1].Pseudo);
             }
 
             //While the provider square is not empty and not be big square, it provide its tokens to next squares
@@ -127,7 +127,7 @@ namespace OAnQuan.Business
         /// <summary>
         /// Finalize the results (score, pool of each player; player 1 win/lose/draw)
         /// </summary>
-        public void FinalResult()
+        public Result GetResult()
         {
             if (SquaresList[0].Tokens.Count == 0 && SquaresList[6].Tokens.Count == 0)//Game finishes
             {
@@ -140,30 +140,17 @@ namespace OAnQuan.Business
                         PlayersList[k - 1].Pool.AddRange(SquaresList[i].Tokens);
                     }
                     n = n + 6;
-                    PlayersList[k - 1].GetScore();
+                    PlayersList[k - 1].GetScore();//get final score of each player
                 }
             }
-            GetResult();
-        }
-
-        /// <summary>
-        /// Get result of player 1: win, lose or draw
-        /// </summary>
-        /// <returns></returns>
-        public Result GetResult()
-        {
-            //PlayersList[0].GamesNb++;
             if (PlayersList[0].Score > PlayersList[1].Score)
             {
-                //PlayersList[0].WinNb++;
                 return Result.WIN;
             }
             else if (PlayersList[0].Score == PlayersList[1].Score)
             {
-                //PlayersList[0].DrawNb++;
                 return Result.DRAW;
             }
-            //PlayersList[0].LoseNb++;
             return Result.LOSE;
         }
     }

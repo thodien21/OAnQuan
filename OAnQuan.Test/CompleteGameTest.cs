@@ -95,7 +95,7 @@ namespace OAnQuan.Test
             Assert.AreEqual(player1.GetScore(), 33);
             Assert.AreEqual(player2.GetScore(), 25);
 
-            board.FinalResult();
+            board.GetResult();
 
             //check score
             Assert.AreEqual(player1.Score, 35);
@@ -107,7 +107,7 @@ namespace OAnQuan.Test
 
             //check result (win/draw/lose)
             Assert.AreEqual(board.GetResult(), Result.WIN);
-            PlayerDb.UpdateResult(board, 1);
+            player1.UpdatePlayer(1, board);
         }
     }
 }

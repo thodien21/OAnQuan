@@ -12,7 +12,7 @@ namespace OAnQuan.DataAccess
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>
-        public static bool CheckIfContainsPlayerId(long playerId)
+        public static bool CheckIfBoardDbContainsPlayerId(long playerId)
         {
             bool contains = false;
             using (SQLiteConnection conn = new SQLiteConnection(connString))
@@ -44,7 +44,7 @@ namespace OAnQuan.DataAccess
         /// <param name="turn"></param>
         /// <param name="player2Pseudo"></param>
         /// <param name="playerId"></param>
-        public static void Save(long turn, string player2Pseudo, long playerId)
+        public static void Save(long playerId, string player2Pseudo, long turn)
         {
             // create a new database connection:
             using (SQLiteConnection conn = new SQLiteConnection(connString))

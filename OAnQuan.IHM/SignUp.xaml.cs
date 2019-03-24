@@ -16,16 +16,15 @@ namespace OAnQuan.IHM
         {
             InitializeComponent();
         }
-        public string pseudoPlayer1 = "";
-        public string pseudoPlayer2 = "IA";
+
         private void BtnCreatAccount_Click(object sender, RoutedEventArgs e)
         {
             //Verify if this pseudo already exists
-            List<Player> allPlayer = PlayerDb.GetAllPlayer();
+            List<Player> allPlayer = PlayerDb.GetAllPlayer(2);
             var Player1 = allPlayer.FirstOrDefault(s => s.Pseudo == txbPeuso.Text);
             if (Player1 != null)
             {
-                MessageBox.Show("This speudo already exist, plase choose another one!");
+                MessageBox.Show("Ce pseudo existe déjà, veuillez choisir un autre :");
                 this.Hide();
                 SignUp signUp = new SignUp();
                 signUp.ShowDialog();

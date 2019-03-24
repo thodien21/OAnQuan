@@ -14,7 +14,7 @@ namespace OAnQuan.DataAccess
         /// </summary>
         /// <param name="board"></param>
         /// <param name="playerId"></param>
-        public static void Save(Board board, long playerId)
+        public static void Save(long playerId, Board board)
         {
             // create a new database connection:
             using (SQLiteConnection conn = new SQLiteConnection(connString))
@@ -48,7 +48,7 @@ namespace OAnQuan.DataAccess
         /// </summary>
         /// <param name="board"></param>
         /// <param name="playerId"></param>
-        public static void Update(Board board, long playerId)
+        public static void Update(long playerId, Board board)
         {
             // create a new database connection:
             using (SQLiteConnection conn = new SQLiteConnection(connString))
