@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using OAnQuan.Business;
+using OAnQuan.DataAccess;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace OAnQuan.IHM
 {
@@ -10,6 +13,9 @@ namespace OAnQuan.IHM
         public Home()
         {
             InitializeComponent();
+
+            //Display the best players
+            icBestPlayerList.ItemsSource = PlayerDb.GetRanking(5);
         }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)

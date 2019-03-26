@@ -10,7 +10,9 @@ namespace OAnQuan.DataAccess
     public class PlayerDb
     {
         // We use the data source:
-        const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //for laptop const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //for fix
+        const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
 
         /// <summary>
         /// Creat the table of player
@@ -191,97 +193,44 @@ namespace OAnQuan.DataAccess
             }
         }
 
-        #region Update result in database
         /// <summary>
-        /// Update the quantity of win games of player
+        /// Update the table Player in database
         /// </summary>
-        /// <param name="playerId"></param>
-        /// <returns></returns>
-        public static long UpdateWinGameQty(long playerId)
+        /// <param name="player"></param>
+        public static void UpdatePlayerDb(Player player)
         {
-            long variable = 100;
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
                 conn.Open();
                 // create a new SQL command:
                 using (SQLiteCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "UPDATE T_Player SET WinGameQty = WinGameQty+1 WHERE PlayerId = @playerId";
-                    cmd.Parameters.AddWithValue("@playerId", playerId);
+                    cmd.CommandText = "UPDATE T_Player SET " +
+                        "Pseudo = @pso, " +
+                        "Password = @pass, " +
+                        "FullName = @fullName, " +
+                        "IsAdmin = @ad, " +
+                        "IsDisabled = @dis, " +
+                        "WinGameQty = @win, " +
+                        "DrawGameqty = @draw, " +
+                        "LoseGameQty = @lose " +
+                    "WHERE PlayerId = @playerId";
 
-                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
-                    {
-                        if (dataReader.Read()) // Read() returns true if there is still a result line to read
-                        {
-                            variable = (long)dataReader["WinGameQty"];
-                        }
-                    }
-                }
-            }
-            return variable;
-        }
-
-        /// <summary>
-        /// Update the quantity of draw games of player
-        /// </summary>
-        /// <param name="playerId"></param>
-        /// <returns></returns>
-        public static long UpdateDrawGameQty(long playerId)
-        {
-            long variable = 100;
-            using (SQLiteConnection conn = new SQLiteConnection(connString))
-            {
-                conn.Open();
-                // create a new SQL command:
-                using (SQLiteCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = "UPDATE T_Player SET DrawGameQty = DrawGameQty+1 WHERE PlayerId = @playerId";
-                    cmd.Parameters.AddWithValue("@playerId", playerId);
-
-                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
-                    {
-                        if (dataReader.Read()) // Read() returns true if there is still a result line to read
-                        {
-                            variable = (long)dataReader["DrawGameQty"];
-                        }
-                    }
+                    cmd.Parameters.AddWithValue("@playerId", player.PlayerId);
+                    cmd.Parameters.AddWithValue("@pso", player.Pseudo);
+                    cmd.Parameters.AddWithValue("@pass", ComputeHash(player.Password, new SHA256CryptoServiceProvider()));
+                    cmd.Parameters.AddWithValue("@fullname", player.FullName);
+                    cmd.Parameters.AddWithValue("@ad", player.IsAdmin);
+                    cmd.Parameters.AddWithValue("@dis", player.IsDisabled);
+                    cmd.Parameters.AddWithValue("@win", player.WinGameQty);
+                    cmd.Parameters.AddWithValue("@draw", player.DrawGameQty);
+                    cmd.Parameters.AddWithValue("@lose", player.LoseGameQty);
+                    cmd.ExecuteNonQuery();
                 }
                 // We are ready, now lets cleanup and close our connection:
                 conn.Close();
             }
-            return variable;
         }
-
-        /// <summary>
-        /// Update the quantity of lose games of player
-        /// </summary>
-        /// <param name="playerId"></param>
-        /// <returns></returns>
-        public static long UpdateLoseGameQty(long playerId)
-        {
-            long variable = 100;
-            using (SQLiteConnection conn = new SQLiteConnection(connString))
-            {
-                conn.Open();
-                // create a new SQL command:
-                using (SQLiteCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = "UPDATE T_Player SET LoseGameQty = LoseGameQty+1 WHERE PlayerId = @playerId";
-                    cmd.Parameters.AddWithValue("@playerId", playerId);
-
-                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
-                    {
-                        if (dataReader.Read()) // Read() returns true if there is still a result line to read
-                        {
-                            variable = (long)dataReader["LoseGameQty"];
-                        }
-                    }
-                }
-            }
-            return variable;
-        }       
-        #endregion
-
 
         #region Funtionnalities reserved for admins: GetAllPlayer, UpgradePlayerToAdmin, DeactivatePlayer, ReactivatePlayer, Search Player, SeeInfoOfEveryPlayer 
         /// <summary>

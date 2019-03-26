@@ -113,19 +113,22 @@ namespace OAnQuan.Business
         /// </summary>
         /// <param name="board"></param>
         /// <param name="playerId"></param>
-        public void UpdatePlayer(long playerId, Board board)
+        public void UpdateResult(long playerId, Board board)
         {
             var result = board.GetResult();
             switch (result)
             {
                 case Result.WIN:
-                    PlayerDb.UpdateWinGameQty(playerId);
+                    this.WinGameQty++;
+                    //PlayerDb.UpdateWinGameQty(playerId);
                     break;
                 case Result.DRAW:
-                    PlayerDb.UpdateDrawGameQty(playerId);
+                    this.DrawGameQty++;
+                    //PlayerDb.UpdateDrawGameQty(playerId);
                     break;
                 case Result.LOSE:
-                    PlayerDb.UpdateLoseGameQty(playerId);
+                    this.LoseGameQty++;
+                    //PlayerDb.UpdateLoseGameQty(playerId);
                     break;
                 default: break;
             }

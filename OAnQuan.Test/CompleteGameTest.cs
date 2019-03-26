@@ -107,7 +107,7 @@ namespace OAnQuan.Test
 
             //check result (win/draw/lose)
             Assert.AreEqual(board.GetResult(), Result.WIN);
-            player1.UpdatePlayer(1, board);
+            player1.UpdateResult(1, board);
         }
     }
 }
