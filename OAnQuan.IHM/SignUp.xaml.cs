@@ -1,5 +1,6 @@
 ﻿using OAnQuan.Business;
 using OAnQuan.DataAccess;
+using OAnQuan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,13 @@ namespace OAnQuan.IHM
         private void BtnCreatAccount_Click(object sender, RoutedEventArgs e)
         {
             //Verify if this pseudo already exists
-            List<Player> allPlayer = PlayerDb.GetAllPlayer(2);
-            var Player1 = allPlayer.FirstOrDefault(s => s.Pseudo == txbPeuso.Text);
-            if (Player1 != null)
+            List<Player> allPlayer = PlayerDb.GetAllPlayer();
+            var player1 = allPlayer.FirstOrDefault(s => s.Pseudo == txbPeuso.Text);
+
+            var string1 = txbPassword.Password;
+            var string2 = txbPasswordConfirmed.Password;
+
+            if (player1 != null)
             {
                 MessageBox.Show("Ce pseudo existe déjà, veuillez choisir un autre :");
                 this.Hide();
@@ -31,10 +36,15 @@ namespace OAnQuan.IHM
             }
             else
             {
-                this.Hide();
-                PlayerDb.InsertPlayer(txbPeuso.Text, txbPassword.Password, txbFullName.Text);
-                Home click = new Home();
-                click.ShowDialog();
+                if(txbPasswordConfirmed.Password == txbPassword.Password)
+                {
+                    this.Hide();
+                    PlayerDb.InsertPlayer(txbPeuso.Text, txbPassword.Password, txbFullName.Text);
+                    Services.Player = PlayerDb.GetPlayer(txbPeuso.Text, txbPassword.Password);
+                    Home click = new Home();
+                    click.ShowDialog();
+                }
+                else MessageBox.Show("Le mot de passe confirmé n'est pas correct");
             }
         }
     }

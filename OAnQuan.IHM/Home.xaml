@@ -11,7 +11,7 @@
         <TabControl TabStripPlacement="Bottom">
             <TabItem Header="O An Quan">
                 <Grid>
-                    <TextBox x:Name="txbWelcomPlayer" HorizontalAlignment="Left" Height="37" Margin="278,10,0,0" TextWrapping="Wrap" Text="Bienvenu joueur !" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Top" Width="229"/>
+                    <TextBox x:Name="txbWelcom" HorizontalAlignment="Left" Height="37" Margin="226,10,0,0" TextWrapping="Wrap" Text="Bienvenu +{Binding Pseudo}+ !" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Top" Width="317"/>
                     <Button x:Name="btnPlay" Content="Ô Ăn Quan" FontSize="50" Foreground="Green" HorizontalAlignment="Left" Height="116" Margin="226,126,0,0" VerticalAlignment="Top" Width="317" Click="BtnPlay_Click" Background="#FFAA959D" BorderBrush="#FF707070" BorderThickness="5" FontFamily="Yu Gothic" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="20" Margin="335,222,0,0" VerticalAlignment="Top" Width="100" Text="Cliquer pour jouer"/>
                 </Grid>

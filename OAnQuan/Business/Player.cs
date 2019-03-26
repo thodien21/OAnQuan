@@ -1,4 +1,5 @@
 ﻿using OAnQuan.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -120,18 +121,51 @@ namespace OAnQuan.Business
             {
                 case Result.WIN:
                     this.WinGameQty++;
-                    //PlayerDb.UpdateWinGameQty(playerId);
                     break;
                 case Result.DRAW:
                     this.DrawGameQty++;
-                    //PlayerDb.UpdateDrawGameQty(playerId);
                     break;
                 case Result.LOSE:
                     this.LoseGameQty++;
-                    //PlayerDb.UpdateLoseGameQty(playerId);
                     break;
                 default: break;
             }
+        }
+
+        private void GetAllPlayer()
+        {
+            if(IsAdmin == 1)
+            {
+                PlayerDb.GetAllPlayer();
+            }
+            else throw new ArgumentOutOfRangeException(nameof(PlayerId), "Cette fonctionnalité n'est réservée qu'au administrateur");
+        }
+
+        private void UpgradePlayerToAdmin(long playerId)
+        {
+            if (IsAdmin == 1)
+            {
+                PlayerDb.UpgradePlayerToAdmin(playerId);
+            }
+            else throw new ArgumentOutOfRangeException(nameof(PlayerId), "Cette fonctionnalité n'est réservée qu'au administrateur");
+        }
+
+        private void DeactivatePlayer(long playerId)
+        {
+            if (IsAdmin == 1)
+            {
+                PlayerDb.DeactivatePlayer(playerId);
+            }
+            else throw new ArgumentOutOfRangeException(nameof(PlayerId), "Cette fonctionnalité n'est réservée qu'au administrateur");
+        }
+
+        private void ReactivatePlayer(long playerId)
+        {
+            if (IsAdmin == 1)
+            {
+                PlayerDb.ReactivatePlayer(playerId);
+            }
+            else throw new ArgumentOutOfRangeException(nameof(PlayerId), "Cette fonctionnalité n'est réservée qu'au administrateur");
         }
     }
 }
