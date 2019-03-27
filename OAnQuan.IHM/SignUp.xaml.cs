@@ -20,16 +20,13 @@ namespace OAnQuan.IHM
 
         private void BtnCreatAccount_Click(object sender, RoutedEventArgs e)
         {
-            //Verify if this pseudo already exists
+            //Verify if this login already exists in database
             List<Player> allPlayer = PlayerDb.GetAllPlayer();
             var player1 = allPlayer.FirstOrDefault(s => s.Pseudo == txbPeuso.Text);
 
-            var string1 = txbPassword.Password;
-            var string2 = txbPasswordConfirmed.Password;
-
             if (player1 != null)
             {
-                MessageBox.Show("Ce pseudo existe déjà, veuillez choisir un autre :");
+                MessageBox.Show("Ce pseudo existe déjà, choissez un autre :");
                 this.Hide();
                 SignUp signUp = new SignUp();
                 signUp.ShowDialog();
@@ -39,8 +36,9 @@ namespace OAnQuan.IHM
                 if(txbPasswordConfirmed.Password == txbPassword.Password)
                 {
                     this.Hide();
-                    PlayerDb.InsertPlayer(txbPeuso.Text, txbPassword.Password, txbFullName.Text);
-                    Services.Player = PlayerDb.GetPlayer(txbPeuso.Text, txbPassword.Password);
+                    PlayerDb.InsertPlayer(txbPeuso.Text, txbPassword.Password, txbFullName.Text);//Insert player to database
+                    Services.GetPlayer(txbPeuso.Text, txbPassword.Password);//Immediately get player
+
                     Home click = new Home();
                     click.ShowDialog();
                 }

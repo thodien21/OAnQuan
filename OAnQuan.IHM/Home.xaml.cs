@@ -16,7 +16,7 @@ namespace OAnQuan.IHM
 
             //Display the best players
             icBestPlayerList.ItemsSource = PlayerDb.GetRanking(5);
-            txbWelcom.Text = PlayerDb.GetPlayer();
+            txbWelcome.Text = "Bienvenu "+ Services.Player.Pseudo + " !";
         }
 
         private void BtnPlay_Click(object sender, RoutedEventArgs e)

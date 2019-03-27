@@ -7,10 +7,10 @@ other video https://www.youtube.com/watch?v=ayp3tHEkRc0
 Code: Confirmer mot de pass?
 
 
-infrastructure
-MCD: int -> long?
-string-> text?
-
 Logiciel maquettage: BALSAMIQ en noir et blanc 
 
 Envoyer depuis l'ordinateur fix
+
+good link for WPF:
+https://documentation.devexpress.com/WPF/10477/Controls-and-Libraries/Data-Editors/Getting-Started (userful for registration form)
+https://documentation.devexpress.com/WPF/10516/Controls-and-Libraries/Data-Editors/Getting-Started/How-to-Create-and-Add-Palettes-in-PopupColorEdit (for changing game colors)

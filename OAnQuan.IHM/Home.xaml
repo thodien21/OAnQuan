@@ -7,17 +7,20 @@
         mc:Ignorable="d"
         Title="Home" Height="450" Width="800">
     <Grid RenderTransformOrigin="0.746,0.517">
-
-        <TabControl TabStripPlacement="Bottom">
+        <TabControl TabStripPlacement="Bottom" SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="O An Quan">
                 <Grid>
-                    <TextBox x:Name="txbWelcom" HorizontalAlignment="Left" Height="37" Margin="226,10,0,0" TextWrapping="Wrap" Text="Bienvenu +{Binding Pseudo}+ !" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Top" Width="317"/>
+                    <ItemsControl>
+                        <TextBox x:Name="txbWelcome" HorizontalAlignment="Center" Height="37" Margin="227,20,248,0" TextWrapping="Wrap" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Top" Width="311"/>
+                    </ItemsControl>
                     <Button x:Name="btnPlay" Content="Ô Ăn Quan" FontSize="50" Foreground="Green" HorizontalAlignment="Left" Height="116" Margin="226,126,0,0" VerticalAlignment="Top" Width="317" Click="BtnPlay_Click" Background="#FFAA959D" BorderBrush="#FF707070" BorderThickness="5" FontFamily="Yu Gothic" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="20" Margin="335,222,0,0" VerticalAlignment="Top" Width="100" Text="Cliquer pour jouer"/>
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Votre info"></TabItem>
+            <TabItem Header="Votre info">
+                <ListBox HorizontalAlignment="Left" Height="227" VerticalAlignment="Top" Width="608" SelectionChanged="ListBox_SelectionChanged" Margin="102,23,0,0"/>
+            </TabItem>
 
             <TabItem x:Name="BestPlayer" Header="Classement">
                 <Grid Margin="50,50,50,50">
@@ -29,9 +32,9 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="1" Text="Gagnés" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="LightGreen"/>
-                        <TextBlock Grid.Column="2" Text="Neutres" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="Black"/>
-                        <TextBlock Grid.Column="3" Text="Perdus" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="Red"/>
+                        <TextBlock Grid.Column="1" Text="Victoires" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="LightGreen" Margin="37,0,31,0" Width="79"/>
+                        <TextBlock Grid.Column="2" Text="Nuls" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="3" Text="Echecs" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="Red"/>
                     </Grid>
                     <ItemsControl Name="icBestPlayerList" Margin="20,109,20,0">
                         <ItemsControl.ItemTemplate>
@@ -53,6 +56,8 @@
                     </ItemsControl>
                 </Grid>
             </TabItem>
+            <StackPanel Height="100" Width="100"/>
+            <DataGrid Height="100" Width="100"/>
         </TabControl>
     </Grid>
 </Window>

@@ -19,7 +19,7 @@ namespace OAnQuan.IHM
             //Verify if this pseudo already exists
             if (PlayerDb.GetPlayer(txbPeuso.Text, txbPassword.Password) == null)
             {
-                MessageBox.Show("Pseudo ou Mot de passe ne sont pas corrects. Réessayez !");
+                MessageBox.Show("Pseudo ou Mot de passe sont incorrect. Réessayez !");
                 this.Hide();
                 SignIn signIn = new SignIn();
                 signIn.ShowDialog();
@@ -27,6 +27,7 @@ namespace OAnQuan.IHM
             else
             {
                 this.Hide();
+                Services.GetPlayer(txbPeuso.Text, txbPassword.Password);//Immediately get player 
                 Home click = new Home();
                 click.ShowDialog();
             }
