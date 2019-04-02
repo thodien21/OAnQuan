@@ -25,5 +25,10 @@ namespace OAnQuan.IHM
             PlayGame game = new PlayGame();
             game.ShowDialog();
         }
+
+        private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

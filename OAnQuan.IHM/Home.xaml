@@ -19,12 +19,22 @@
             </TabItem>
 
             <TabItem Header="Votre info">
-                <ListBox HorizontalAlignment="Left" Height="227" VerticalAlignment="Top" Width="608" SelectionChanged="ListBox_SelectionChanged" Margin="102,23,0,0"/>
+                <Grid>
+                    <TextBox HorizontalAlignment="Left" Height="27" Margin="340,14,0,0" TextWrapping="Wrap" Text="Votre compte" TextAlignment="Center" VerticalAlignment="Top" Width="84"/>
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="546,252,0,0" TextWrapping="Wrap" Text="Range : 115/200" TextAlignment="Center" VerticalAlignment="Top" Width="120"/>
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="500,119,0,0" TextWrapping="Wrap" Text="Nombre de parties jouées : 14" TextAlignment="Center" VerticalAlignment="Top" Width="197"/>
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="552,157,0,0" TextWrapping="Wrap" Text="Victoires : 5" TextAlignment="Center" VerticalAlignment="Top" Width="105"/>
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="552,185,0,0" TextWrapping="Wrap" Text="Neutres : 6" TextAlignment="Center" VerticalAlignment="Top" Width="105" RenderTransformOrigin="-0.604,-0.243"/>
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="552,213,0,0" TextWrapping="Wrap" Text="Echoues : 3" TextAlignment="Center" VerticalAlignment="Top" Width="105"/>
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="54,185,0,0" TextWrapping="Wrap" Text="Pseudo" TextAlignment="Center" VerticalAlignment="Top" Width="197"/>
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="54,213,0,0" TextWrapping="Wrap" Text="FullName" TextAlignment="Center" VerticalAlignment="Top" Width="197"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="320,142,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+                </Grid>
             </TabItem>
 
             <TabItem x:Name="BestPlayer" Header="Classement">
                 <Grid Margin="50,50,50,50">
-                    <TextBlock FontSize="30" FontWeight="Heavy" HorizontalAlignment="Center" Margin="291,0,168,246" Width="227"><Run Text=" "/><Run Text="Classement" FontStyle="Oblique"/></TextBlock>
+                    <TextBlock FontSize="30" FontWeight="Heavy" HorizontalAlignment="Center" Margin="291,0,168,246" Width="227"><Run Text="Classement" FontStyle="Oblique"/></TextBlock>
                     <Grid Margin="50,68,50,185">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -56,8 +66,7 @@
                     </ItemsControl>
                 </Grid>
             </TabItem>
-            <StackPanel Height="100" Width="100"/>
-            <DataGrid Height="100" Width="100"/>
         </TabControl>
+
     </Grid>
 </Window>
