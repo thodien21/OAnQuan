@@ -51,5 +51,10 @@ namespace OAnQuan.IHM
             PlayerInfo playerInfo = new PlayerInfo();
             playerInfo.Show();
         }
+
+        private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }
