@@ -11,7 +11,7 @@ namespace OAnQuan.Test.DataAccess
         [Test]
         public static void GetAllPlayer_Test()
         {
-            List<Player> playerList = PlayerDb.GetAllPlayer(2);
+            List<Player> playerList = PlayerDb.GetAllPlayer();
             Assert.AreEqual(playerList.Count, 8);
             var player1 = new List<string>() { "", "" };
             var player2 = new List<string>() { "Ti", "Chuot" };
@@ -62,21 +62,6 @@ namespace OAnQuan.Test.DataAccess
         public static List<string> RankingPlayer(Player player)
         {
             return new List<string>() { player.Pseudo, player.WinGameQty.ToString(), player.DrawGameQty.ToString(), player.LoseGameQty.ToString() };
-        }
-
-        [Test]
-        public static void IsAdmin_Test()
-        {
-            Assert.AreEqual(PlayerDb.IfAdmin(1), true);
-            Assert.AreEqual(PlayerDb.IfAdmin(2), true);
-            Assert.AreEqual(PlayerDb.IfAdmin(4), true);
-            Assert.AreEqual(PlayerDb.IfAdmin(7), true);
-
-            
-            Assert.AreEqual(PlayerDb.IfAdmin(3), false);
-            Assert.AreEqual(PlayerDb.IfAdmin(5), false);
-            Assert.AreEqual(PlayerDb.IfAdmin(6), false);
-            Assert.AreEqual(PlayerDb.IfAdmin(8), true);
         }
 
         [Test]

@@ -12,8 +12,10 @@ namespace OAnQuan.DataAccess
         // We use the data source:
         //for laptop 
         //const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
-        //for fix
-        const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //for fix at home
+        const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //for fix at school
+        //const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
 
         /// <summary>
         /// Creat the table of player
@@ -156,7 +158,46 @@ namespace OAnQuan.DataAccess
         }
 
         /// <summary>
-        /// Get best players with ranking
+        /// Get player from pseudo
+        /// </summary>
+        /// <param name="pseudo"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        static public Player GetPlayerFromPseudo(string pseudo)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                // create a new SQL command:
+                SQLiteCommand cmd = conn.CreateCommand();
+
+                // First lets build a SQL-Query again:
+                cmd.CommandText = "SELECT * FROM T_Player WHERE Pseudo = @pso";
+                cmd.Parameters.AddWithValue("@pso", pseudo);
+                // Now the SQLiteCommand object can give us a DataReader-Object:
+                SQLiteDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read())
+                {
+                    return new Player()
+                    {
+                        PlayerId = (long)dataReader["PlayerId"],
+                        Pseudo = pseudo,
+                        Password = (string)dataReader["Password"],
+                        FullName = (string)dataReader["FullName"],
+                        IsAdmin = (long)dataReader["IsAdmin"],
+                        IsDisabled = (long)dataReader["IsDisabled"],
+                        WinGameQty = (long)dataReader["WinGameQty"],
+                        DrawGameQty = (long)dataReader["DrawGameQty"],
+                        LoseGameQty = (long)dataReader["LoseGameQty"]
+                    };
+                }
+                else return null;
+            }
+        }
+
+        /// <summary>
+        /// Get ranking with limit
         /// </summary>
         /// <param name="limit">number of best players to rank</param>
         /// <returns>pseudo, winGameQty, drawGameQty, loseGameQty</returns>
@@ -177,21 +218,42 @@ namespace OAnQuan.DataAccess
                 cmd.Parameters.AddWithValue("@limit", limit);
 
                 // Now the SQLiteCommand object can give us a DataReader-Object:
-                SQLiteDataReader dataReader = cmd.ExecuteReader();
-
-                // The SQLiteDataReader allows us to run through the result lines:
-                List<Player> listPlayer = new List<Player>();
-                while (dataReader.Read()) // Read() returns true if there is still a result line to read
+                using (SQLiteDataReader dataReader = cmd.ExecuteReader())
                 {
-                    string pseudo = (string)dataReader["Pseudo"];
-                    long winGameQty = (long)dataReader["WinGameQty"];
-                    long loseGameQty = (long)dataReader["LoseGameQty"];
-                    long drawGameQty = (long)dataReader["DrawGameQty"];
+                    // The SQLiteDataReader allows us to run through the result lines:
+                    List<Player> listPlayer = new List<Player>();
+                    while (dataReader.Read()) // Read() returns true if there is still a result line to read
+                    {
+                        string pseudo = (string)dataReader["Pseudo"];
+                        long winGameQty = (long)dataReader["WinGameQty"];
+                        long loseGameQty = (long)dataReader["LoseGameQty"];
+                        long drawGameQty = (long)dataReader["DrawGameQty"];
 
-                    listPlayer.Add(new Player(pseudo, winGameQty, loseGameQty, drawGameQty));
+                        listPlayer.Add(new Player(pseudo, winGameQty, loseGameQty, drawGameQty));
+                    }
+                    return listPlayer;
                 }
-                return listPlayer;
             }
+        }
+
+        /// <summary>
+        /// Count the quantity of all players
+        /// </summary>
+        /// <returns>int</returns>
+        public static int CountPlayer()
+        {
+            int count = 0;
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+                // create a new SQL command:
+                using (SQLiteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT COUNT(*) FROM T_Player";
+                    count = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+            return count;
         }
 
         /// <summary>
@@ -249,7 +311,7 @@ namespace OAnQuan.DataAccess
                 SQLiteCommand cmd = conn.CreateCommand();
 
                 // First lets build a SQL-Query again:
-                cmd.CommandText = "SELECT Pseudo, FullName FROM T_Player";
+                cmd.CommandText = "SELECT * FROM T_Player";
 
                 // Now the SQLiteCommand object can give us a DataReader-Object:
                 SQLiteDataReader dataReader = cmd.ExecuteReader();
@@ -257,10 +319,18 @@ namespace OAnQuan.DataAccess
                 // The SQLiteDataReader allows us to run through the result lines:
                 while (dataReader.Read()) // Read() returns true if there is still a result line to read
                 {
-                    string pseudo = (string)dataReader["Pseudo"];
-                    string fullName = (string)dataReader["FullName"];
-
-                    listPlayer.Add(new Player(pseudo, fullName));
+                    listPlayer.Add(new Player()
+                    {
+                        PlayerId = (long)dataReader["PlayerId"],
+                        Pseudo = (string)dataReader["Pseudo"],
+                        Password = (string)dataReader["Password"],
+                        FullName = (string)dataReader["FullName"],
+                        IsAdmin = (long)dataReader["IsAdmin"],
+                        IsDisabled = (long)dataReader["IsDisabled"],
+                        WinGameQty = (long)dataReader["WinGameQty"],
+                        DrawGameQty = (long)dataReader["DrawGameQty"],
+                        LoseGameQty = (long)dataReader["LoseGameQty"]
+                    });
                 }
             }
             return listPlayer;

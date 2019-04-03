@@ -7,57 +7,64 @@
         mc:Ignorable="d"
         Title="Home" Height="450" Width="800">
     <Grid RenderTransformOrigin="0.746,0.517">
-        <TabControl TabStripPlacement="Bottom" SelectionChanged="TabControl_SelectionChanged">
+        <TabControl TabStripPlacement="Bottom">
             <TabItem Header="O An Quan">
                 <Grid>
                     <ItemsControl>
-                        <TextBox x:Name="txbWelcome" HorizontalAlignment="Center" Height="37" Margin="227,20,248,0" TextWrapping="Wrap" FontSize="20" FontWeight="DemiBold" VerticalAlignment="Top" Width="311"/>
+                        <TextBox x:Name="txbWelcome" HorizontalAlignment="Center" Height="37" FontSize="20" FontWeight="DemiBold"/>
                     </ItemsControl>
-                    <Button x:Name="btnPlay" Content="Ô Ăn Quan" FontSize="50" Foreground="Green" HorizontalAlignment="Left" Height="116" Margin="226,126,0,0" VerticalAlignment="Top" Width="317" Click="BtnPlay_Click" Background="#FFAA959D" BorderBrush="#FF707070" BorderThickness="5" FontFamily="Yu Gothic" FontWeight="Bold"/>
+                    <Button x:Name="btnPlay" Content="Ô Ăn Quan" FontSize="50" Foreground="Green" HorizontalAlignment="Left" Height="116" Margin="226,126,0,0" VerticalAlignment="Top" Width="317" Click="btnPlay_Click" Background="#FFAA959D" BorderBrush="#FF707070" BorderThickness="5" FontFamily="Yu Gothic" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="20" Margin="335,222,0,0" VerticalAlignment="Top" Width="100" Text="Cliquer pour jouer"/>
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Votre info">
-                <ListBox HorizontalAlignment="Left" Height="227" VerticalAlignment="Top" Width="608" SelectionChanged="ListBox_SelectionChanged" Margin="102,23,0,0"/>
+            <TabItem Header="Votre compte" Name="tbiPlayer">
+                <Grid>
+                    <Label Content="{Binding Pseudo}" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="24" HorizontalAlignment="Center" Margin="295,33,286,0" VerticalAlignment="Top" Width="205"/>
+                    <Label Content="{Binding FullName}" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="24" HorizontalAlignment="Center" Margin="295,65,286,0" VerticalAlignment="Top" Width="205"/>
+                    <Label Content="Administrateur : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,136,333,0" VerticalAlignment="Top" Width="213"/>
+                    <Label Name="lblIsAdmin"  FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,133,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
+                    <Button x:Name="btnAdmin" Content="Gérer des joueurs" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center" Margin="520,136,112,0" VerticalAlignment="Top" Width="154" Foreground="CornflowerBlue" Click="btnAdmin_Click"/>
+                    
+                    <Label Content="Etat de compte : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,173,333,0" VerticalAlignment="Top" Width="213"/>
+                    <Label Name="lblIsDisabled" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,171,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
+                    <Label Content="Nombre de parties jouées : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,206,333,0" VerticalAlignment="Top" Width="213"/>
+                    <Label Content="{Binding TotalGameQty}" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,204,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
+                    <Label Content="Victoires : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="12" HorizontalAlignment="Center" Margin="293,239,333,0" VerticalAlignment="Top" Width="160"/>
+                    <Label Content="{Binding WinGameQty}" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="15" HorizontalAlignment="Center" Margin="459,237,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
+                    <Label Content="Nuls : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="12" HorizontalAlignment="Center" Margin="293,269,333,0" VerticalAlignment="Top" Width="160"/>
+                    <Label Content="{Binding DrawGameQty}" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="15" HorizontalAlignment="Center" Margin="459,267,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
+                    <Label Content="Echecs : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="12" HorizontalAlignment="Center" Margin="293,299,333,0" VerticalAlignment="Top" Width="160"/>
+                    <Label Content="{Binding LoseGameQty}" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="15" HorizontalAlignment="Center" Margin="459,297,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
+                    <Label Content="Votre classement : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="293,325,333,0" VerticalAlignment="Top" Width="160"/>
+                    <Label Name="lblOwnRanking" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,323,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
+                </Grid>
             </TabItem>
 
-            <TabItem x:Name="BestPlayer" Header="Classement">
-                <Grid Margin="50,50,50,50">
-                    <TextBlock FontSize="30" FontWeight="Heavy" HorizontalAlignment="Center" Margin="291,0,168,246" Width="227"><Run Text=" "/><Run Text="Classement" FontStyle="Oblique"/></TextBlock>
-                    <Grid Margin="50,68,50,185">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="1" Text="Victoires" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="LightGreen" Margin="37,0,31,0" Width="79"/>
-                        <TextBlock Grid.Column="2" Text="Nuls" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="Black"/>
-                        <TextBlock Grid.Column="3" Text="Echecs" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="Red"/>
-                    </Grid>
-                    <ItemsControl Name="icBestPlayerList" Margin="20,109,20,0">
+            <TabItem Header="Classement">
+                <Grid Margin="157,50,149,50">
+                    <TextBlock FontSize="24" FontWeight="Heavy" HorizontalAlignment="Left">5 meilleurs joueurs</TextBlock>
+
+                    <StackPanel Orientation="Horizontal" Margin="161,68,20,185">
+                        <TextBlock Grid.Column="1" Width="100" Height="30" Text="Victoires" FontSize="20" FontWeight="Medium" HorizontalAlignment="Left" Foreground="Green"/>
+                        <TextBlock Grid.Column="1" Width="80" Height="30" Text="Nuls" FontSize="20" FontWeight="Medium" HorizontalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Grid.Column="1" Width="80" Height="30" Text="Echecs" FontSize="20" FontWeight="Medium" HorizontalAlignment="Right" Foreground="Red"/>
+                    </StackPanel>
+
+                    <ItemsControl Name="icBestPlayerList" Margin="0,109,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Pseudo}" FontSize="20" FontWeight="Bold"/>
-                                    <ProgressBar Grid.Column="1" Minimum="0" Value="{Binding WinGameQty}" />
-                                    <ProgressBar Grid.Column="2" Minimum="0" Value="{Binding DrawGameQty}" Foreground="Black"/>
-                                    <ProgressBar Grid.Column="3" Minimum="0" Value="{Binding LoseGameQty}" Foreground="Red"/>
-                                </Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Pseudo}" FontSize="20" FontWeight="Bold" Width="200" Height="30"/>
+                                    <Border HorizontalAlignment="Left" Height="20" Width="{Binding WinGameQty}" Background="Green"/>
+                                    <Border HorizontalAlignment="Center" Height="20" Width="{Binding DrawGameQty}" Background="Black"/>
+                                    <Border HorizontalAlignment="Right" Height="20" Width="{Binding LoseGameQty}" Background="Red"/>
+                                </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </Grid>
             </TabItem>
-            <StackPanel Height="100" Width="100"/>
-            <DataGrid Height="100" Width="100"/>
         </TabControl>
     </Grid>
 </Window>

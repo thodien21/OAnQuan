@@ -12,14 +12,18 @@ namespace OAnQuan.Business
     {
         #region properties
         public string FullName { get; set; }
-        public long WinGameQty { get; set; }
-        public long DrawGameQty { get; set; }
-        public long LoseGameQty { get; set; }
+
         public string Pseudo { get; set; }
         public long PlayerId { get; internal set; }
         public string Password { get; internal set; }
         public long IsAdmin { get; internal set; }
         public long IsDisabled { get; internal set; }
+
+        public long WinGameQty { get; set; }
+        public long DrawGameQty { get; set; }
+        public long LoseGameQty { get; set; }
+        public long TotalGameQty => Services.Player.WinGameQty + Services.Player.DrawGameQty + Services.Player.LoseGameQty;
+        public long Ranking => GetOwnRanking();
 
         /// <summary>
         /// Pool of tokens actually earned in the game
@@ -73,6 +77,7 @@ namespace OAnQuan.Business
         }
         #endregion
 
+        #region functionalities for player
         /// <summary>
         /// Calculate the earned score from player's pool after turn
         /// </summary>
@@ -84,6 +89,26 @@ namespace OAnQuan.Business
             var smallToken = new SmallToken();
             var bigToken = new BigToken();
             return Score = nbSmallToken * smallToken.Value + nbBigToken * bigToken.Value;
+        }
+
+        /// <summary>
+        /// Get ranking of own player
+        /// </summary>
+        /// <returns>int</returns>
+        public int GetOwnRanking()
+        {
+            var ownRanking = 0;
+            var count = PlayerDb.CountPlayer();
+            var playerListRanking = PlayerDb.GetRanking(count);
+            for (int i = 0; i < count; i++)
+            {
+                if (playerListRanking[i].Pseudo == Pseudo)
+                {
+                    ownRanking = i+1;
+                    break;
+                }
+            }
+            return ownRanking;
         }
 
         /// <summary>
@@ -131,7 +156,9 @@ namespace OAnQuan.Business
                 default: break;
             }
         }
+        #endregion
 
+        #region functionalities for Admin
         private void GetAllPlayer()
         {
             if(IsAdmin == 1)
@@ -167,5 +194,6 @@ namespace OAnQuan.Business
             }
             else throw new ArgumentOutOfRangeException(nameof(PlayerId), "Cette fonctionnalité n'est réservée qu'au administrateur");
         }
+        #endregion
     }
 }
