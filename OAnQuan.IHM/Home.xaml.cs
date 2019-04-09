@@ -23,7 +23,7 @@ namespace OAnQuan.IHM
             tbiPlayer.DataContext = Services.Player;
             lblOwnRanking.Content = Services.Player.Ranking + "/" + Services.PlayerQty;
             lblIsAdmin.Content = (Services.Player.IsAdmin == 1) ? "Oui" : "Non";
-            lblIsDisabled.Content = (Services.Player.IsDisabled == 1) ? "Non" : "Oui";
+            lblIsDisabled.Content = (Services.Player.IsEnabled == 1) ? "Oui" : "Non";
 
             //Administration
             if(Services.Player.IsAdmin != 1)
@@ -34,7 +34,7 @@ namespace OAnQuan.IHM
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            if(Services.Player.IsDisabled == 1)
+            if(Services.Player.IsEnabled == 0)
             {
                 MessageBox.Show("Votre compte est désactivé, vous ne pouvez plus jouer...");
             }

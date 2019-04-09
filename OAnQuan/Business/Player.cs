@@ -17,11 +17,11 @@ namespace OAnQuan.Business
         public long PlayerId { get; internal set; }
         public string Password { get; internal set; }
 
-        public long IsAdmin { get; internal set; }
-        public string IsAdminString => (IsAdmin == 1) ? "oui" : "non";
+        public long IsAdmin { get; set; }
+        public string IsAdminString => (IsAdmin == 1) ? "Oui" : "Non";
 
-        public long IsDisabled { get; internal set; }
-        public string IsDisabledString => (IsDisabled == 1) ? "non" : "oui";
+        public long IsEnabled { get; set; }
+        public string IsEnabledString => (IsEnabled == 1) ? "Oui" : "Non";
 
         public long WinGameQty { get; set; }
         public long DrawGameQty { get; set; }

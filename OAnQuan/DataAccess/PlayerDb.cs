@@ -71,13 +71,13 @@ namespace OAnQuan.DataAccess
                 SQLiteCommand cmd = conn.CreateCommand();
 
                 // Lets insert something into our new table:
-                cmd.CommandText = "INSERT INTO T_Player (Pseudo, Password, FullName, IsAdmin, IsDisabled, WinGameQty, DrawGameQty, LoseGameQty) " +
-                    "VALUES (@pso, @pass, @fullName, @isAdmin, @isDisabled, @winGameQty, @drawGameQty, @loseGameQty);";
+                cmd.CommandText = "INSERT INTO T_Player (Pseudo, Password, FullName, IsAdmin, IsEnabled, WinGameQty, DrawGameQty, LoseGameQty) " +
+                    "VALUES (@pso, @pass, @fullName, @isAdmin, @isEnabled, @winGameQty, @drawGameQty, @loseGameQty);";
                 cmd.Parameters.AddWithValue("@pso", pseudo);
                 cmd.Parameters.AddWithValue("@pass", ComputeHash(password, new SHA256CryptoServiceProvider()));
                 cmd.Parameters.AddWithValue("@fullName", fullName);
                 cmd.Parameters.AddWithValue("@isAdmin", 0);
-                cmd.Parameters.AddWithValue("@isDisabled", 0);
+                cmd.Parameters.AddWithValue("@isEnabled", 1);
                 cmd.Parameters.AddWithValue("@winGameQty", 0);
                 cmd.Parameters.AddWithValue("@drawGameQty", 0);
                 cmd.Parameters.AddWithValue("@loseGameQty", 0);
@@ -99,31 +99,41 @@ namespace OAnQuan.DataAccess
                 conn.Open();
 
                 // create a new SQL command:
-                SQLiteCommand cmd = conn.CreateCommand();
-
-                // First lets build a SQL-Query again:
-                cmd.CommandText = "SELECT * FROM T_Player WHERE Pseudo = @pso and Password = @pass";
-                cmd.Parameters.AddWithValue("@pso", pseudo);
-                cmd.Parameters.AddWithValue("@pass", ComputeHash(password, new SHA256CryptoServiceProvider()));
-
-                // Now the SQLiteCommand object can give us a DataReader-Object:
-                SQLiteDataReader dataReader = cmd.ExecuteReader();
-                if (dataReader.Read())
+                using (SQLiteCommand cmd = conn.CreateCommand())
                 {
-                    return new Player()
+                    // First lets build a SQL-Query again:
+                    cmd.CommandText = "SELECT * FROM T_Player WHERE Pseudo = @pso and Password = @pass";
+                    cmd.Parameters.AddWithValue("@pso", pseudo);
+                    cmd.Parameters.AddWithValue("@pass", ComputeHash(password, new SHA256CryptoServiceProvider()));
+
+                    // Now the SQLiteCommand object can give us a DataReader-Object:
+                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
                     {
-                        PlayerId = (long)dataReader["PlayerId"],
-                        Pseudo = pseudo,
-                        Password = password,
-                        FullName = (string)dataReader["FullName"],
-                        IsAdmin = (long)dataReader["IsAdmin"],
-                        IsDisabled = (long)dataReader["IsDisabled"],
-                        WinGameQty = (long)dataReader["WinGameQty"],
-                        DrawGameQty = (long)dataReader["DrawGameQty"],
-                        LoseGameQty = (long)dataReader["LoseGameQty"]
-                    };
-                }
-                else return null;
+                        if (dataReader.Read())
+                        {
+                            var playerId = (long)dataReader["PlayerId"];
+                            var fullName = (string)dataReader["FullName"];
+                            //    IsAdmin = (long)dataReader["IsAdmin"],
+                            //    IsEnabled = (long)dataReader["IsEnabled"],
+                            //    WinGameQty = (long)dataReader["WinGameQty"],
+                            //    DrawGameQty = (long)dataReader["DrawGameQty"],
+                            //    LoseGameQty = (long)dataReader["LoseGameQty"]
+                            return new Player()
+                            {
+                                PlayerId = (long)dataReader["PlayerId"],
+                                Pseudo = pseudo,
+                                Password = password,
+                                FullName = (string)dataReader["FullName"],
+                                IsAdmin = (long)dataReader["IsAdmin"],
+                                IsEnabled = (long)dataReader["IsEnabled"],
+                                WinGameQty = (long)dataReader["WinGameQty"],
+                                DrawGameQty = (long)dataReader["DrawGameQty"],
+                                LoseGameQty = (long)dataReader["LoseGameQty"],
+                            };
+                        }
+                        else return null;
+                    }
+                } 
             }
         }
         #endregion
@@ -186,7 +196,7 @@ namespace OAnQuan.DataAccess
                         Password = (string)dataReader["Password"],
                         FullName = (string)dataReader["FullName"],
                         IsAdmin = (long)dataReader["IsAdmin"],
-                        IsDisabled = (long)dataReader["IsDisabled"],
+                        IsEnabled = (long)dataReader["IsEnabled"],
                         WinGameQty = (long)dataReader["WinGameQty"],
                         DrawGameQty = (long)dataReader["DrawGameQty"],
                         LoseGameQty = (long)dataReader["LoseGameQty"]
@@ -231,7 +241,7 @@ namespace OAnQuan.DataAccess
                             Password = (string)dataReader["Password"],
                             FullName = (string)dataReader["FullName"],
                             IsAdmin = (long)dataReader["IsAdmin"],
-                            IsDisabled = (long)dataReader["IsDisabled"],
+                            IsEnabled = (long)dataReader["IsEnabled"],
                             WinGameQty = (long)dataReader["WinGameQty"],
                             DrawGameQty = (long)dataReader["DrawGameQty"],
                             LoseGameQty = (long)dataReader["LoseGameQty"]
@@ -279,7 +289,7 @@ namespace OAnQuan.DataAccess
                         "Password = @pass, " +
                         "FullName = @fullName, " +
                         "IsAdmin = @ad, " +
-                        "IsDisabled = @dis, " +
+                        "IsEnabled = @en, " +
                         "WinGameQty = @win, " +
                         "DrawGameqty = @draw, " +
                         "LoseGameQty = @lose " +
@@ -290,7 +300,7 @@ namespace OAnQuan.DataAccess
                     cmd.Parameters.AddWithValue("@pass", ComputeHash(player.Password, new SHA256CryptoServiceProvider()));
                     cmd.Parameters.AddWithValue("@fullname", player.FullName);
                     cmd.Parameters.AddWithValue("@ad", player.IsAdmin);
-                    cmd.Parameters.AddWithValue("@dis", player.IsDisabled);
+                    cmd.Parameters.AddWithValue("@en", player.IsEnabled);
                     cmd.Parameters.AddWithValue("@win", player.WinGameQty);
                     cmd.Parameters.AddWithValue("@draw", player.DrawGameQty);
                     cmd.Parameters.AddWithValue("@lose", player.LoseGameQty);
@@ -332,7 +342,7 @@ namespace OAnQuan.DataAccess
                         Password = (string)dataReader["Password"],
                         FullName = (string)dataReader["FullName"],
                         IsAdmin = (long)dataReader["IsAdmin"],
-                        IsDisabled = (long)dataReader["IsDisabled"],
+                        IsEnabled = (long)dataReader["IsEnabled"],
                         WinGameQty = (long)dataReader["WinGameQty"],
                         DrawGameQty = (long)dataReader["DrawGameQty"],
                         LoseGameQty = (long)dataReader["LoseGameQty"]
@@ -373,7 +383,7 @@ namespace OAnQuan.DataAccess
                 // create a new SQL command:
                 using (SQLiteCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "UPDATE T_Player SET IsDisabled = 1 WHERE PlayerId = @playerId";
+                    cmd.CommandText = "UPDATE T_Player SET IsEnabled = 0 WHERE PlayerId = @playerId";
                     cmd.Parameters.AddWithValue("@playerId", playerId);
                     cmd.ExecuteNonQuery();
                 }
@@ -392,7 +402,7 @@ namespace OAnQuan.DataAccess
                 // create a new SQL command:
                 using (SQLiteCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "UPDATE T_Player SET IsDisabled = 0 WHERE PlayerId = @playerId";
+                    cmd.CommandText = "UPDATE T_Player SET IsEnabled = 1 WHERE PlayerId = @playerId";
                     cmd.Parameters.AddWithValue("@playerId", playerId);
                     cmd.ExecuteNonQuery();
                 }

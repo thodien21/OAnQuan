@@ -17,22 +17,24 @@ using System.Windows.Shapes;
 namespace OAnQuan.IHM
 {
     /// <summary>
-    /// Interaction logic for PlayerInfo.xaml
+    /// Logique d'interaction pour UpdateInfoPlayer.xaml
     /// </summary>
-    public partial class PlayerInfo : Window
+    public partial class UpdateInfoPlayer : Window
     {
-        public static DataGrid dataGrid;
-        public PlayerInfo()
+        Player ThisPlayer;
+        public UpdateInfoPlayer(Player player)
         {
             InitializeComponent();
-            dgrListPlayer.ItemsSource = Services.PlayerListWithRanking;
-            dataGrid = dgrListPlayer;
+            ThisPlayer = player;
+            ThisPlayer.FullName= nametextBox.Text;
+            ThisPlayer.IsEnabled = (cobEnabled.Text == "Oui")? 1: 0;
+            ThisPlayer.IsAdmin = (cobAdmin.Text == "Oui")? 1: 0;
         }
+
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            Player thisPlayer = dgrListPlayer.SelectedItem as Player;
-            UpdateInfoPlayer up = new UpdateInfoPlayer(thisPlayer);
-            up.ShowDialog();
+            PlayerDb.UpdatePlayerDb(ThisPlayer);
+            PlayerInfo.dataGrid.ItemsSource = Services.PlayerListWithRanking;
         }
     }
 }

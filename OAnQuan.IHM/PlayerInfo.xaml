@@ -7,49 +7,28 @@
         mc:Ignorable="d"
         Title="Administration" Height="450" Width="800">
 
-    <Grid Margin="10">
-        <ListView Name="icAllPlayerList">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Classement" Width="70" DisplayMemberBinding="{Binding Ranking}" />
-                    <GridViewColumn Header="Nom complet" Width="200" DisplayMemberBinding="{Binding FullName}" />
-                    <GridViewColumn Header="Admin" Width="70" DisplayMemberBinding="{Binding IsAdminString}" />
-                    <GridViewColumn Header="Active" Width="70" DisplayMemberBinding="{Binding IsDisabledString}" />
-                    <GridViewColumn Header="Victoires" Width="70" DisplayMemberBinding="{Binding WinGameQty}" />
-                    <GridViewColumn Header="Nuls" Width="70" DisplayMemberBinding="{Binding DrawGameQty}" />
-                    <GridViewColumn Header="Echecs" Width="70" DisplayMemberBinding="{Binding LoseGameQty}" />
-                    <GridViewColumn Header="Joués" Width="70" DisplayMemberBinding="{Binding TotalGameQty}" />
-                    <GridViewColumn Header="" Width="100">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button  x:Name="btn" Content="Editer" Click="btn_Click"></Button>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-            <ListView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <Expander IsExpanded="False">
-                                            <Expander.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
-                                                </StackPanel>
-                                            </Expander.Header>
-                                            <ItemsPresenter />
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
-            </ListView.GroupStyle>
-        </ListView>
-    </Grid>
+    <DockPanel>
+        <DataGrid x:Name="dgrListPlayer" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Classement" Width="70" Binding="{Binding Ranking}" />
+                <DataGridTextColumn Header="Classement" Width="70" Binding="{Binding Pseudo}" />
+                <DataGridTextColumn Header="Nom complet" Width="200" Binding="{Binding FullName}" />
+                <DataGridTextColumn Header="Admin" Width="70" Binding="{Binding IsAdminString}" />
+                <DataGridTextColumn Header="Active" Width="70" Binding="{Binding IsDisabledString}" />
+                <DataGridTextColumn Header="Victoires" Width="70" Binding="{Binding WinGameQty}" />
+                <DataGridTextColumn Header="Nuls" Width="70" Binding="{Binding DrawGameQty}" />
+                <DataGridTextColumn Header="Echecs" Width="70" Binding="{Binding LoseGameQty}" />
+                <DataGridTextColumn Header="Joués" Width="70" Binding="{Binding TotalGameQty}" />
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="btnUpdate" Content="Editer" Click="btnUpdate_Click"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </Window>
