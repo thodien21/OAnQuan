@@ -23,12 +23,12 @@ namespace OAnQuan.IHM
             tbiPlayer.DataContext = Services.Player;
             lblOwnRanking.Content = Services.Player.Ranking + "/" + Services.PlayerQty;
             lblIsAdmin.Content = (Services.Player.IsAdmin == 1) ? "Oui" : "Non";
-            lblIsDisabled.Content = (Services.Player.IsDisabled == 1) ? "Désactivé" : "Activé";
+            lblIsDisabled.Content = (Services.Player.IsDisabled == 1) ? "Non" : "Oui";
 
             //Administration
             if(Services.Player.IsAdmin != 1)
             {
-                btnAdmin.Visibility = Visibility;//Hide this tab since player is not admin
+                btnAdmin.Visibility = Visibility;//Hide this button since player is not admin
             }
         }
 

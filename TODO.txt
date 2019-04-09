@@ -14,3 +14,43 @@ Envoyer depuis l'ordinateur fix
 good link for WPF:
 https://documentation.devexpress.com/WPF/10477/Controls-and-Libraries/Data-Editors/Getting-Started (userful for registration form)
 https://documentation.devexpress.com/WPF/10516/Controls-and-Libraries/Data-Editors/Getting-Started/How-to-Create-and-Add-Palettes-in-PopupColorEdit (for changing game colors)
+
+
+    <Grid Margin="10">
+        <ListView Name="icAllPlayerList">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Classement" Width="70" DisplayMemberBinding="{Binding Ranking}" />
+                    <GridViewColumn Header="Nom complet" Width="200" DisplayMemberBinding="{Binding FullName}" />
+                    <GridViewColumn Header="Admin" Width="70" DisplayMemberBinding="{Binding IsAdminString}" />
+                    <GridViewColumn Header="Active" Width="70" DisplayMemberBinding="{Binding IsDisabledString}" />
+                    <GridViewColumn Header="Victoires" Width="70" DisplayMemberBinding="{Binding WinGameQty}" />
+                    <GridViewColumn Header="Nuls" Width="70" DisplayMemberBinding="{Binding DrawGameQty}" />
+                    <GridViewColumn Header="Echecs" Width="70" DisplayMemberBinding="{Binding LoseGameQty}" />
+                    <GridViewColumn Header="Joués" Width="70" DisplayMemberBinding="{Binding TotalGameQty}" />
+                </GridView>
+            </ListView.View>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Expander IsExpanded="False">
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
+                                                </StackPanel>
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListView.GroupStyle>
+        </ListView>
+    </Grid>

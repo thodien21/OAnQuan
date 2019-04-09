@@ -16,15 +16,20 @@ namespace OAnQuan.Business
         public string Pseudo { get; set; }
         public long PlayerId { get; internal set; }
         public string Password { get; internal set; }
+
         public long IsAdmin { get; internal set; }
+        public string IsAdminString => (IsAdmin == 1) ? "oui" : "non";
+
         public long IsDisabled { get; internal set; }
+        public string IsDisabledString => (IsDisabled == 1) ? "non" : "oui";
 
         public long WinGameQty { get; set; }
         public long DrawGameQty { get; set; }
         public long LoseGameQty { get; set; }
-        public long TotalGameQty => Services.Player.WinGameQty + Services.Player.DrawGameQty + Services.Player.LoseGameQty;
+        public long TotalGameQty => WinGameQty + DrawGameQty + LoseGameQty;
         public long Ranking => GetOwnRanking();
 
+        public List<String> GroupedInfo => GetGroupedInfo();
         /// <summary>
         /// Pool of tokens actually earned in the game
         /// </summary>
@@ -109,6 +114,14 @@ namespace OAnQuan.Business
                 }
             }
             return ownRanking;
+        }
+
+        public List<String> GetGroupedInfo()
+        {
+            var listInfo= new List<string>();
+            listInfo.Add(Pseudo);
+            listInfo.Add(FullName);
+            return listInfo;
         }
 
         /// <summary>

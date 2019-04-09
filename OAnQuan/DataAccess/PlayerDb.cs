@@ -13,9 +13,9 @@ namespace OAnQuan.DataAccess
         //for laptop 
         //const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
         //for fix at home
-        const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
         //for fix at school
-        //const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
 
         /// <summary>
         /// Creat the table of player
@@ -211,7 +211,7 @@ namespace OAnQuan.DataAccess
                 SQLiteCommand cmd = conn.CreateCommand();
 
                 // First lets build a SQL-Query again:
-                cmd.CommandText = "SELECT Pseudo, WinGameQty, DrawGameQty, LoseGameQty " +
+                cmd.CommandText = "SELECT * " +
                     "FROM T_Player GROUP BY Pseudo " +
                     "ORDER BY WinGameQty DESC, LoseGameQty, DrawGameQty DESC " +
                     "LIMIT @limit ";
@@ -224,12 +224,18 @@ namespace OAnQuan.DataAccess
                     List<Player> listPlayer = new List<Player>();
                     while (dataReader.Read()) // Read() returns true if there is still a result line to read
                     {
-                        string pseudo = (string)dataReader["Pseudo"];
-                        long winGameQty = (long)dataReader["WinGameQty"];
-                        long loseGameQty = (long)dataReader["LoseGameQty"];
-                        long drawGameQty = (long)dataReader["DrawGameQty"];
-
-                        listPlayer.Add(new Player(pseudo, winGameQty, loseGameQty, drawGameQty));
+                        listPlayer.Add(new Player()
+                        {
+                            PlayerId = (long)dataReader["PlayerId"],
+                            Pseudo = (string)dataReader["Pseudo"],
+                            Password = (string)dataReader["Password"],
+                            FullName = (string)dataReader["FullName"],
+                            IsAdmin = (long)dataReader["IsAdmin"],
+                            IsDisabled = (long)dataReader["IsDisabled"],
+                            WinGameQty = (long)dataReader["WinGameQty"],
+                            DrawGameQty = (long)dataReader["DrawGameQty"],
+                            LoseGameQty = (long)dataReader["LoseGameQty"]
+                        });
                     }
                     return listPlayer;
                 }

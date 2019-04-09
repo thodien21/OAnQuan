@@ -24,11 +24,15 @@ namespace OAnQuan.IHM
         {
             InitializeComponent();
             icAllPlayerList.ItemsSource = Services.PlayerListWithRanking;
-            //var playerChosenForInfo = Services.PlayerChosenForInfo;
-            //grdPlayer.DataContext = playerChosenForInfo;
-            //lblOwnRanking.Content = playerChosenForInfo.Ranking + "/" + PlayerDb.CountPlayer();
-            //lblIsAdmin.Content = (playerChosenForInfo.IsAdmin == 1) ? "Oui" : "Non";
-            //lblIsDisabled.Content = (playerChosenForInfo.IsDisabled == 1) ? "Désactivé" : "Activé";
+
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(icAllPlayerList.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Pseudo");
+            view.GroupDescriptions.Add(groupDescription);
+        }
+        private void btn_Click(object sender, RoutedEventArgs e)
+        {
+            PlayerInfo playerInfo = new PlayerInfo();
+            playerInfo.Show();
         }
     }
 }

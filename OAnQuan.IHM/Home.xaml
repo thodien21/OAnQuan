@@ -26,7 +26,7 @@
                     <Label Name="lblIsAdmin"  FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,133,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
                     <Button x:Name="btnAdmin" Content="Gérer des joueurs" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center" Margin="520,136,112,0" VerticalAlignment="Top" Width="154" Foreground="CornflowerBlue" Click="btnAdmin_Click"/>
                     
-                    <Label Content="Etat de compte : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,173,333,0" VerticalAlignment="Top" Width="213"/>
+                    <Label Content="Disponible : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,173,333,0" VerticalAlignment="Top" Width="213"/>
                     <Label Name="lblIsDisabled" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,171,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
                     <Label Content="Nombre de parties jouées : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,206,333,0" VerticalAlignment="Top" Width="213"/>
                     <Label Content="{Binding TotalGameQty}" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,204,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
