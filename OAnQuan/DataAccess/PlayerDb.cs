@@ -11,11 +11,11 @@ namespace OAnQuan.DataAccess
     {
         // We use the data source:
         //for laptop 
-        //const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
         //for fix at home
         //const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
         //for fix at school
-        const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
 
         /// <summary>
         /// Creat the table of player
@@ -111,13 +111,6 @@ namespace OAnQuan.DataAccess
                     {
                         if (dataReader.Read())
                         {
-                            var playerId = (long)dataReader["PlayerId"];
-                            var fullName = (string)dataReader["FullName"];
-                            //    IsAdmin = (long)dataReader["IsAdmin"],
-                            //    IsEnabled = (long)dataReader["IsEnabled"],
-                            //    WinGameQty = (long)dataReader["WinGameQty"],
-                            //    DrawGameQty = (long)dataReader["DrawGameQty"],
-                            //    LoseGameQty = (long)dataReader["LoseGameQty"]
                             return new Player()
                             {
                                 PlayerId = (long)dataReader["PlayerId"],
@@ -199,7 +192,7 @@ namespace OAnQuan.DataAccess
                         IsEnabled = (long)dataReader["IsEnabled"],
                         WinGameQty = (long)dataReader["WinGameQty"],
                         DrawGameQty = (long)dataReader["DrawGameQty"],
-                        LoseGameQty = (long)dataReader["LoseGameQty"]
+                        LoseGameQty = (long)dataReader["LoseGameQty"],
                     };
                 }
                 else return null;

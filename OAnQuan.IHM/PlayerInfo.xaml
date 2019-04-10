@@ -13,8 +13,8 @@
                 <DataGridTextColumn Header="Classement" Width="70" Binding="{Binding Ranking}" />
                 <DataGridTextColumn Header="Classement" Width="70" Binding="{Binding Pseudo}" />
                 <DataGridTextColumn Header="Nom complet" Width="200" Binding="{Binding FullName}" />
+                <DataGridTextColumn Header="Active" Width="70" Binding="{Binding IsEnabledString}" />
                 <DataGridTextColumn Header="Admin" Width="70" Binding="{Binding IsAdminString}" />
-                <DataGridTextColumn Header="Active" Width="70" Binding="{Binding IsDisabledString}" />
                 <DataGridTextColumn Header="Victoires" Width="70" Binding="{Binding WinGameQty}" />
                 <DataGridTextColumn Header="Nuls" Width="70" Binding="{Binding DrawGameQty}" />
                 <DataGridTextColumn Header="Echecs" Width="70" Binding="{Binding LoseGameQty}" />
