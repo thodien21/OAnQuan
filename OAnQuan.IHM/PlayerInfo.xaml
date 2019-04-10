@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OAnQuan.IHM"
         mc:Ignorable="d"
-        Title="Administration" Height="450" Width="800">
+        Title="Administration" Height="481.765" Width="902.353">
 
     <DockPanel>
         <DataGrid x:Name="dgrListPlayer" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Classement" Width="70" Binding="{Binding Ranking}" />
-                <DataGridTextColumn Header="Classement" Width="70" Binding="{Binding Pseudo}" />
+                <DataGridTextColumn Header="Pseudo" Width="150" Binding="{Binding Pseudo}" />
                 <DataGridTextColumn Header="Nom complet" Width="200" Binding="{Binding FullName}" />
                 <DataGridTextColumn Header="Active" Width="70" Binding="{Binding IsEnabledString}" />
                 <DataGridTextColumn Header="Admin" Width="70" Binding="{Binding IsAdminString}" />
