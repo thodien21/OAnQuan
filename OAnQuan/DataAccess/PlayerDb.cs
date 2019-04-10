@@ -287,7 +287,7 @@ namespace OAnQuan.DataAccess
                     cmd.CommandText = "UPDATE T_Player SET " +
                         "Pseudo = @pso, " +
                         "Password = @pass, " +
-                        "FullName = @fullName, " +
+                        "FullName = @full, " +
                         "IsAdmin = @ad, " +
                         "IsEnabled = @en, " +
                         "WinGameQty = @win, " +
@@ -298,7 +298,7 @@ namespace OAnQuan.DataAccess
                     cmd.Parameters.AddWithValue("@playerId", player.PlayerId);
                     cmd.Parameters.AddWithValue("@pso", player.Pseudo);
                     cmd.Parameters.AddWithValue("@pass", ComputeHash(player.Password, new SHA256CryptoServiceProvider()));
-                    cmd.Parameters.AddWithValue("@fullname", player.FullName);
+                    cmd.Parameters.AddWithValue("@full", player.FullName);
                     cmd.Parameters.AddWithValue("@ad", player.IsAdmin);
                     cmd.Parameters.AddWithValue("@en", player.IsEnabled);
                     cmd.Parameters.AddWithValue("@win", player.WinGameQty);

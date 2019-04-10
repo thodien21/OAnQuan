@@ -7,22 +7,22 @@
         mc:Ignorable="d"
         Title="UpdateInfoPlayer" Height="450" Width="800">
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="104,33,0,0" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="39,70,0,0" TextWrapping="Wrap" Text="FullName" VerticalAlignment="Top"/>
-        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="39,110,0,0" TextWrapping="Wrap" Text="Gender" VerticalAlignment="Top"/>
-        <TextBox x:Name="nametextBox" HorizontalAlignment="Left" Height="23" Margin="119,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="116,148,0,0" VerticalAlignment="Top" Width="130" Click="btnUpdate_Click"/>
+        <TextBlock x:Name="tblPlayer" HorizontalAlignment="Left" Margin="104,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="39,70,0,0" TextWrapping="Wrap" Text="FullName" VerticalAlignment="Top"/>
+        <TextBox x:Name="txbFullName" HorizontalAlignment="Left" Height="23" Margin="119,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        
+        <TextBlock HorizontalAlignment="Left" Margin="39,110,0,0" TextWrapping="Wrap" Text="Active" VerticalAlignment="Top"/>
         <ComboBox x:Name="cobEnabled" HorizontalAlignment="Left" Margin="119,109,0,0" VerticalAlignment="Top" Width="120">
-            <ComboBox.Items>
-                <ComboBoxItem>Oui</ComboBoxItem>
-                <ComboBoxItem>Non</ComboBoxItem>
-            </ComboBox.Items>
+            <ComboBoxItem Content="Oui"/>
+            <ComboBoxItem Content="Non"/>
         </ComboBox>
-        <ComboBox x:Name="cobAdmin" HorizontalAlignment="Left" Margin="119,109,0,0" VerticalAlignment="Top" Width="120">
-            <ComboBox.Items>
-                <ComboBoxItem>Oui</ComboBoxItem>
-                <ComboBoxItem>Non</ComboBoxItem>
-            </ComboBox.Items>
+        
+        <TextBlock HorizontalAlignment="Left" Margin="39,151,0,0" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cobAdmin" HorizontalAlignment="Left" Margin="119,150,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="Oui"/>
+            <ComboBoxItem Content="Non"/>
         </ComboBox>
+
+        <Button x:Name="btnSave" Content="Enregistrer" HorizontalAlignment="Left" Margin="115,188,0,0" VerticalAlignment="Top" Width="130" Click="btnSave_Click"/>
     </Grid>
 </Window>

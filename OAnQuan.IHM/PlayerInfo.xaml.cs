@@ -28,9 +28,10 @@ namespace OAnQuan.IHM
             dgrListPlayer.ItemsSource = Services.PlayerListWithRanking;
             dataGrid = dgrListPlayer;
         }
-        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        private void btnModify_Click(object sender, RoutedEventArgs e)
         {
             Player thisPlayer = dgrListPlayer.SelectedItem as Player;
+            
             UpdateInfoPlayer up = new UpdateInfoPlayer(thisPlayer);
             up.ShowDialog();
         }

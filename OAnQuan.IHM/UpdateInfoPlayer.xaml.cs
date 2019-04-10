@@ -26,15 +26,18 @@ namespace OAnQuan.IHM
         {
             InitializeComponent();
             ThisPlayer = player;
-            ThisPlayer.FullName= nametextBox.Text;
-            ThisPlayer.IsEnabled = (cobEnabled.Text == "Oui")? 1: 0;
-            ThisPlayer.IsAdmin = (cobAdmin.Text == "Oui")? 1: 0;
+            tblPlayer.Text = ThisPlayer.Pseudo;
         }
 
-        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            ThisPlayer.FullName = txbFullName.Text;
+            ThisPlayer.IsEnabled = (cobEnabled.Text == "Oui") ? 1 : 0;
+            ThisPlayer.IsAdmin = (cobAdmin.Text == "Oui") ? 1 : 0;
+            
             PlayerDb.UpdatePlayerDb(ThisPlayer);
-            PlayerInfo.dataGrid.ItemsSource = Services.PlayerListWithRanking;
+            PlayerInfo.dataGrid.ItemsSource = Services.PlayerListWithRanking;//to save in data base
+            MessageBox.Show("save!");
         }
     }
 }

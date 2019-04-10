@@ -67,16 +67,6 @@ namespace OAnQuan.Business
             DrawGameQty = drawGameQty;
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="pseudo"></param>
-        /// <param name="fullName"></param>
-        public Player(string pseudo, string fullName) : this(pseudo)
-        {
-            FullName = fullName;
-        }
-
         public Player()
         {
         }
