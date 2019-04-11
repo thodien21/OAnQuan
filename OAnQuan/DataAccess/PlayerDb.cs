@@ -13,9 +13,9 @@ namespace OAnQuan.DataAccess
         //for laptop 
         //const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
         //for fix at home
-        const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
         //for fix at school
-        //const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
 
         /// <summary>
         /// Creat the table of player
@@ -279,24 +279,16 @@ namespace OAnQuan.DataAccess
                 {
                     cmd.CommandText = "UPDATE T_Player SET " +
                         "Pseudo = @pso, " +
-                        "Password = @pass, " +
                         "FullName = @full, " +
                         "IsAdmin = @ad, " +
-                        "IsEnabled = @en, " +
-                        "WinGameQty = @win, " +
-                        "DrawGameqty = @draw, " +
-                        "LoseGameQty = @lose " +
+                        "IsEnabled = @en " +
                     "WHERE PlayerId = @playerId";
 
                     cmd.Parameters.AddWithValue("@playerId", player.PlayerId);
                     cmd.Parameters.AddWithValue("@pso", player.Pseudo);
-                    cmd.Parameters.AddWithValue("@pass", ComputeHash(player.Password, new SHA256CryptoServiceProvider()));
                     cmd.Parameters.AddWithValue("@full", player.FullName);
                     cmd.Parameters.AddWithValue("@ad", player.IsAdmin);
                     cmd.Parameters.AddWithValue("@en", player.IsEnabled);
-                    cmd.Parameters.AddWithValue("@win", player.WinGameQty);
-                    cmd.Parameters.AddWithValue("@draw", player.DrawGameQty);
-                    cmd.Parameters.AddWithValue("@lose", player.LoseGameQty);
                     cmd.ExecuteNonQuery();
                 }
                 // We are ready, now lets cleanup and close our connection:

@@ -40,7 +40,7 @@ namespace OAnQuan.IHM
             }
             else
             {
-                this.Hide();
+                //this.Hide();
                 PlayGame game = new PlayGame();
                 game.ShowDialog();
             }

@@ -20,13 +20,13 @@ namespace OAnQuan.IHM
             if (PlayerDb.GetPlayer(txbPeuso.Text, txbPassword.Password) == null)
             {
                 MessageBox.Show("Pseudo ou Mot de passe sont incorrect. Réessayez !");
-                this.Hide();
+                //this.Hide();
                 SignIn signIn = new SignIn();
                 signIn.ShowDialog();
             }
             else
             {
-                this.Hide();
+                //this.Hide();
                 Services.GetPlayer(txbPeuso.Text, txbPassword.Password);//Immediately get player 
                 Home click = new Home();
                 click.ShowDialog();
