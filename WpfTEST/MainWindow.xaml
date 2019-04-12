@@ -1,6 +1,23 @@
-﻿<Application x:Class="WpfTutorialSamples.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 Startup="Application_Startup">
-    <Application.Resources></Application.Resources>
-</Application>
+﻿<Window x:Class="WpfTEST.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfTEST"
+        Title="Ô ĂN QUAN" Height="900" Width="1300">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="320"  Width="1160">
+        <ItemsControl Name="ic">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Canvas Name="PaintCanvas">
+                        <Button Content="{Binding ButtonContent}" FontSize="24" FontWeight="Bold" BorderThickness="3" BorderBrush="Green" Padding="130,125,0,0" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" Height="{Binding Height}" Width="{Binding Width}" Name="button" Click="button_Click"/>
+                    </Canvas>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Canvas Name="PaintCanvas">
+            <!--<Button Canvas.Left="46" Canvas.Top="274" Content="Button" Height="23" Name="button1" Width="75" Click="button1_Click" />-->
+        </Canvas>
+    </Grid>
+</Window>
+
