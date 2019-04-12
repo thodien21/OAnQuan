@@ -1,37 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
-namespace WpfTutorialSamples.ListView_control
+namespace WGame
 {
-	public partial class ListViewGroupSample : Window
-	{
-		public ListViewGroupSample()
-		{
-			InitializeComponent();
-			List<User> items = new List<User>();
-			items.Add(new User() { Name = "John Doe", Age = 42, Sex = SexType.Male });
-			items.Add(new User() { Name = "Jane Doe", Age = 39, Sex = SexType.Female });
-			items.Add(new User() { Name = "Sammy Doe", Age = 13, Sex = SexType.Male });
-			lvUsers.ItemsSource = items;
+    public partial class MainWindow : Window
+    {
+        int loopCounter;
+        private System.Windows.Threading.DispatcherTimer timer;
+        Random rand = new Random();
+        Ellipse ellipse = null;
+        int TokenQty = 3;
+        public MainWindow()
+        {
+            InitializeComponent();
+            button1.Content = TokenQty;
+            for(int i=0; i<TokenQty; i++)
+            {
+                ellipse = CreateAnEllipse(20, 20);
+                PaintCanvas.Children.Add(ellipse);
+                Canvas.SetLeft(ellipse, rand.Next(0, 100));
+                Canvas.SetTop(ellipse, rand.Next(0, 100));
+            }
+        }
 
-			CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lvUsers.ItemsSource);
-			PropertyGroupDescription groupDescription = new PropertyGroupDescription("Sex");
-			view.GroupDescriptions.Add(groupDescription);
-		}
-	}
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            loopCounter = 10;
+            timer.Start();
+        }
 
-	public enum SexType { Male, Female };
+        
 
-	public class User
-	{
-		public string Name { get; set; }
+        // Customize your ellipse in this method
+        public Ellipse CreateAnEllipse(int height, int width)
+        {
+            SolidColorBrush fillBrush = new SolidColorBrush() { Color = Colors.Red };
+            SolidColorBrush borderBrush = new SolidColorBrush() { Color = Colors.Black };
 
-		public int Age { get; set; }
-
-		public string Mail { get; set; }
-
-		public SexType Sex { get; set; }
-	}
+            return new Ellipse()
+            {
+                Height = height,
+                Width = width,
+                StrokeThickness = 1,
+                Stroke = borderBrush,
+                Fill = fillBrush
+            };
+        }
+    }
 }
