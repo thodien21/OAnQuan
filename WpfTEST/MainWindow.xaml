@@ -5,19 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfTEST"
         Title="Ô ĂN QUAN" Height="900" Width="1300">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="320"  Width="1160">
+    <Window.Resources>
+        <Style x:Key="RoundButtonTemplate" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="15" Background="{TemplateBinding Background}"
+                                BorderThickness="1">
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="320"  Width="1120" Visibility="Visible">
+        <Grid.Background>
+            <SolidColorBrush Opacity="0"/>
+        </Grid.Background>
         <ItemsControl Name="ic">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Canvas Name="PaintCanvas">
-                        <Button Content="{Binding ButtonContent}" FontSize="24" FontWeight="Bold" BorderThickness="3" BorderBrush="Green" Padding="130,125,0,0" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" Height="{Binding Height}" Width="{Binding Width}" Name="button" Click="button_Click"/>
+                        <Button  Content="{Binding ButtonContent}" FontSize="24" FontWeight="Bold" Padding="130,125,0,0" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" Height="{Binding Height}" Width="{Binding Width}" x:Name="button" Click="button_Click"/>
                     </Canvas>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Canvas Name="PaintCanvas">
-            <!--<Button Canvas.Left="46" Canvas.Top="274" Content="Button" Height="23" Name="button1" Width="75" Click="button1_Click" />-->
-        </Canvas>
+       
+        <Border BorderBrush="Black" BorderThickness="4" CornerRadius="160" >
+            <Canvas Name="PaintCanvas">
+                <!--<Button Canvas.Left="46" Canvas.Top="274" Content="Button" Height="23" Name="button1" Width="75" Click="button1_Click" />-->
+            </Canvas>
+        </Border>
     </Grid>
 </Window>
 

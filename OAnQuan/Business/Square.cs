@@ -12,6 +12,8 @@ namespace OAnQuan.Business
 
         public int PlayerNumber { get; set; }
 
+        public int TokenQty => Tokens.Count;
+
         /// <summary>
         /// The tokens in this square is eaten
         /// </summary>

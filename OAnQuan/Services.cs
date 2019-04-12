@@ -14,6 +14,9 @@ namespace OAnQuan
         public static int PlayerQty => PlayerListWithRanking.Count;
         public static Player PlayerChosenForInfo { get; set; }
 
+        public static Board Board { get; set; }
+        
+
         /// <summary>
         /// Get own player from login/sign up
         /// </summary>
