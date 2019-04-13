@@ -26,7 +26,7 @@
         <ItemsControl Name="ic">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Canvas Name="PaintCanvas">
+                    <Canvas>
                         <Button  Content="{Binding ButtonContent}" FontSize="24" FontWeight="Bold" Padding="130,125,0,0" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" Height="{Binding Height}" Width="{Binding Width}" x:Name="button" Click="button_Click"/>
                     </Canvas>
                 </DataTemplate>

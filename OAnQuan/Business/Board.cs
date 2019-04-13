@@ -20,6 +20,7 @@ namespace OAnQuan.Business
         /// Number of player whose turn is on
         /// </summary>
         public int Turn { get; set; }
+        public List<int> ClickedSquares { get; set; }
 
         public const int PlayerQty = 2;
 
@@ -29,7 +30,7 @@ namespace OAnQuan.Business
         public Board()
         {
             SquaresList = new List<Square>();
-
+            ClickedSquares = new List<int>();
             PlayersList = new List<Player>();
             for (int i=0; i< PlayerQty; i++)
             {
@@ -121,6 +122,9 @@ namespace OAnQuan.Business
                 //calculate the quantity of tokens in the next square to see if it is empty
                 tokenQty = SquaresList[squareId].Tokens.Count;
             }
+
+            //Change turn
+            Turn = (Turn == 1) ? 2 : 1;
             return SquaresList;
         }
 

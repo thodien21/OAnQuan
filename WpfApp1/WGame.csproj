@@ -94,5 +94,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OAnQuan\OAnQuan.csproj">
+      <Project>{2F0A11CE-8CE4-4A7F-AF2C-AD0A94B9F972}</Project>
+      <Name>OAnQuan</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

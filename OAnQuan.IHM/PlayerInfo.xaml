@@ -23,7 +23,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="btnModify" Content="Editer" Click="btnModify_Click"/>
+                                <Button x:Name="btnModify" Content="{Binding Pseudo}" Click="btnModify_Click"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

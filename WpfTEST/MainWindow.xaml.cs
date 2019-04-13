@@ -69,7 +69,7 @@ namespace WpfTEST
                 //Set small squares
                 for (int i = n + 1; i < n + 6; i++)
                 {
-                    for (int j = 0; j < buttons[i].EllQty; j++)
+                    for (int j = 0; j < board.SquaresList[i].TokenQty; j++)
                     {
                         ellipse = CreateAnEllipse(20, 20);
                         Canvas.SetLeft(ellipse, rand.Next(buttons[i].X + 50, buttons[i].X + u - 50));
