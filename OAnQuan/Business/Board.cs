@@ -76,10 +76,10 @@ namespace OAnQuan.Business
             var tokenQty = SquaresList[squareId].Tokens.Count;
 
             //Check if the selected square is authorized and the qty of provider square is not null:
-            if (selectedSquare.PlayerNumber != playerNumber || tokenQty == 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(squareId), "La case choisie doit être dans la rangée de {0} et non vide", PlayersList[playerNumber-1].Pseudo);
-            }
+            //if (selectedSquare.PlayerNumber != playerNumber || tokenQty == 0)
+            //{
+            //    throw new ArgumentOutOfRangeException(nameof(squareId), "La case choisie doit être dans la rangée de {0} et non vide", PlayersList[playerNumber-1].Pseudo);
+            //}
 
             //While the provider square is not empty and not be big square, it provide its tokens to next squares
             while (tokenQty != 0 && squareId != 0 && squareId != 6)

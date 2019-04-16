@@ -54,3 +54,5 @@ https://documentation.devexpress.com/WPF/10516/Controls-and-Libraries/Data-Edito
             </ListView.GroupStyle>
         </ListView>
     </Grid>
+
+	For color animation: https://www.developpez.net/forums/d1202118/dotnet/developpement-windows/windows-presentation-foundation/animation-bouton-csharp-wpf/

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace WGame
@@ -64,6 +65,30 @@ namespace WGame
 
             SetBoard();
             TextBlock.Text = "Turn of "+board.Turn;
+            
+
+            foreach (var item in btnList)
+            {
+                // Animate the button background color when it's clicked.
+               item.Click += delegate (object sender, RoutedEventArgs args)
+                {
+                    board.ClickedSquares.Add(btnList.IndexOf(item));
+                    item.BorderThickness = new Thickness(5);
+                    ColorAnimation animation;
+                    animation = new ColorAnimation();
+                    animation.From = Colors.Orange;
+                    animation.To = Colors.Gray;
+                    animation.Duration = new Duration(TimeSpan.FromSeconds(1));
+                    item.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
+                    if (board.ClickedSquares.Count == 2)
+                    {
+                        Go();
+                    }
+                };
+                //myStackPanel.Children.Add(item);
+            }
+            
+            //this.Content = myStackPanel;
         }
 
         /// <summary>
@@ -147,6 +172,7 @@ namespace WGame
                 }
                 SetBoard();
             }
+            board.ClickedSquares.Clear();//Clear the list of clicked squares after each turn
         }
 
         // Customize your ellipse in this method
@@ -166,125 +192,121 @@ namespace WGame
         }
 
 #region button click
-        private void button0_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(0);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button0_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if(board.ClickedSquares.Count == 0)
+        //    {
+        //        MessageBox.Show("Il faut d'abord choisir une case de votre rangé !");
+        //    }
+        //    else
+        //    {
+        //        board.ClickedSquares.Add(0);
+        //        Go();
+        //    }
+        //}
 
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(1);
-            if(board.ClickedSquares.Count==2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button1_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(1);
+        //    if(board.ClickedSquares.Count==2)
+        //    {
+        //        Go();
+        //    }
+        //}
 
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(2);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button2_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(2);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    }
+        //}
 
-        private void button3_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(3);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            };
-        }
+        //private void button3_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(3);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    };
+        //}
 
-        private void button4_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(4);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button4_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(4);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    }
+        //}
 
-        private void button5_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(5);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button5_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(5);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    }
+        //}
 
-        private void button6_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(6);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button6_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (board.ClickedSquares.Count == 0)
+        //    {
+        //        MessageBox.Show("Il faut d'abord choisir une case de votre rangé !");
+        //    }
+        //    else
+        //    {
+        //        board.ClickedSquares.Add(6);
+        //        Go();
+        //    }
+        //}
 
-        private void button7_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(7);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button7_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(7);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    }
+        //}
 
-        private void button8_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(8);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button8_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(8);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    }
+        //}
 
-        private void button9_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(9);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button9_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(9);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    }
+        //}
 
-        private void button10_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(10);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button10_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(10);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    }
+        //}
 
-        private void button11_Click(object sender, RoutedEventArgs e)
-        {
-            board.ClickedSquares.Add(11);
-            if (board.ClickedSquares.Count == 2)
-            {
-                Go();
-                board.ClickedSquares.Clear();
-            }
-        }
+        //private void button11_Click(object sender, RoutedEventArgs e)
+        //{
+        //    board.ClickedSquares.Add(11);
+        //    if (board.ClickedSquares.Count == 2)
+        //    {
+        //        Go();
+        //    }
+        //}
         #endregion
     }
 }

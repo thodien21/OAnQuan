@@ -7,40 +7,43 @@
         Title="Ô ĂN QUAN" Height="900" Width="1300">
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="320"  Width="1120">
         <Canvas Name="canvas0">
-            <Button Padding="130,130,0,0" Height="320" Width="160" Name="button0" Click="button0_Click" />
+            <Button Padding="130,130,0,0" Height="320" Width="160" Name="button0">
+                
+            </Button>
         </Canvas>
         <Canvas Name="canvas1">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button1" Click="button1_Click" Canvas.Left="160" Canvas.Top="160" />
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button1" Canvas.Left="160" Canvas.Top="160">
+            </Button>
         </Canvas>
         <Canvas Name="canvas2">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button2" Click="button2_Click" Canvas.Left="320" Canvas.Top="160" />
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button2" Canvas.Left="320" Canvas.Top="160" />
         </Canvas>
         <Canvas Name="canvas3">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button3" Click="button3_Click" Canvas.Left="480" Canvas.Top="160" />
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button3" Canvas.Left="480" Canvas.Top="160" />
         </Canvas>
         <Canvas Name="canvas4">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button4" Click="button4_Click" Canvas.Left="640" Canvas.Top="160" />
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button4" Canvas.Left="640" Canvas.Top="160" />
         </Canvas>
         <Canvas Name="canvas5">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button5" Click="button5_Click" Canvas.Left="800" Canvas.Top="160" />
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button5" Canvas.Left="800" Canvas.Top="160" />
         </Canvas>
         <Canvas Name="canvas6">
-            <Button Padding="130,130,0,0" Height="320" Width="160" Name="button6" Click="button6_Click" Canvas.Left="960"/>
+            <Button Padding="130,130,0,0" Height="320" Width="160" Name="button6" Canvas.Left="960"/>
         </Canvas>
         <Canvas Name="canvas7">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button7" Click="button7_Click" Canvas.Left="800"/>
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button7" Canvas.Left="800"/>
         </Canvas>
         <Canvas Name="canvas8">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button8" Click="button8_Click" Canvas.Left="640"/>
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button8" Canvas.Left="640"/>
         </Canvas>
         <Canvas Name="canvas9">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button9" Click="button9_Click" Canvas.Left="480"/>
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button9" Canvas.Left="480"/>
         </Canvas>
         <Canvas Name="canvas10">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button10" Click="button10_Click" Canvas.Left="320"/>
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button10" Canvas.Left="320"/>
         </Canvas>
         <Canvas Name="canvas11">
-            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button11" Click="button11_Click" Canvas.Left="160"/>
+            <Button Padding="130,130,0,0" Height="160" Width="160" Name="button11" Canvas.Left="160"/>
         </Canvas>
         <TextBlock HorizontalAlignment="Left" Margin="142,-175,0,0" TextWrapping="Wrap" Name="TextBlock" VerticalAlignment="Top" FontSize="15"/>
         <TextBlock HorizontalAlignment="Left" Margin="842,-175,0,0" TextWrapping="Wrap" Name="TextBlock2" VerticalAlignment="Top" FontSize="15"/>
