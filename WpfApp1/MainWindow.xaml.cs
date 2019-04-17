@@ -64,31 +64,65 @@ namespace WGame
             canList.Add(canvas11);
 
             SetBoard();
-            TextBlock.Text = "Turn of "+board.Turn;
-            
 
+            TextBlock.Text = "Turn of " + board.Turn;
             foreach (var item in btnList)
             {
                 // Animate the button background color when it's clicked.
-               item.Click += delegate (object sender, RoutedEventArgs args)
+                item.Click += delegate (object sender, RoutedEventArgs args)
                 {
-                    board.ClickedSquares.Add(btnList.IndexOf(item));
-                    item.BorderThickness = new Thickness(5);
-                    ColorAnimation animation;
-                    animation = new ColorAnimation();
-                    animation.From = Colors.Orange;
-                    animation.To = Colors.Gray;
-                    animation.Duration = new Duration(TimeSpan.FromSeconds(1));
-                    item.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
-                    if (board.ClickedSquares.Count == 2)
+                    if ((board.SquaresList[btnList.IndexOf(item)].PlayerNumber != board.Turn || board.SquaresList[btnList.IndexOf(item)].TokenQty == 0) && board.ClickedSquares.Count == 0)
                     {
-                        Go();
+                        MessageBox.Show("La case choisie doit être non vide et se situer dans la rangée de joueur qui a le tour");
+                    }
+                    else
+                    {
+                        TextBlock.Text = "Turn of " + board.Turn;
+                        board.ClickedSquares.Add(btnList.IndexOf(item));
+                        AnimateWhenClicked(item);
+                        if (board.ClickedSquares.Count == 1)
+                        {
+                            AnimateWhenClicked(btnList[(btnList.IndexOf(item) + 1)%12]);
+                            AnimateWhenClicked(btnList[(btnList.IndexOf(item) + 11)%12]);
+                        }
+                        if (board.ClickedSquares.Count == 2)
+                        {
+                            Go();
+                        }
                     }
                 };
-                //myStackPanel.Children.Add(item);
             }
-            
-            //this.Content = myStackPanel;
+        }
+        
+        /// <summary>
+        /// Button will have a green and thicker border when clicked
+        /// </summary>
+        /// <param name="button"></param>
+        public void AnimateWhenClicked(Button button)
+        {
+            Storyboard story = new Storyboard();
+
+            ColorAnimation anim = new ColorAnimation();
+            anim.From = Colors.Gray;
+            anim.To = Colors.Green;
+            anim.BeginTime = TimeSpan.FromSeconds(0);
+            anim.Duration = new Duration(TimeSpan.FromSeconds(1));
+            anim.AutoReverse = true;
+            story.Children.Add(anim);
+            Storyboard.SetTarget(anim, button);
+            Storyboard.SetTargetProperty(anim, new PropertyPath("(Button.BorderBrush).(SolidColorBrush.Color)"));
+
+            ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
+            thicknessAnimation.From = new Thickness(1);
+            thicknessAnimation.To = new Thickness(5);
+            thicknessAnimation.BeginTime = TimeSpan.FromSeconds(0);
+            thicknessAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
+            thicknessAnimation.AutoReverse = true;
+            story.Children.Add(thicknessAnimation);
+            Storyboard.SetTarget(thicknessAnimation, button);
+            Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath("(Button.BorderThickness)"));
+
+            story.Begin();
         }
 
         /// <summary>
@@ -160,16 +194,22 @@ namespace WGame
         {
             if (board.ClickedSquares[0] != 0 & board.ClickedSquares[0] != 6)
             {
-                if (board.ClickedSquares[0] < board.ClickedSquares[1])
+                if(board.ClickedSquares[0]==11 && board.ClickedSquares[1]==0)
                 {
                     board.Go(board.Turn, board.ClickedSquares[0], Direction.RIGHT);
-                    TextBlock2.Text = "Chosen square is "+ board.ClickedSquares[0]+ "\nDirection is right\n" + "next player turn " + board.Turn;
+                    TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is right\n" + "next player turn " + board.Turn;
                 }
-                else
+                else if (board.ClickedSquares[0] - board.ClickedSquares[1] == -1)
+                {
+                    board.Go(board.Turn, board.ClickedSquares[0], Direction.RIGHT);
+                    TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is right\n" + "next player turn " + board.Turn;
+                }
+                else if (board.ClickedSquares[0] - board.ClickedSquares[1] == 1)
                 {
                     board.Go(board.Turn, board.ClickedSquares[0], Direction.LEFT);
                     TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is left\n" + "next player turn " + board.Turn;
                 }
+                else MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
                 SetBoard();
             }
             board.ClickedSquares.Clear();//Clear the list of clicked squares after each turn
