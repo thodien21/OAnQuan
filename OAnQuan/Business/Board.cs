@@ -75,27 +75,10 @@ namespace OAnQuan.Business
             Square providerSquare = new Square();
             var tokenQty = SquaresList[squareId].Tokens.Count;
 
-            //Check if the selected square is authorized and the qty of provider square is not null:
-            //if (selectedSquare.PlayerNumber != playerNumber || tokenQty == 0)
-            //{
-            //    throw new ArgumentOutOfRangeException(nameof(squareId), "La case choisie doit être dans la rangée de {0} et non vide", PlayersList[playerNumber-1].Pseudo);
-            //}
-
-            //While the provider square is not empty and not be big square, it provide its tokens to next squares
+           
             while (tokenQty != 0 && squareId != 0 && squareId != 6)
             {
-                //save the tokens in a new object
-                providerSquare = SquaresList[squareId];
-                //the provider square is emptied by distributing the tokens for its followed squares.
-                SquaresList[squareId].Tokens.Clear();
-
-                for (int i = 0; i < tokenQty; i++)
-                {
-                    //move to the next square
-                    squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
-                    //the next square has 1 token in plus
-                    SquaresList[squareId].Tokens.Add(new SmallToken());
-                }
+                SmallGo(playerNumber, squareId, direction);
                 //move to the next square
                 squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
                 //the quantity of tokens in the next square
@@ -125,6 +108,29 @@ namespace OAnQuan.Business
 
             //Change turn
             Turn = (Turn == 1) ? 2 : 1;
+            return SquaresList;
+        }
+
+        public List<Square> SmallGo(int playerNumber, int squareId, Direction direction)
+        {
+            var tokenQty = SquaresList[squareId].Tokens.Count;
+            Square providerSquare = new Square();
+
+            while (tokenQty != 0 && squareId != 0 && squareId != 6)
+            {
+                //save the tokens in a new object
+                providerSquare = SquaresList[squareId];
+                //the provider square is emptied by distributing the tokens for its followed squares.
+                SquaresList[squareId].Tokens.Clear();
+
+                for (int i = 0; i < tokenQty; i++)
+                {
+                    //move to the next square
+                    squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
+                    //the next square has 1 token in plus
+                    SquaresList[squareId].Tokens.Add(new SmallToken());
+                }
+            }
             return SquaresList;
         }
 

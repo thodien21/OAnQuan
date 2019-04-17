@@ -66,6 +66,7 @@ namespace WGame
             SetBoard();
 
             TextBlock.Text = "Turn of " + board.Turn;
+            Storyboard story = new Storyboard();
             foreach (var item in btnList)
             {
                 // Animate the button background color when it's clicked.
@@ -82,12 +83,14 @@ namespace WGame
                         AnimateWhenClicked(item);
                         if (board.ClickedSquares.Count == 1)
                         {
-                            AnimateWhenClicked(btnList[(btnList.IndexOf(item) + 1)%12]);
-                            AnimateWhenClicked(btnList[(btnList.IndexOf(item) + 11)%12]);
+                            AnimateWhenClickedFirstSquare(btnList[(btnList.IndexOf(item) + 1)%12], story);
+                            AnimateWhenClickedFirstSquare(btnList[(btnList.IndexOf(item) + 11)%12], story);
                         }
                         if (board.ClickedSquares.Count == 2)
                         {
                             Go();
+                            story.Stop();//stop animation of neighbor squares
+                            story.Children.Clear();//clear storyboard of neighbor squares
                         }
                     }
                 };
@@ -126,11 +129,35 @@ namespace WGame
         }
 
         /// <summary>
+        /// Animate the neighbor squares still one of them is chosen
+        /// </summary>
+        /// <param name="button">button</param>
+        /// <param name="story">storyboard</param>
+        public void AnimateWhenClickedFirstSquare(Button button, Storyboard story)
+        {
+            ColorAnimation anim = new ColorAnimation();
+            anim.From = Colors.Gray;
+            anim.To = Colors.Green;
+            story.Children.Add(anim);
+            Storyboard.SetTarget(anim, button);
+            Storyboard.SetTargetProperty(anim, new PropertyPath("(Button.BorderBrush).(SolidColorBrush.Color)"));
+
+            ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
+            thicknessAnimation.From = new Thickness(1);
+            thicknessAnimation.To = new Thickness(5);
+            story.Children.Add(thicknessAnimation);
+            Storyboard.SetTarget(thicknessAnimation, button);
+            Storyboard.SetTargetProperty(thicknessAnimation, new PropertyPath("(Button.BorderThickness)"));
+
+            story.Begin();
+        }
+        
+        /// <summary>
         /// Visualize the board
         /// </summary>
         private void SetBoard()
         {
-            //clear the canvas before set up
+            //clear the canvas before beginning the game
             foreach(var item in canList)
             {
                 item.Children.RemoveRange(1, item.Children.Count);
@@ -190,27 +217,115 @@ namespace WGame
             }
         }
 
+        private void UpdateBoard()
+        {
+            
+            int n = 0;
+            for (int k = 0; k < 2; k++)
+            {
+                //Update big squares
+                int diffBigSquare = canList[n].Children.Count - board.SquaresList[n].TokenQty;
+                if (board.SquaresList[n].TokenQty ==0 )
+                    canList[n].Children.RemoveRange(1, canList[n].Children.Count);
+                else
+                {
+                    if (board.SquaresList[n].Tokens.FirstOrDefault(s => s.GetType().Equals(typeof(BigToken))) == null)
+                    {
+                        Diff(diffBigSquare, n);
+                    }
+                    else
+                    {
+                        Diff(diffBigSquare - 1, n);//because there is one big token
+                    }
+                }
+                
+                //Update small squares
+                for (int i=1+n; i<6+n; i++)
+                {
+                    if (board.SquaresList[i].TokenQty == 0)
+                        canList[i].Children.RemoveRange(1, canList[i].Children.Count);
+                    else
+                    {
+                        int diffSmallSquare = canList[i + n].Children.Count - board.SquaresList[i + n].TokenQty;
+                        Diff(diffSmallSquare, i);
+                    }
+                }
+                n = n + 6;
+            }
+
+            //Display the quantity of tokens in each square(button)
+            for (int i = 0; i < 12; i++)
+            {
+                btnList[i].Content = board.SquaresList[i].TokenQty;
+            }
+        }
+
+        public void Diff(int diff, int n)
+        {
+            if (diff > 0)
+            {
+                for (int j = 0; j < diff; j++)
+                {
+                    canList[n].Children.Remove(ellipse);//remove small tokens
+                }
+            }
+            else if (diff < 0)
+            {
+                if(n==0 || n==6)
+                {
+
+                }
+                for (int j = 0; j < -diff; j++)
+                {
+                    canList[n].Children.Add(ellipse);//add small tokens
+                }
+            }
+            for (int i = 1; i < 6; i++)
+            {
+                for (int j = 0; j < board.SquaresList[i].TokenQty; j++)
+                {
+                    ellipse = CreateAnEllipse(20, 20);
+                    Canvas.SetLeft(ellipse, rand.Next(u * i + 50, u * i + u - 50));
+                    Canvas.SetTop(ellipse, rand.Next(u + 50, 2 * u - 50));
+                    canList[i].Children.Add(ellipse);
+                }
+            }
+            for (int i = 7; i < 12; i++)
+            {
+                for (int j = 0; j < board.SquaresList[i].TokenQty; j++)
+                {
+                    ellipse = CreateAnEllipse(20, 20);
+                    Canvas.SetLeft(ellipse, rand.Next(u * (12 - i) + 50, u * (12 - i) + u - 50));
+                    Canvas.SetTop(ellipse, rand.Next(50, u - 50));
+                    canList[i].Children.Add(ellipse);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Diffuse the tokens
+        /// </summary>
         public void Go()
         {
             if (board.ClickedSquares[0] != 0 & board.ClickedSquares[0] != 6)
             {
                 if(board.ClickedSquares[0]==11 && board.ClickedSquares[1]==0)
                 {
-                    board.Go(board.Turn, board.ClickedSquares[0], Direction.RIGHT);
+                    board.SmallGo(board.Turn, board.ClickedSquares[0], Direction.RIGHT);
                     TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is right\n" + "next player turn " + board.Turn;
                 }
                 else if (board.ClickedSquares[0] - board.ClickedSquares[1] == -1)
                 {
-                    board.Go(board.Turn, board.ClickedSquares[0], Direction.RIGHT);
+                    board.SmallGo(board.Turn, board.ClickedSquares[0], Direction.RIGHT);
                     TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is right\n" + "next player turn " + board.Turn;
                 }
                 else if (board.ClickedSquares[0] - board.ClickedSquares[1] == 1)
                 {
-                    board.Go(board.Turn, board.ClickedSquares[0], Direction.LEFT);
+                    board.SmallGo(board.Turn, board.ClickedSquares[0], Direction.LEFT);
                     TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is left\n" + "next player turn " + board.Turn;
                 }
                 else MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
-                SetBoard();
+                UpdateBoard();
             }
             board.ClickedSquares.Clear();//Clear the list of clicked squares after each turn
         }
