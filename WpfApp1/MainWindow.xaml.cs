@@ -20,6 +20,7 @@ namespace WGame
         List<Canvas> canList = new List<Canvas>();
         Board board = new Board();
         public const int u = 160;
+        public int indicator = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -54,12 +55,14 @@ namespace WGame
 
             //Initialize the board at the beginning of the game
             SetBoard();
-            
+            timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(2); //Set the interval period here.
+
+
             TextBlock.Text = "Turn of " + board.Turn;
             Storyboard story = new Storyboard();
             foreach (var item in btnList)
             {
-                
                 // Animate the color and thickness of button's border when it's clicked.
                 item.Click += delegate (object sender, RoutedEventArgs args)
                 {
@@ -83,7 +86,6 @@ namespace WGame
                             story.Stop();//stop animation of neighbor squares
                             story.Children.Clear();//clear storyboard of neighbor squares
                             board.ClickedSquares.Clear();//Clear the list of clicked squares after each go
-                            
                         }
                     }
                 };
@@ -188,16 +190,121 @@ namespace WGame
             }
         }
 
+        private void UpdateBoard(object sender, EventArgs e)
+        {
+            int n = 0;
+            for (int k = 0; k < 2; k++)
+            {
+                //Update big squares
+                int diffTokenQtyInBigSquare = canList[n].Children.Count - board.SquaresList[n].TokenQty;
+                if (board.SquaresList[n].TokenQty ==0 )
+                    canList[n].Children.RemoveRange(1, canList[n].Children.Count);
+                else
+                {
+                    if (board.SquaresList[n].Tokens.FirstOrDefault(s => s.GetType().Equals(typeof(BigToken))) == null)
+                    {
+                        DiffTokenQty(n, diffTokenQtyInBigSquare);
+                    }
+                    else
+                    {
+                        DiffTokenQty(n, diffTokenQtyInBigSquare - 1);//because there is one big token
+                    }
+                }
+                if (--loopCounter == 0)
+                    timer.Stop();
+                //Update small squares
+                for (int i=1+n; i<6+n; i++)
+                {
+                    if (board.SquaresList[i].TokenQty == 0)
+                        canList[i].Children.RemoveRange(1, canList[i].Children.Count);
+                    else
+                    {
+                        int diffSmallSquare = canList[i].Children.Count - board.SquaresList[i].TokenQty;
+                        DiffTokenQty(i, diffSmallSquare);
+                    }
+                    if (--loopCounter == 0)
+                        timer.Stop();
+                }
+                n = n + 6;
+            }
+
+            //Display the quantity of tokens in each square(button)
+            for (int i = 0; i < 12; i++)
+            {
+                btnList[i].Content = board.SquaresList[i].TokenQty;
+            }
+        }
+
+        /// <summary>
+        /// diffTokenQty = canList[n].Children.Count - board.SquaresList[n].TokenQty
+        /// </summary>
+        /// <param name="diff"></param>
+        /// <param name="squareIndex"></param>
+        public void DiffTokenQty(int squareIndex, int diffTokenQty)
+        {
+            if (diffTokenQty > 0)
+            {
+                for (int j = 0; j < diffTokenQty; j++)
+                {
+                    canList[squareIndex].Children.Remove(ellipse);//remove small tokens
+                }
+            }
+            else if (diffTokenQty < 0)
+            {
+                if (squareIndex == 0 || squareIndex == 6)
+                {
+                    AddSmallTokenInBigSquare(squareIndex, diffTokenQty, 0);
+                }
+                else if (squareIndex >= 1 && squareIndex <= 5)
+                    AddTokensInFirstRang(squareIndex, -diffTokenQty);
+                else if (squareIndex >= 7 && squareIndex <= 11)
+                    AddTokensInSecondRang(squareIndex, -diffTokenQty);
+            }
+        }
+
+        /// <summary>
+        /// Diffuse the tokens
+        /// </summary>
+        public void Go()
+        {
+            int squareId = board.ClickedSquares[0];
+            int nextSquareId = board.ClickedSquares[1];
+            Direction direction = Direction.UNKNOW;
+
+            //determine the direction 
+            while ((squareId - nextSquareId + 12)%12 != 11 && (squareId-nextSquareId) != 1)
+            {
+                MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
+                break;
+            }
+            if ((squareId == 11 && nextSquareId == 0) || (squareId - nextSquareId == -1))
+                direction = Direction.RIGHT;
+            else if (squareId - nextSquareId == 1)
+                direction = Direction.LEFT;
+
+            //one direction is determined, tokens are shared until the next quare is empty
+            while (squareId != 0 & squareId != 6 && board.SquaresList[squareId].TokenQty != 0)
+            {
+                //share tokens 1 by 1 each small step
+                if(direction == Direction.LEFT || direction == Direction.RIGHT)
+                {
+                    loopCounter = board.SquaresList[squareId].TokenQty;
+                    timer.Start();
+                    squareId = board.SmallStep(board.Turn, squareId, direction);//play small step and get squareId of next small step
+                    TextBlock2.Text = "Chosen square is " + squareId + "\nDirection is " + direction + "\nNext player turn " + board.Turn;
+                    
+                    timer.Tick += UpdateBoard;//Update the board after each small step
+                    nextSquareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : squareId - 1;
+                }
+            }
+        }
+
         public void AddBigToken(int squareIndex)
         {
-            //loopCounter = 10;
-            //timer.Start();
             ellipse = CreateAnEllipse(u / 2, u / 4);
             Canvas.SetLeft(ellipse, rand.Next(60 + squareIndex * u, 60 + squareIndex * u));
             Canvas.SetTop(ellipse, rand.Next(120, 2 * u - 160));
             canList[squareIndex].Children.Add(ellipse);
-            btnList[squareIndex].Content = board.SquaresList[squareIndex].TokenQty;
-            
         }
 
         public void AddSmallTokenInBigSquare(int squareIndex, int smallTokenQty, int bigTokenQty)
@@ -238,105 +345,6 @@ namespace WGame
                 Canvas.SetLeft(ellipse, rand.Next(u * (12 - squareIndex) + 50, u * (12 - squareIndex) + u - 50));
                 Canvas.SetTop(ellipse, rand.Next(50, u - 50));
                 canList[squareIndex].Children.Add(ellipse);
-            }
-        }
-
-        private void UpdateBoard()
-        {
-            int n = 0;
-            for (int k = 0; k < 2; k++)
-            {
-                //Update big squares
-                int diffTokenQtyInBigSquare = canList[n].Children.Count - board.SquaresList[n].TokenQty;
-                if (board.SquaresList[n].TokenQty ==0 )
-                    canList[n].Children.RemoveRange(1, canList[n].Children.Count);
-                else
-                {
-                    if (board.SquaresList[n].Tokens.FirstOrDefault(s => s.GetType().Equals(typeof(BigToken))) == null)
-                    {
-                        DiffTokenQty(n, diffTokenQtyInBigSquare);
-                    }
-                    else
-                    {
-                        DiffTokenQty(n, diffTokenQtyInBigSquare - 1);//because there is one big token
-                    }
-                }
-                
-                //Update small squares
-                for (int i=1+n; i<6+n; i++)
-                {
-                    if (board.SquaresList[i].TokenQty == 0)
-                        canList[i].Children.RemoveRange(1, canList[i].Children.Count);
-                    else
-                    {
-                        int diffSmallSquare = canList[i].Children.Count - board.SquaresList[i].TokenQty;
-                        DiffTokenQty(i, diffSmallSquare);
-                    }
-                }
-                n = n + 6;
-            }
-
-            //Display the quantity of tokens in each square(button)
-            for (int i = 0; i < 12; i++)
-            {
-                btnList[i].Content = board.SquaresList[i].TokenQty;
-            }
-        }
-
-        /// <summary>
-        /// diffTokenQty = canList[n].Children.Count - board.SquaresList[n].TokenQty
-        /// </summary>
-        /// <param name="diff"></param>
-        /// <param name="squareIndex"></param>
-        public void DiffTokenQty(int squareIndex, int diffTokenQty)
-        {
-            if (diffTokenQty > 0)
-            {
-                for (int j = 0; j < diffTokenQty; j++)
-                {
-                    canList[squareIndex].Children.Remove(ellipse);//remove small tokens
-                }
-            }
-            else if (diffTokenQty < 0)
-            {
-                if (squareIndex == 0 || squareIndex == 6)
-                {
-                    AddSmallTokenInBigSquare(squareIndex, diffTokenQty, 0);
-                }
-                else if (squareIndex >= 1 && squareIndex <= 5)
-                    AddTokensInFirstRang(squareIndex, -diffTokenQty);
-                else if (squareIndex >= 7 && squareIndex <= 11)
-                    AddTokensInSecondRang(squareIndex, -diffTokenQty);
-            }
-            btnList[squareIndex].Content = board.SquaresList[squareIndex].TokenQty;
-        }
-
-        /// <summary>
-        /// Diffuse the tokens
-        /// </summary>
-        public void Go()
-        {
-            int squareId = board.ClickedSquares[0];
-            int nextSquareId = board.ClickedSquares[1];
-            Direction direction = Direction.UNKNOW;
-            while (squareId != 0 & squareId != 6 && board.SquaresList[squareId].TokenQty != 0)
-            {
-                if ((squareId == 11 && nextSquareId == 0) || (squareId - nextSquareId == -1))
-                    direction = Direction.RIGHT;
-                else if (squareId - nextSquareId == 1)
-                    direction = Direction.LEFT;
-                else
-                {
-                    MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
-                    break;
-                }
-                if(direction == Direction.LEFT || direction == Direction.RIGHT)
-                {
-                    squareId = board.SmallStep(board.Turn, squareId, direction);//play small step and get squareId of next small step
-                    TextBlock2.Text = "Chosen square is " + squareId + "\nDirection is " + direction + "\nNext player turn " + board.Turn;
-                    UpdateBoard();//Update the board after each small step
-                    nextSquareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : squareId - 1;
-                }
             }
         }
 
