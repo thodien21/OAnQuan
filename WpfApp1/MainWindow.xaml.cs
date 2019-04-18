@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -187,14 +186,6 @@ namespace WGame
             {
                 btnList[i].Content = board.SquaresList[i].TokenQty;
             }
-        }
-
-        private void TimingAddBigToken(object sender, EventArgs e)
-        {
-            int squareIndex = 0;
-            if (--loopCounter == 0)
-                timer.Stop();
-            AddBigToken(squareIndex);
         }
 
         public void AddBigToken(int squareIndex)
