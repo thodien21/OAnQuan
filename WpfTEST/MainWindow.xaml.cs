@@ -89,11 +89,11 @@ namespace WpfTEST
             PaintCanvas.Children.Remove(ellipse);
         }
 
-        //private void button1_Click(object sender, RoutedEventArgs e)
-        //{
-        //    loopCounter = 10;
-        //    timer.Start();
-        //}
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            loopCounter = 10;
+            timer.Start();
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {

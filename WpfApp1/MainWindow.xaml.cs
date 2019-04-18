@@ -55,11 +55,12 @@ namespace WGame
 
             //Initialize the board at the beginning of the game
             SetBoard();
-
+            
             TextBlock.Text = "Turn of " + board.Turn;
             Storyboard story = new Storyboard();
             foreach (var item in btnList)
             {
+                
                 // Animate the color and thickness of button's border when it's clicked.
                 item.Click += delegate (object sender, RoutedEventArgs args)
                 {
@@ -82,6 +83,8 @@ namespace WGame
                             Go();
                             story.Stop();//stop animation of neighbor squares
                             story.Children.Clear();//clear storyboard of neighbor squares
+                            board.ClickedSquares.Clear();//Clear the list of clicked squares after each go
+                            
                         }
                     }
                 };
@@ -186,13 +189,24 @@ namespace WGame
             }
         }
 
+        private void TimingAddBigToken(object sender, EventArgs e)
+        {
+            int squareIndex = 0;
+            if (--loopCounter == 0)
+                timer.Stop();
+            AddBigToken(squareIndex);
+        }
+
         public void AddBigToken(int squareIndex)
         {
+            //loopCounter = 10;
+            //timer.Start();
             ellipse = CreateAnEllipse(u / 2, u / 4);
             Canvas.SetLeft(ellipse, rand.Next(60 + squareIndex * u, 60 + squareIndex * u));
             Canvas.SetTop(ellipse, rand.Next(120, 2 * u - 160));
             canList[squareIndex].Children.Add(ellipse);
             btnList[squareIndex].Content = board.SquaresList[squareIndex].TokenQty;
+            
         }
 
         public void AddSmallTokenInBigSquare(int squareIndex, int smallTokenQty, int bigTokenQty)
@@ -238,7 +252,6 @@ namespace WGame
 
         private void UpdateBoard()
         {
-            
             int n = 0;
             for (int k = 0; k < 2; k++)
             {
@@ -265,7 +278,7 @@ namespace WGame
                         canList[i].Children.RemoveRange(1, canList[i].Children.Count);
                     else
                     {
-                        int diffSmallSquare = canList[i + n].Children.Count - board.SquaresList[i + n].TokenQty;
+                        int diffSmallSquare = canList[i].Children.Count - board.SquaresList[i].TokenQty;
                         DiffTokenQty(i, diffSmallSquare);
                     }
                 }
@@ -312,27 +325,28 @@ namespace WGame
         /// </summary>
         public void Go()
         {
-            if (board.ClickedSquares[0] != 0 & board.ClickedSquares[0] != 6)
+            int squareId = board.ClickedSquares[0];
+            int nextSquareId = board.ClickedSquares[1];
+            Direction direction = Direction.UNKNOW;
+            while (squareId != 0 & squareId != 6 && board.SquaresList[squareId].TokenQty != 0)
             {
-                if(board.ClickedSquares[0]==11 && board.ClickedSquares[1]==0)
+                if ((squareId == 11 && nextSquareId == 0) || (squareId - nextSquareId == -1))
+                    direction = Direction.RIGHT;
+                else if (squareId - nextSquareId == 1)
+                    direction = Direction.LEFT;
+                else
                 {
-                    board.SmallGo(board.Turn, board.ClickedSquares[0], Direction.RIGHT);
-                    TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is right\n" + "next player turn " + board.Turn;
+                    MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
+                    break;
                 }
-                else if (board.ClickedSquares[0] - board.ClickedSquares[1] == -1)
+                if(direction == Direction.LEFT || direction == Direction.RIGHT)
                 {
-                    board.SmallGo(board.Turn, board.ClickedSquares[0], Direction.RIGHT);
-                    TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is right\n" + "next player turn " + board.Turn;
+                    squareId = board.SmallStep(board.Turn, squareId, direction);//play small step and get squareId of next small step
+                    TextBlock2.Text = "Chosen square is " + squareId + "\nDirection is " + direction + "\nNext player turn " + board.Turn;
+                    UpdateBoard();//Update the board after each small step
+                    nextSquareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : squareId - 1;
                 }
-                else if (board.ClickedSquares[0] - board.ClickedSquares[1] == 1)
-                {
-                    board.SmallGo(board.Turn, board.ClickedSquares[0], Direction.LEFT);
-                    TextBlock2.Text = "Chosen square is " + board.ClickedSquares[0] + "\nDirection is left\n" + "next player turn " + board.Turn;
-                }
-                else MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
-                UpdateBoard();
             }
-            board.ClickedSquares.Clear();//Clear the list of clicked squares after each turn
         }
 
         // Customize your ellipse in this method
@@ -350,123 +364,5 @@ namespace WGame
                 Fill = fillBrush
             };
         }
-
-#region button click
-        //private void button0_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if(board.ClickedSquares.Count == 0)
-        //    {
-        //        MessageBox.Show("Il faut d'abord choisir une case de votre rangé !");
-        //    }
-        //    else
-        //    {
-        //        board.ClickedSquares.Add(0);
-        //        Go();
-        //    }
-        //}
-
-        //private void button1_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(1);
-        //    if(board.ClickedSquares.Count==2)
-        //    {
-        //        Go();
-        //    }
-        //}
-
-        //private void button2_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(2);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    }
-        //}
-
-        //private void button3_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(3);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    };
-        //}
-
-        //private void button4_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(4);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    }
-        //}
-
-        //private void button5_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(5);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    }
-        //}
-
-        //private void button6_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (board.ClickedSquares.Count == 0)
-        //    {
-        //        MessageBox.Show("Il faut d'abord choisir une case de votre rangé !");
-        //    }
-        //    else
-        //    {
-        //        board.ClickedSquares.Add(6);
-        //        Go();
-        //    }
-        //}
-
-        //private void button7_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(7);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    }
-        //}
-
-        //private void button8_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(8);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    }
-        //}
-
-        //private void button9_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(9);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    }
-        //}
-
-        //private void button10_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(10);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    }
-        //}
-
-        //private void button11_Click(object sender, RoutedEventArgs e)
-        //{
-        //    board.ClickedSquares.Add(11);
-        //    if (board.ClickedSquares.Count == 2)
-        //    {
-        //        Go();
-        //    }
-        //}
-        #endregion
     }
 }
