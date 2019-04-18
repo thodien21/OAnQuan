@@ -90,13 +90,9 @@ namespace OAnQuan.Business
                 squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
                 eatenTokens = SquaresList[squareId].Eaten();
                 if(eatenTokens.Count != 0)
-                {
                     PlayersList[playerNumber - 1].Pool.AddRange(eatenTokens);//add eaten tokens in player's pool
-                }
                 else
-                {
                     break; //nothing to eat in this case
-                }
 
                 //move to the next square to see if it is also empty
                 squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
