@@ -11,19 +11,6 @@ using System.Windows.Shapes;
 
 namespace WGame
 {
-    //class Button
-    //{
-    //    public string ButtonContent { get; set; }
-    //    public string ButtonID { get; set; }
-    //    public int X { get; set; }
-    //    public int Y { get; set; }
-    //    public int Height { get; set; }
-    //    public int Width { get; set; }
-    //    public int Radius { get; set; }
-    //    public int EllQty { get; set; }
-    //    public List<Ellipse> EllList => new List<Ellipse>();
-    //    public string CanvasName { get; set; }
-    //}
     public partial class MainWindow : Window
     {
         int loopCounter;
@@ -37,6 +24,8 @@ namespace WGame
         public MainWindow()
         {
             InitializeComponent();
+
+            //Add buttons in a list
             btnList.Add(button0);
             btnList.Add(button1);
             btnList.Add(button2);
@@ -50,6 +39,7 @@ namespace WGame
             btnList.Add(button10);
             btnList.Add(button11);
 
+            //Add canlists in a list
             canList.Add(canvas0);
             canList.Add(canvas1);
             canList.Add(canvas2);
@@ -63,13 +53,14 @@ namespace WGame
             canList.Add(canvas10);
             canList.Add(canvas11);
 
+            //Initialize the board at the beginning of the game
             SetBoard();
 
             TextBlock.Text = "Turn of " + board.Turn;
             Storyboard story = new Storyboard();
             foreach (var item in btnList)
             {
-                // Animate the button background color when it's clicked.
+                // Animate the color and thickness of button's border when it's clicked.
                 item.Click += delegate (object sender, RoutedEventArgs args)
                 {
                     if ((board.SquaresList[btnList.IndexOf(item)].PlayerNumber != board.Turn || board.SquaresList[btnList.IndexOf(item)].TokenQty == 0) && board.ClickedSquares.Count == 0)
@@ -171,49 +162,77 @@ namespace WGame
                 if (board.SquaresList[n].Tokens.FirstOrDefault(s=>s.GetType().Equals(typeof(BigToken))) != null)
                 {
                     bigTokenQty = 1;
-                    ellipse = CreateAnEllipse(u / 2, u / 4);
-                    Canvas.SetLeft(ellipse, rand.Next(60 + n * u, 60 + n * u));
-                    Canvas.SetTop(ellipse, rand.Next(120, 2 * u - 160));
-                    canList[n].Children.Add(ellipse);
-                    btnList[n].Content = board.SquaresList[n].TokenQty;
+                    AddBigToken(n);
                 }
                 //Set big squares with small tokens
-                for(int j=0; j< board.SquaresList[n].TokenQty - bigTokenQty; j++)
-                {
-                    ellipse = CreateAnEllipse(20, 20);
-                    Canvas.SetLeft(ellipse, rand.Next(60 + n * u, 60 + n * u));
-                    Canvas.SetTop(ellipse, rand.Next(120, 2 * u - 160));
-                    canList[n].Children.Add(ellipse);
-                }
+                AddSmallTokenInBigSquare(n, board.SquaresList[n].TokenQty, bigTokenQty);
                 n = n + 6;
             }
 
             //Set up small squares
             for (int i = 1; i < 6; i++)
             {
-                for (int j = 0; j < board.SquaresList[i].TokenQty; j++)
-                {
-                    ellipse = CreateAnEllipse(20, 20);
-                    Canvas.SetLeft(ellipse, rand.Next(u * i + 50, u * i + u - 50));
-                    Canvas.SetTop(ellipse, rand.Next(u + 50, 2 * u - 50));
-                    canList[i].Children.Add(ellipse);
-                }
+                AddTokensInFirstRang(i, board.SquaresList[i].TokenQty);
             }
             for (int i = 7; i < 12; i++)
             {
-                for (int j = 0; j < board.SquaresList[i].TokenQty; j++)
-                {
-                    ellipse = CreateAnEllipse(20, 20);
-                    Canvas.SetLeft(ellipse, rand.Next(u * (12-i) + 50, u * (12 - i) + u - 50));
-                    Canvas.SetTop(ellipse, rand.Next(50, u - 50));
-                    canList[i].Children.Add(ellipse);
-                }
+                AddTokensInSecondRang(i, board.SquaresList[i].TokenQty);
             }
 
             //Display the quantity of tokens in each square(button)
             for(int i=0; i<12; i++)
             {
                 btnList[i].Content = board.SquaresList[i].TokenQty;
+            }
+        }
+
+        public void AddBigToken(int squareIndex)
+        {
+            ellipse = CreateAnEllipse(u / 2, u / 4);
+            Canvas.SetLeft(ellipse, rand.Next(60 + squareIndex * u, 60 + squareIndex * u));
+            Canvas.SetTop(ellipse, rand.Next(120, 2 * u - 160));
+            canList[squareIndex].Children.Add(ellipse);
+            btnList[squareIndex].Content = board.SquaresList[squareIndex].TokenQty;
+        }
+
+        public void AddSmallTokenInBigSquare(int squareIndex, int smallTokenQty, int bigTokenQty)
+        {
+            for (int j = 0; j < smallTokenQty - bigTokenQty; j++)
+            {
+                ellipse = CreateAnEllipse(20, 20);
+                Canvas.SetLeft(ellipse, rand.Next(60 + squareIndex * u, 60 + squareIndex * u));
+                Canvas.SetTop(ellipse, rand.Next(120, 2 * u - 160));
+                canList[squareIndex].Children.Add(ellipse);
+            }
+        }
+
+        /// <summary>
+        /// Where squareIndex=1-5
+        /// </summary>
+        /// <param name="squareIndex"></param>
+        public void AddTokensInFirstRang(int squareIndex, int tokenQty)
+        {
+            for (int j = 0; j < tokenQty; j++)
+            {
+                ellipse = CreateAnEllipse(20, 20);
+                Canvas.SetLeft(ellipse, rand.Next(u * squareIndex + 50, u * squareIndex + u - 50));
+                Canvas.SetTop(ellipse, rand.Next(u + 50, 2 * u - 50));
+                canList[squareIndex].Children.Add(ellipse);
+            }
+        }
+
+        /// <summary>
+        /// Where squareIndex=7-11
+        /// </summary>
+        /// <param name="squareIndex"></param>
+        public void AddTokensInSecondRang(int squareIndex, int tokenQty)
+        {
+            for (int j = 0; j < tokenQty; j++)
+            {
+                ellipse = CreateAnEllipse(20, 20);
+                Canvas.SetLeft(ellipse, rand.Next(u * (12 - squareIndex) + 50, u * (12 - squareIndex) + u - 50));
+                Canvas.SetTop(ellipse, rand.Next(50, u - 50));
+                canList[squareIndex].Children.Add(ellipse);
             }
         }
 
@@ -224,18 +243,18 @@ namespace WGame
             for (int k = 0; k < 2; k++)
             {
                 //Update big squares
-                int diffBigSquare = canList[n].Children.Count - board.SquaresList[n].TokenQty;
+                int diffTokenQtyInBigSquare = canList[n].Children.Count - board.SquaresList[n].TokenQty;
                 if (board.SquaresList[n].TokenQty ==0 )
                     canList[n].Children.RemoveRange(1, canList[n].Children.Count);
                 else
                 {
                     if (board.SquaresList[n].Tokens.FirstOrDefault(s => s.GetType().Equals(typeof(BigToken))) == null)
                     {
-                        Diff(diffBigSquare, n);
+                        DiffTokenQty(n, diffTokenQtyInBigSquare);
                     }
                     else
                     {
-                        Diff(diffBigSquare - 1, n);//because there is one big token
+                        DiffTokenQty(n, diffTokenQtyInBigSquare - 1);//because there is one big token
                     }
                 }
                 
@@ -247,7 +266,7 @@ namespace WGame
                     else
                     {
                         int diffSmallSquare = canList[i + n].Children.Count - board.SquaresList[i + n].TokenQty;
-                        Diff(diffSmallSquare, i);
+                        DiffTokenQty(i, diffSmallSquare);
                     }
                 }
                 n = n + 6;
@@ -260,46 +279,32 @@ namespace WGame
             }
         }
 
-        public void Diff(int diff, int n)
+        /// <summary>
+        /// diffTokenQty = canList[n].Children.Count - board.SquaresList[n].TokenQty
+        /// </summary>
+        /// <param name="diff"></param>
+        /// <param name="squareIndex"></param>
+        public void DiffTokenQty(int squareIndex, int diffTokenQty)
         {
-            if (diff > 0)
+            if (diffTokenQty > 0)
             {
-                for (int j = 0; j < diff; j++)
+                for (int j = 0; j < diffTokenQty; j++)
                 {
-                    canList[n].Children.Remove(ellipse);//remove small tokens
+                    canList[squareIndex].Children.Remove(ellipse);//remove small tokens
                 }
             }
-            else if (diff < 0)
+            else if (diffTokenQty < 0)
             {
-                if(n==0 || n==6)
+                if (squareIndex == 0 || squareIndex == 6)
                 {
-
+                    AddSmallTokenInBigSquare(squareIndex, diffTokenQty, 0);
                 }
-                for (int j = 0; j < -diff; j++)
-                {
-                    canList[n].Children.Add(ellipse);//add small tokens
-                }
+                else if (squareIndex >= 1 && squareIndex <= 5)
+                    AddTokensInFirstRang(squareIndex, -diffTokenQty);
+                else if (squareIndex >= 7 && squareIndex <= 11)
+                    AddTokensInSecondRang(squareIndex, -diffTokenQty);
             }
-            for (int i = 1; i < 6; i++)
-            {
-                for (int j = 0; j < board.SquaresList[i].TokenQty; j++)
-                {
-                    ellipse = CreateAnEllipse(20, 20);
-                    Canvas.SetLeft(ellipse, rand.Next(u * i + 50, u * i + u - 50));
-                    Canvas.SetTop(ellipse, rand.Next(u + 50, 2 * u - 50));
-                    canList[i].Children.Add(ellipse);
-                }
-            }
-            for (int i = 7; i < 12; i++)
-            {
-                for (int j = 0; j < board.SquaresList[i].TokenQty; j++)
-                {
-                    ellipse = CreateAnEllipse(20, 20);
-                    Canvas.SetLeft(ellipse, rand.Next(u * (12 - i) + 50, u * (12 - i) + u - 50));
-                    Canvas.SetTop(ellipse, rand.Next(50, u - 50));
-                    canList[i].Children.Add(ellipse);
-                }
-            }
+            btnList[squareIndex].Content = board.SquaresList[squareIndex].TokenQty;
         }
 
         /// <summary>
