@@ -66,7 +66,6 @@ namespace WGame
                     }
                     else
                     {
-                        TextBlock.Text = "Turn of " + board.Turn;
                         board.ClickedSquares.Add(btnList.IndexOf(item));
                         AnimateBorderWhenClicked(item);
                         if (board.ClickedSquares.Count == 1)
@@ -82,10 +81,24 @@ namespace WGame
                             board.ClickedSquares.Clear();//Clear the list of clicked squares after each go
                         }
                     }
+                    if (board.SquaresList[0].TokenQty == 0 && board.SquaresList[6].TokenQty == 0)
+                        DeclareResult();
                 };
             }
         }
         
+        public void DeclareResult()
+        {
+            TextBlock.Text = "Player 1 has " + board.PlayersList[0].GetScore() + " points\nPlayer 2 has " + board.PlayersList[1].GetScore() + " points";
+            int diffScore = board.PlayersList[0].GetScore() - board.PlayersList[1].GetScore();
+            if (diffScore > 0)
+                MessageBox.Show(board.PlayersList[0].Pseudo + " gagne");
+            else if (diffScore < 0)
+                MessageBox.Show(board.PlayersList[0].Pseudo + " perd");
+            else
+                MessageBox.Show("Jeu neutre");
+        }
+
         /// <summary>
         /// Button will have a green and thicker border when clicked
         /// </summary>
@@ -255,27 +268,41 @@ namespace WGame
             int squareId = board.ClickedSquares[0];
             int nextSquareId = board.ClickedSquares[1];
             Direction direction = Direction.UNKNOW;
-            while (squareId != 0 & squareId != 6 && board.SquaresList[squareId].TokenQty != 0)
-            {
-                //determine the direction
-                if ((squareId == 11 && nextSquareId == 0) || (squareId - nextSquareId == -1))
-                    direction = Direction.RIGHT;
-                else if (squareId - nextSquareId == 1)
-                    direction = Direction.LEFT;
-                else
-                {
-                    MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
-                    break;
-                }
+            int tokenQty = board.SquaresList[squareId].TokenQty;
 
+            //determine the direction
+            if ((squareId == 11 && nextSquareId == 0) || (squareId - nextSquareId == -1))
+                direction = Direction.RIGHT;
+            else if (squareId - nextSquareId == 1)
+                direction = Direction.LEFT;
+            else
+                MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
+            TextBlock2.Text = "Chosen square is " + squareId + "\nDirection is " + direction + "\nPlayer turn " + board.Turn;
+
+            if (direction == Direction.LEFT || direction == Direction.RIGHT)
+            {
                 //share tokens and update ellipes
-                if(direction == Direction.LEFT || direction == Direction.RIGHT)
+                while (squareId != 0 & squareId != 6 && tokenQty != 0)
                 {
                     squareId = board.SmallStep(board.Turn, squareId, direction);//play small step and get squareId of next small step
-                    TextBlock2.Text = "Chosen square is " + squareId + "\nDirection is " + direction + "\nNext player turn " + board.Turn;
+                    tokenQty = board.SquaresList[squareId].TokenQty;//calculate token qty of next square
+                    
                     UpdateEllipseQtyInBoard();//Update the board after each small step
-                    nextSquareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : squareId - 1;
                 }
+                
+                while (tokenQty == 0 && board.SquaresList[nextSquareId].Tokens.Count != 0)
+                {
+                    //put eaten tokens in pool and return Id of the next square to see if it's empty
+                    squareId = board.PutEatenTokensInPool(board.Turn, squareId, direction);
+                    UpdateEllipseQtyInBoard();
+
+                    tokenQty = board.SquaresList[squareId].Tokens.Count;
+                    nextSquareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : squareId - 1; //get nextSquareId of next small step
+                }
+
+                //Change turn
+                board.Turn = (board.Turn == 1) ? 2 : 1;
+                TextBlock.Text = "Next turn is " + board.Turn;
             }
         }
 

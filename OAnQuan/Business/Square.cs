@@ -21,10 +21,6 @@ namespace OAnQuan.Business
         public List<Token> Eaten()
         {
             List<Token> earnedTokens = new List<Token>();
-            /* foreach(var item in Tokens)
-            {
-                earnedTokens.Add(item);
-            }*/
             earnedTokens.AddRange(Tokens);
             Tokens.Clear();
             return earnedTokens;

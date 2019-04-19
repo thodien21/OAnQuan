@@ -61,7 +61,7 @@ namespace OAnQuan.Business
         }
 
         /// <summary>
-        /// play turn
+        /// Play his turn
         /// </summary>
         /// <param name="player">player having turn</param>
         /// <param name="squareId">square identifier (1-5) </param>
@@ -75,7 +75,7 @@ namespace OAnQuan.Business
             Square providerSquare = new Square();
             var tokenQty = SquaresList[squareId].Tokens.Count;
 
-           
+            //Share the tokens until the next quare is empty, or big square
             while (tokenQty != 0 && squareId != 0 && squareId != 6)
             {
                 squareId = SmallStep(playerNumber, squareId, direction);
@@ -83,21 +83,12 @@ namespace OAnQuan.Business
                 tokenQty = SquaresList[squareId].Tokens.Count;
             }
 
+            int nextsquareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
             //Some eaten tokens?
-            while (tokenQty == 0)
+            while (tokenQty == 0 && SquaresList[nextsquareId].Tokens.Count != 0)
             {
-                //eat the next square
-                squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
-                eatenTokens = SquaresList[squareId].Eaten();
-                if(eatenTokens.Count != 0)
-                    PlayersList[playerNumber - 1].Pool.AddRange(eatenTokens);//add eaten tokens in player's pool
-                else
-                    break; //nothing to eat in this case
-
-                //move to the next square to see if it is also empty
-                squareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
                 //calculate the quantity of tokens in the next square to see if it is empty
-                tokenQty = SquaresList[squareId].Tokens.Count;
+                tokenQty = PutEatenTokensInPool(playerNumber, squareId, direction);
             }
 
             //Change turn
@@ -105,12 +96,35 @@ namespace OAnQuan.Business
             return SquaresList;
         }
 
-        public int GetIdOfNextSquare(int squareId, Direction direction)
+        /// <summary>
+        /// Put the tokens of its nextSquare into the player's pool
+        /// </summary>
+        /// <param name="playerNumber"></param>
+        /// <param name="squareId"></param>
+        /// <param name="direction"></param>
+        /// <returns>quantity of tokens of next square to see if it's empty</returns>
+        public int PutEatenTokensInPool(int playerNumber, int squareId, Direction direction)
         {
-            //move to the next square
-            return (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
+            //eat the tokens in next square
+            int nextSquareId = (direction == Direction.RIGHT) ? (squareId + 1) % 12 : (squareId + 11) % 12;
+            List<Token> eatenTokens = SquaresList[nextSquareId].Eaten();
+
+            //add eaten tokens in player's pool
+            PlayersList[playerNumber - 1].Pool.AddRange(eatenTokens);
+
+            //move to the next square to see if it is also empty
+            return squareId = (direction == Direction.RIGHT) ? (nextSquareId + 1) % 12 : (nextSquareId + 11) % 12;
+            ////calculate the quantity of tokens in the next square to see if it is empty
+            //return SquaresList[squareId].Tokens.Count;
         }
 
+        /// <summary>
+        /// Share the tokens until the next quare is empty, or big square
+        /// </summary>
+        /// <param name="playerNumber"></param>
+        /// <param name="squareId">Id of the square which shares tokens</param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
         public int SmallStep(int playerNumber, int squareId, Direction direction)
         {
             var tokenQty = SquaresList[squareId].Tokens.Count;
