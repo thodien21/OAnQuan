@@ -1,5 +1,6 @@
 ﻿using OAnQuan.Business;
 using System.Data.SQLite;
+using System.Linq;
 
 namespace OAnQuan.DataAccess
 {
@@ -26,8 +27,9 @@ namespace OAnQuan.DataAccess
                 {
                     Square square = board.SquaresList[i];
                     var squareNumber = i + 1;
-                    var bigTokenQty = Square.GetBigTokenQtyFromList(square.Tokens);
-                    var smallTokenQty = square.Tokens.Count - bigTokenQty;
+                    
+                    var bigTokenQty = square.Tokens.Count(t => t.Value == 5);
+                    var smallTokenQty = square.Tokens.Count(t => t.Value == 1);
 
                     using (SQLiteCommand cmd = conn.CreateCommand())
                     {
@@ -60,8 +62,8 @@ namespace OAnQuan.DataAccess
                 {
                     Square square = board.SquaresList[i];
                     var squareNumber = i + 1;
-                    var bigTokenQty = Square.GetBigTokenQtyFromList(square.Tokens);
-                    var smallTokenQty = square.Tokens.Count - bigTokenQty;
+                    var bigTokenQty = square.Tokens.Count(t => t.Value == 5);
+                    var smallTokenQty = square.Tokens.Count(t => t.Value == 1);
 
                     using (SQLiteCommand cmd = conn.CreateCommand())
                     {

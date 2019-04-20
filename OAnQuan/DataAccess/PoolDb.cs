@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using System.Text;
 
 namespace OAnQuan.DataAccess
@@ -28,8 +29,9 @@ namespace OAnQuan.DataAccess
                 {
                     List<Token> pool = board.PlayersList[i].Pool;
                     long playerNumber = i + 1;
-                    var bigTokenQty = Square.GetBigTokenQtyFromList(pool);
-                    var smallTokenQty = pool.Count - bigTokenQty;
+                    //var bigTokenQty = Square.GetBigTokenQtyFromList(pool);
+                    var bigTokenQty = pool.Count(t => t.Value == 5);
+                    var smallTokenQty = pool.Count(t => t.Value == 1);
 
                     using (SQLiteCommand cmd = conn.CreateCommand())
                     {
@@ -62,8 +64,8 @@ namespace OAnQuan.DataAccess
                 {
                     List<Token> pool = board.PlayersList[i].Pool;
                     long playerNumber = i + 1;
-                    var bigTokenQty = Square.GetBigTokenQtyFromList(pool);
-                    var smallTokenQty = pool.Count - bigTokenQty;
+                    var bigTokenQty = pool.Count(t => t.Value == 5);
+                    var smallTokenQty = pool.Count(t => t.Value == 1);
 
                     using (SQLiteCommand cmd = conn.CreateCommand())
                     {

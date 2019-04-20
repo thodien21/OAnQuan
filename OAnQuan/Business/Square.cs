@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace OAnQuan.Business
@@ -13,35 +14,5 @@ namespace OAnQuan.Business
         public int PlayerNumber { get; set; }
 
         public int TokenQty => Tokens.Count;
-
-        /// <summary>
-        /// The tokens in this square is eaten
-        /// </summary>
-        /// <returns></returns>
-        public List<Token> Eaten()
-        {
-            List<Token> earnedTokens = new List<Token>();
-            earnedTokens.AddRange(Tokens);
-            Tokens.Clear();
-            return earnedTokens;
-        }
-
-        /// <summary>
-        /// Calculate the quantity of big token in the token list
-        /// </summary>
-        /// <returns></returns>
-        public static int GetBigTokenQtyFromList(List<Token> tokensList)
-        {
-            var bigToken = new BigToken();
-            var nbBigToken = 0;
-            foreach (var item in tokensList)
-            {
-                if (item.GetType() == bigToken.GetType())
-                {
-                    nbBigToken++;
-                }
-            }
-            return nbBigToken;
-        }
     }
 }

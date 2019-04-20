@@ -92,8 +92,8 @@ namespace OAnQuan.Test
             Turn(board, 1, 3, Direction.RIGHT, list9, 29);
             
             //END OF GAME: Assert the score of each player
-            Assert.AreEqual(player1.GetScore(), 33);
-            Assert.AreEqual(player2.GetScore(), 25);
+            Assert.AreEqual(player1.Score, 33);
+            Assert.AreEqual(player2.Score, 25);
 
             board.GetResult();
 

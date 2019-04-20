@@ -38,7 +38,7 @@ namespace OAnQuan.Business
         /// <summary>
         /// actual score of player in the game
         /// </summary>
-        public int Score { get; set; }
+        public int Score => Pool.Sum(p => p.Value);
         #endregion
 
         #region constructors
@@ -73,20 +73,7 @@ namespace OAnQuan.Business
         #endregion
 
         #region functionalities for player
-        /// <summary>
-        /// Calculate the earned score from player's pool after turn
-        /// </summary>
-        /// <returns></returns>
-        public int GetScore ()
-        {
-            var nbBigToken = Square.GetBigTokenQtyFromList(Pool);
-            var nbSmallToken = Pool.Count - nbBigToken;
-            var smallToken = new SmallToken();
-            var bigToken = new BigToken();
-            return Score = nbSmallToken * smallToken.Value + nbBigToken * bigToken.Value;
-        }
-
-        /// <summary>
+        //// <summary>
         /// Get ranking of own player
         /// </summary>
         /// <returns>int</returns>
@@ -158,6 +145,17 @@ namespace OAnQuan.Business
                     break;
                 default: break;
             }
+        }
+
+        public List<Token> EatTokensInSquare(Square square)
+        {
+            List<Token> earnedTokens = new List<Token>();
+            earnedTokens.AddRange(square.Tokens);
+
+            square.Tokens.Clear();//Remove tokens in eaten square
+            Pool.AddRange(earnedTokens);//Add eaten tokens in player's pool
+
+            return earnedTokens;
         }
         #endregion
 
