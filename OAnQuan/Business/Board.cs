@@ -33,7 +33,7 @@ namespace OAnQuan.Business
             PlayersList = new List<Player>();
             for (int i=0; i< PlayerQty; i++)
             {
-                PlayersList.Add(new Player(""));
+                PlayersList.Add(new Player("toto"));
             }
 
             Turn = new Random().Next(1,3); //Board decides who plays first (1 or 2).

@@ -29,7 +29,6 @@ namespace OAnQuan.Business
         public long TotalGameQty => WinGameQty + DrawGameQty + LoseGameQty;
         public long Ranking => GetOwnRanking();
 
-        public List<String> GroupedInfo => GetGroupedInfo();
         /// <summary>
         /// Pool of tokens actually earned in the game
         /// </summary>
@@ -51,20 +50,6 @@ namespace OAnQuan.Business
         {
             Pseudo = pseudo;
             Pool = new List<Token>();
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="pseudo"></param>
-        /// <param name="winGameQty"></param>
-        /// <param name="loseGameQty"></param>
-        /// <param name="drawGameQty"></param>
-        public Player(string pseudo, long winGameQty, long loseGameQty, long drawGameQty) : this(pseudo)
-        {
-            WinGameQty = winGameQty;
-            LoseGameQty = loseGameQty;
-            DrawGameQty = drawGameQty;
         }
 
         public Player()

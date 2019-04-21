@@ -14,6 +14,7 @@ namespace WGame
     {
         Random rand = new Random();
         Ellipse ellipse = null;
+        Ellipse bigEllipse = null;
         List<Button> btnList = new List<Button>();
         List<Canvas> canList = new List<Canvas>();
         List<Button> btnListPool = new List<Button>();
@@ -21,6 +22,7 @@ namespace WGame
 
         Board board = new Board();
         public const int u = 160;
+        int numStep = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -60,7 +62,7 @@ namespace WGame
             btnListPool.Add(buttonPool2);
 
             //Initialize the board at the beginning of the game
-            SetBoard();
+            SetBoardWithEllipes();
             
             TextBlock.Text = "Turn of " + board.Turn;
             Storyboard story = new Storyboard();
@@ -70,9 +72,7 @@ namespace WGame
                 item.Click += delegate (object sender, RoutedEventArgs args)
                 {
                     if ((board.SquaresList[btnList.IndexOf(item)].PlayerNumber != board.Turn || board.SquaresList[btnList.IndexOf(item)].TokenQty == 0) && board.ClickedSquares.Count == 0)
-                    {
                         MessageBox.Show("La case choisie doit être non vide et se situer dans la rangée de joueur qui a le tour");
-                    }
                     else
                     {
                         board.ClickedSquares.Add(btnList.IndexOf(item));
@@ -93,7 +93,17 @@ namespace WGame
                         }
                     }
                     if (board.SquaresList[0].TokenQty == 0 && board.SquaresList[6].TokenQty == 0)
-                        MessageBox.Show(board.PlayersList[0].Pseudo + board.GetResult().ToString());
+                        MessageBox.Show(board.PlayersList[0].Pseudo + " " + board.GetResult().ToString());
+                    
+                    //If the row of player is all empty, the pool suply 1 small token for each square
+                    else if (board.SquaresList.Where(s => s.PlayerNumber == board.Turn).All(s => s.TokenQty == 0))
+                    {
+                        int smallTokenQtyInPool = board.PlayersList[board.Turn - 1].Pool.Count(t => t.Value == 1);
+                        if (smallTokenQtyInPool >= 5)
+                            Supply5SmallEllipses();
+                        else
+                            MessageBox.Show(board.PlayersList[0].Pseudo + " " + board.GetResult().ToString());
+                    }
                 };
             }
         }
@@ -156,37 +166,31 @@ namespace WGame
         /// <summary>
         /// Visualize the board
         /// </summary>
-        private void SetBoard()
+        private void SetBoardWithEllipes()
         {
             //Set up big squares
             int n = 0;
             int bigTokenQty = 1;
             for (int k = 0; k < 2; k++)
             {
-                AddBigToken(n);
+                AddBigEllipse(n);
                 //Set big squares with small tokens
-                AddSmallTokenInBigSquare(n, board.SquaresList[n].TokenQty-bigTokenQty);
+                AddSmallEllipsesInBigSquare(n, board.SquaresList[n].TokenQty-bigTokenQty);
                 n = n + 6;
             }
 
             //Set up small squares
             for (int i = 1; i < 6; i++)
-            {
-                AddTokensInFirstRow(i, board.SquaresList[i].TokenQty);
-            }
+                AddEllipsesInFirstRow(i, board.SquaresList[i].TokenQty);
             for (int i = 7; i < 12; i++)
-            {
-                AddTokensInSecondRow(i, board.SquaresList[i].TokenQty);
-            }
+                AddEllipsesInSecondRow(i, board.SquaresList[i].TokenQty);
 
             //Display the quantity of tokens in each square(button)
-            for(int i=0; i<12; i++)
-            {
+            for (int i=0; i<12; i++)
                 btnList[i].Content = board.SquaresList[i].TokenQty;
-            }
         }
 
-        private void UpdateEllipsesInBoard()
+        private void AddEllipsesInBoard()
         {
             //Display the quantity of tokens in each square(button)
             for (int i = 0; i < 12; i++)
@@ -210,12 +214,48 @@ namespace WGame
             else if (diffTokenQty < 0)
             {
                 if (squareIndex == 0 || squareIndex == 6)
-                    AddSmallTokenInBigSquare(squareIndex, Math.Abs(diffTokenQty));
+                    AddSmallEllipsesInBigSquare(squareIndex, Math.Abs(diffTokenQty));
                 else if (squareIndex >= 1 && squareIndex <= 5)
-                    AddTokensInFirstRow(squareIndex, Math.Abs(diffTokenQty));
+                    AddEllipsesInFirstRow(squareIndex, Math.Abs(diffTokenQty));
                 else if (squareIndex >= 7 && squareIndex <= 11)
-                    AddTokensInSecondRow(squareIndex, Math.Abs(diffTokenQty));
+                    AddEllipsesInSecondRow(squareIndex, Math.Abs(diffTokenQty));
             }
+        }
+
+        public void Supply5SmallEllipses()
+        {
+            //Rank tokens in ascendant order of value
+            List<Token> list = new List<Token>();
+            list.AddRange(board.PlayersList[board.Turn - 1].Pool.OrderBy(t => t.Value));
+            board.PlayersList[board.Turn - 1].Pool.Clear();
+            board.PlayersList[board.Turn - 1].Pool.AddRange(list);
+
+            //Remove 5 small tokens and refresh the display of Pool button
+            board.PlayersList[board.Turn - 1].Pool.RemoveRange(0, 5);
+            btnListPool[board.Turn - 1].Content = board.PlayersList[board.Turn - 1].Pool.Count;
+
+            //clear and refill canvas with new tokenslist in popl
+            canListPool[board.Turn - 1].Children.RemoveRange(1, canListPool[board.Turn - 1].Children.Count);
+            AddEllipsesInPool(board.PlayersList[board.Turn - 1].Pool);
+
+            //Add 1 token in each square of player's row as well as update interface 
+            if (board.Turn == 1)
+            {
+                for (int j = 1; j < 6; j++)
+                {
+                    board.SquaresList[j].Tokens.Add(new SmallToken());
+                    AddEllipsesInFirstRow(j, 1);
+                }
+            }
+            else
+            {
+                for (int j = 7; j < 12; j++)
+                {
+                    board.SquaresList[j].Tokens.Add(new SmallToken());
+                    AddEllipsesInSecondRow(j, 1);
+                }
+            }
+            TextBlock2.Text = TextBlock2.Text + "                            -5 = " + board.PlayersList[board.Turn - 1].Score.ToString();
         }
 
         /// <summary>
@@ -236,69 +276,70 @@ namespace WGame
                 direction = Direction.LEFT;
             else
                 MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
-            TextBlock2.Text = TextBlock2.Text + "\n" + board.Turn + "-" + squareId + direction;
+
+            numStep++;
+            TextBlock2.Text = TextBlock2.Text + "\n" + numStep + "    " + board.Turn + "---" + squareId + direction;
             //Play in chosen direction
             if (direction == Direction.LEFT || direction == Direction.RIGHT)
             {
                 //share tokens and update ellipes
-                while (squareId != 0 & squareId != 6 && tokenQty != 0)
+                while (squareId != 0 && squareId != 6 && tokenQty != 0)
                 {
                     squareId = board.SmallStep(board.Turn, squareId, direction);//play small step and get squareId of next small step
                     tokenQty = board.SquaresList[squareId].TokenQty;//calculate token qty of next square
                     
-                    UpdateEllipsesInBoard();//Update the board after each small step
+                    AddEllipsesInBoard();//Update the board after each small step
                 }
 
                 nextSquareId = board.CalculateNextSquareId(squareId, direction);//recalculate nextSquareId
                 //while the next square is empty and its own next square is not empty, player earns tokens from its next square
-                while (tokenQty == 0 && board.SquaresList[nextSquareId].TokenQty != 0)
+                while (squareId != 0 && squareId != 6 && tokenQty == 0 && board.SquaresList[nextSquareId].TokenQty != 0)
                 {
                     //Player eats tokens in next square
                     eatenTokens = board.PlayersList[board.Turn - 1].EatTokensInSquare(board.SquaresList[nextSquareId]);
-                    UpdateEllipsesInBoard();
-                    UpdateEllipsesInPool(eatenTokens);
+                    AddEllipsesInBoard();
+                    AddEllipsesInPool(eatenTokens);
 
                     //recalculate squareId and nextSquareId
                     squareId = board.CalculateNextSquareId(nextSquareId, direction);
                     tokenQty = board.SquaresList[squareId].TokenQty;
                     nextSquareId = board.CalculateNextSquareId(squareId, direction);
+                    TextBlock2.Text = TextBlock2.Text + "---" + board.PlayersList[board.Turn - 1].Score.ToString();
                 }
-                TextBlock2.Text = TextBlock2.Text + "-" + board.PlayersList[board.Turn-1].Score.ToString();
+
                 //Change turn
                 board.Turn = (board.Turn == 1) ? 2 : 1;
                 TextBlock.Text = "Next turn is " + board.Turn;
             }
         }
 
-        public void UpdateEllipsesInPool(List<Token> eatenTokens)
+        public void AddEllipsesInPool(List<Token> eatenTokens)
         {
             int smallTokenQty = eatenTokens.Count(t => t.Value == 1);
             int bigTokenQty = eatenTokens.Count(t => t.Value == 5);
 
-            if (bigTokenQty == 0)
-                AddSmallTokenInPool(eatenTokens.Count);
-            else
-            {
-                AddBigTokenInPool();
-                AddSmallTokenInPool(smallTokenQty);
-            }
+            AddBigEllipseInPool(bigTokenQty);
+            AddSmallEllipsesInPool(smallTokenQty);
             btnListPool[board.Turn - 1].Content = board.PlayersList[board.Turn - 1].Score;
         }
 
-        public void AddBigTokenInPool()
+        public void AddBigEllipseInPool(int bigTokenQty)
         {
-            ellipse = CreateAnEllipse(u / 2, u / 4);
-            Canvas.SetLeft(ellipse, rand.Next(50, 150));
+            for(int i=0; i< bigTokenQty; i++)
+            {
+                bigEllipse = CreateAnEllipse(u / 2, u / 4);
+                Canvas.SetLeft(bigEllipse, rand.Next(50, 150));
 
-            if (board.Turn ==1)
-                Canvas.SetBottom(ellipse, rand.Next(20, 160));
-            else
-                Canvas.SetTop(ellipse, rand.Next(20, 160));
+                if (board.Turn == 1)
+                    Canvas.SetBottom(bigEllipse, rand.Next(20, 160));
+                else
+                    Canvas.SetTop(bigEllipse, rand.Next(20, 160));
 
-            canListPool[board.Turn - 1].Children.Add(ellipse);
+                canListPool[board.Turn - 1].Children.Add(bigEllipse);
+            }
         }
 
-        public void AddSmallTokenInPool(int smallTokenQty)
+        public void AddSmallEllipsesInPool(int smallTokenQty)
         {
             if (board.Turn == 1)
             {
@@ -322,15 +363,15 @@ namespace WGame
             }
         }
 
-        public void AddBigToken(int squareIndex)
+        public void AddBigEllipse(int squareIndex)
         {
-            ellipse = CreateAnEllipse(u / 2, u / 4);
-            Canvas.SetLeft(ellipse, rand.Next(60 + squareIndex * u, 60 + squareIndex * u));
-            Canvas.SetTop(ellipse, rand.Next(120, 2 * u - 160));
-            canList[squareIndex].Children.Add(ellipse);
+            bigEllipse = CreateAnEllipse(u / 2, u / 4);
+            Canvas.SetLeft(bigEllipse, rand.Next(60 + squareIndex * u, 60 + squareIndex * u));
+            Canvas.SetTop(bigEllipse, rand.Next(120, 2 * u - 160));
+            canList[squareIndex].Children.Add(bigEllipse);
         }
 
-        public void AddSmallTokenInBigSquare(int squareIndex, int smallTokenQty)
+        public void AddSmallEllipsesInBigSquare(int squareIndex, int smallTokenQty)
         {
             for (int j = 0; j < smallTokenQty; j++)
             {
@@ -345,7 +386,7 @@ namespace WGame
         /// Where squareIndex=1-5
         /// </summary>
         /// <param name="squareIndex"></param>
-        public void AddTokensInFirstRow(int squareIndex, int tokenQty)
+        public void AddEllipsesInFirstRow(int squareIndex, int tokenQty)
         {
             for (int j = 0; j < tokenQty; j++)
             {
@@ -360,7 +401,7 @@ namespace WGame
         /// Where squareIndex=7-11
         /// </summary>
         /// <param name="squareIndex"></param>
-        public void AddTokensInSecondRow(int squareIndex, int tokenQty)
+        public void AddEllipsesInSecondRow(int squareIndex, int tokenQty)
         {
             for (int j = 0; j < tokenQty; j++)
             {
