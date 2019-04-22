@@ -204,7 +204,7 @@ namespace OAnQuan.DataAccess
         /// </summary>
         /// <param name="limit">number of best players to rank</param>
         /// <returns>pseudo, winGameQty, drawGameQty, loseGameQty</returns>
-        public static List<Player> GetRanking(int limit)
+        public static List<Player> GetRankingPlayerListWithLimit(int limit)
         {
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {

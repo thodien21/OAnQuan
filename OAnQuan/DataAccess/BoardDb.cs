@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using OAnQuan.Business;
+using System.Data.SQLite;
 
 namespace OAnQuan.DataAccess
 {
@@ -88,6 +89,32 @@ namespace OAnQuan.DataAccess
                     // And execute this again
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        static public Board GetSavedBoardFromDb(long playerId)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                // create a new SQL command:
+                SQLiteCommand cmd = conn.CreateCommand();
+
+                // First lets build a SQL-Query again:
+                cmd.CommandText = "SELECT * FROM T_Board WHERE PlayerId = @playerId";
+                cmd.Parameters.AddWithValue("@playerId", playerId);
+                // Now the SQLiteCommand object can give us a DataReader-Object:
+                SQLiteDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read())
+                {
+                    return new Board()
+                    {
+                        TurnDb = (long)dataReader["Turn"],
+                        Player2Pseudo = (string)dataReader["Player2Pseudo"]
+                    };
+                }
+                else return null;
             }
         }
     }

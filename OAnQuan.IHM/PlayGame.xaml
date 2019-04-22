@@ -6,62 +6,59 @@
         xmlns:local="clr-namespace:OAnQuan.IHM"
         Title="Ô ĂN QUAN" Height="900" Width="1300">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="311*"/>
-            <ColumnDefinition Width="981*"/>
-        </Grid.ColumnDefinitions>
-        <Grid Margin="475,34,266,35" Height="800"  Width="240" Grid.Column="1">
+        <Grid Margin="700,34,266,35" Height="800"  Width="240">
             <Canvas Name="canvasPool2">
                 <Button Padding="220,160,0,0" Height="180" Width="240" Name="buttonPool2"/>
             </Canvas>
             <Canvas Name="canvasPool1">
-                <Button Padding="220,160,0,0" Height="180" Width="240" x:Name="buttonPool1" Canvas.Bottom="0"/>
+                <Button Padding="220,160,0,0" Height="180" Width="240" Name="buttonPool1" Canvas.Bottom="0"/>
             </Canvas>
         </Grid>
 
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="320"  Width="1120" Grid.ColumnSpan="2" Margin="86,274,86,275">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="320"  Width="1120">
             <Canvas Name="canvas0">
-                <Button Padding="130,130,0,0" Height="320" Width="160" Name="button0"/>
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="320" Width="160" Name="button0"/>
             </Canvas>
             <Canvas Name="canvas1">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button1" Canvas.Left="160" Canvas.Top="160">
-                </Button>
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button1" Canvas.Left="160" Canvas.Top="160"/>
             </Canvas>
             <Canvas Name="canvas2">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button2" Canvas.Left="320" Canvas.Top="160" />
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button2" Canvas.Left="320" Canvas.Top="160" />
             </Canvas>
             <Canvas Name="canvas3">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button3" Canvas.Left="480" Canvas.Top="160" />
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button3" Canvas.Left="480" Canvas.Top="160" />
             </Canvas>
             <Canvas Name="canvas4">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button4" Canvas.Left="640" Canvas.Top="160" />
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button4" Canvas.Left="640" Canvas.Top="160" />
             </Canvas>
             <Canvas Name="canvas5">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button5" Canvas.Left="800" Canvas.Top="160" />
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button5" Canvas.Left="800" Canvas.Top="160" />
             </Canvas>
             <Canvas Name="canvas6">
-                <Button Padding="130,130,0,0" Height="320" Width="160" Name="button6" Canvas.Left="960"/>
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="320" Width="160" Name="button6" Canvas.Left="960"/>
             </Canvas>
             <Canvas Name="canvas7">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button7" Canvas.Left="800"/>
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button7" Canvas.Left="800"/>
             </Canvas>
             <Canvas Name="canvas8">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button8" Canvas.Left="640"/>
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button8" Canvas.Left="640"/>
             </Canvas>
             <Canvas Name="canvas9">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button9" Canvas.Left="480"/>
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button9" Canvas.Left="480"/>
             </Canvas>
             <Canvas Name="canvas10">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button10" Canvas.Left="320"/>
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button10" Canvas.Left="320"/>
             </Canvas>
             <Canvas Name="canvas11">
-                <Button Padding="130,130,0,0" Height="160" Width="160" Name="button11" Canvas.Left="160"/>
+                <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button11" Canvas.Left="160"/>
             </Canvas>
-            <TextBlock HorizontalAlignment="Left" Margin="500,-255,-200,200" TextWrapping="Wrap" Name="TextBlock" VerticalAlignment="Top" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Margin="0,-275,0,0" TextWrapping="Wrap" Name="TextBlock2" VerticalAlignment="Top" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Margin="250,-275,0,0" TextWrapping="Wrap" Name="TextBlock3" VerticalAlignment="Top" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" Margin="500,-250,-200,200" TextWrapping="Wrap" Name="TextBlock" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" Margin="0,-300,0,0" TextWrapping="Wrap" Name="TextBlock2" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" Margin="250,-275,0,0" TextWrapping="Wrap" Name="TextBlock3" FontSize="15"/>
         </Grid>
-        <Button Name="btnSaveGame" Content="Savegarder la partie" FontSize="20" FontStretch="Expanded" FontStyle="Oblique" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="40,718,0,0" VerticalAlignment="Top" Width="252" Height="38" Click="BtnSaveGame_Click"/>
-        <Button x:Name="btnExitGame" Content="Quitter sans sauvegarder" FontSize="20" FontStyle="Oblique" HorizontalAlignment="Left" Margin="40,769,0,0" VerticalAlignment="Top" Width="252" Height="38" Click="BtnExitGame_Click"/>
+        <Grid>
+            <Button Name="btnSaveGame" Content="Savegarder la partie" FontSize="20" FontStyle="Oblique" FontWeight="DemiBold" Margin="-800,600,0,0" Width="252" Height="38" Click="BtnSaveGame_Click"/>
+            <Button Name="btnExitGame" Content="Quitter sans sauvegarder" FontSize="20" FontStyle="Oblique" Margin="-800,700,0,0" Width="252" Height="38" Click="BtnExitGame_Click"/>
+        </Grid>
     </Grid>
 </Window>

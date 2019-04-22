@@ -362,7 +362,7 @@ namespace OAnQuan.IHM
         /// Where squareIndex=1-5
         /// </summary>
         /// <param name="squareIndex"></param>
-        public void AddEllipsesInFirstRow(int squareIndex, int tokenQty)
+        public void AddEllipsesInFirstRow(int squareIndex, long tokenQty)
         {
             for (int j = 0; j < tokenQty; j++)
             {
@@ -512,7 +512,7 @@ namespace OAnQuan.IHM
             switch (result)
             {
                 case MessageBoxResult.OK:
-                    Services.Player.SaveOrUpdateGame(Services.Player.PlayerId, board.PlayersList[1].Pseudo, board.Turn, board);
+                    Services.Player.SaveOrUpdateGame(board.PlayersList[1].Pseudo, board.Turn, board);
                     MessageBox.Show("Partie sauvegardée.");
                     this.Close();
                     break;

@@ -19,7 +19,11 @@ namespace OAnQuan.Business
         /// Number of player whose turn is on
         /// </summary>
         public int Turn { get; set; }
+
+        public long TurnDb { get; set; }
+                
         public List<int> ClickedSquares { get; set; }
+        public string Player2Pseudo { get; set; }
 
         public const int PlayerQty = 2;
 
@@ -66,7 +70,7 @@ namespace OAnQuan.Business
         /// <param name="squareId">square identifier (1-5) </param>
         /// <param name="direction">direction to share the tokens</param>
         /// <returns></returns>
-        public List<Square> Go(int playerNumber, int squareId, Direction direction)
+        public List<Square> Go(long playerNumber, int squareId, Direction direction)
         {
             var selectedSquare = SquaresList[squareId];
             List<Token> eatenTokens = new List<Token>();//the list of tokens which would be eaten
@@ -110,7 +114,7 @@ namespace OAnQuan.Business
         /// <param name="squareId">Id of the square which shares tokens</param>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public int SmallStep(int playerNumber, int squareId, Direction direction)
+        public int SmallStep(long playerNumber, int squareId, Direction direction)
         {
             var tokenQty = SquaresList[squareId].TokenQty;
             Square providerSquare = new Square();

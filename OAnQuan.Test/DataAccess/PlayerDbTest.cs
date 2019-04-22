@@ -39,7 +39,7 @@ namespace OAnQuan.Test.DataAccess
         [Test]
         public static void RankingPlayer_Test()
         {
-            List<Player> playerList = PlayerDb.GetRanking(3);
+            List<Player> playerList = PlayerDb.GetRankingPlayerListWithLimit(3);
             Assert.AreEqual(playerList.Count, 3);
 
             //var player1 = new List<string>() { "", "0", "0", "0" };

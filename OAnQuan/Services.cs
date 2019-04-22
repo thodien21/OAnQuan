@@ -10,7 +10,7 @@ namespace OAnQuan
         /// Player who login/sign up
         /// </summary>
         public static Player Player { get; set; }
-        public static List<Player> PlayerListWithRanking => PlayerDb.GetRanking(PlayerDb.CountPlayer());
+        public static List<Player> PlayerListWithRanking => PlayerDb.GetRankingPlayerListWithLimit(PlayerDb.CountPlayer());
         public static int PlayerQty => PlayerListWithRanking.Count;
 
         /// <summary>

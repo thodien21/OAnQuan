@@ -66,7 +66,7 @@ namespace OAnQuan.Business
         {
             var ownRanking = 0;
             var count = PlayerDb.CountPlayer();
-            var playerListRanking = PlayerDb.GetRanking(count);
+            var playerListRanking = PlayerDb.GetRankingPlayerListWithLimit(count);
             for (int i = 0; i < count; i++)
             {
                 if (playerListRanking[i].Pseudo == Pseudo)
@@ -92,20 +92,40 @@ namespace OAnQuan.Business
         /// <param name="turn">turn of which player?</param>
         /// <param name="player2Pseudo">pseudo of player number 2</param>
         /// <param name="playerId">player identity</param>
-        public void SaveOrUpdateGame(long playerId, string player2Pseudo, long turn, Board board)
+        public void SaveOrUpdateGame(string player2Pseudo, long turn, Board board)
         {
-            bool contains = BoardDb.CheckIfBoardDbContainsPlayerId(playerId);
+            bool contains = BoardDb.CheckIfBoardDbContainsPlayerId(PlayerId);
             if (contains)
             {
-                BoardDb.Update(playerId, player2Pseudo, turn);
-                SquareListDb.Update(playerId, board);
-                PoolDb.Update(playerId, board);
+                BoardDb.Update(PlayerId, player2Pseudo, turn);
+                SquareListDb.Update(PlayerId, board);
+                PoolDb.Update(PlayerId, board);
             }
             else
             {
-                BoardDb.Save(playerId, player2Pseudo, turn);
-                SquareListDb.Save(playerId, board);
-                PoolDb.Save(playerId, board);
+                BoardDb.Save(PlayerId, player2Pseudo, turn);
+                SquareListDb.Save(PlayerId, board);
+                PoolDb.Save(PlayerId, board);
+            }
+        }
+
+        public void GetSavedGameFromDb()
+        {
+            Board board = BoardDb.GetSavedBoardFromDb(PlayerId);
+            board.Turn = Convert.ToInt32(board.TurnDb);
+            board.SquaresList = SquareListDb.GetSquareListDb(PlayerId);
+
+            board.PlayersList = new List<Player> { this, new Player(board.Player2Pseudo) };
+
+            var poolList = PoolDb.GetPoolListDb(PlayerId);
+            //Recover pool of each player
+            for (int i= 0; i <2; i++)
+            {
+                board.PlayersList[i].Pool = new List<Token>();
+                for (int j = 0; j < poolList[0].SmallTokenQty; j++)
+                    board.PlayersList[i].Pool.Add(new SmallToken());
+                for (int j = 0; j < poolList[0].BigTokenQty; j++)
+                    board.PlayersList[i].Pool.Add(new BigToken());
             }
         }
 

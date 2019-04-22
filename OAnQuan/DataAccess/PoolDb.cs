@@ -85,5 +85,36 @@ namespace OAnQuan.DataAccess
                 }
             }
         }
+
+        public static List<Square> GetPoolListDb(long playerId)
+        {
+            List<Square> poolList = new List<Square>();
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                // create a new SQL command:
+                SQLiteCommand cmd = conn.CreateCommand();
+
+                // First lets build a SQL-Query again:
+                cmd.CommandText = "SELECT * FROM T_Pool WHERE PlayerId = @playerId";
+                cmd.Parameters.AddWithValue("@playerId", playerId);
+
+                // Now the SQLiteCommand object can give us a DataReader-Object:
+                SQLiteDataReader dataReader = cmd.ExecuteReader();
+
+                // The SQLiteDataReader allows us to run through the result lines:
+                while (dataReader.Read()) // Read() returns true if there is still a result line to read
+                {
+                    poolList.Add(new Square()
+                    {
+                        PlayerNumber = (long)dataReader["PlayerNumber"],
+                        SmallTokenQty = (long)dataReader["SmallTokenQty"],
+                        BigTokenQty = (long)dataReader["BigTokenQty"]
+                    });
+                }
+            }
+            return poolList;
+        }
     }
 }

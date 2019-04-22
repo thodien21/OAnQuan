@@ -16,7 +16,7 @@ namespace OAnQuan.IHM
             InitializeComponent();
 
             //Display the best players
-            icBestPlayerList.ItemsSource= PlayerDb.GetRanking(5);
+            icBestPlayerList.ItemsSource= PlayerDb.GetRankingPlayerListWithLimit(5);
             txbWelcome.Text = "Bienvenu "+ Services.Player.Pseudo + " !";
 
             //Display info of player
@@ -30,6 +30,12 @@ namespace OAnQuan.IHM
             {
                 btnAdmin.Visibility = Visibility;//Hide this button since player is not admin
             }
+        }
+        
+        private void btnAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            PlayerInfo playerInfo = new PlayerInfo();
+            playerInfo.Show();
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
@@ -45,16 +51,12 @@ namespace OAnQuan.IHM
                 game.ShowDialog();
             }
         }
-
-        private void btnAdmin_Click(object sender, RoutedEventArgs e)
-        {
-            PlayerInfo playerInfo = new PlayerInfo();
-            playerInfo.Show();
-        }
-
+        
         private void btnPlaySavedGame_Click(object sender, RoutedEventArgs e)
         {
-
+            Services.Player.GetSavedGameFromDb();
+            PlayGame game = new PlayGame();
+            game.ShowDialog();
         }
     }
 }
