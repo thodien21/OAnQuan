@@ -13,19 +13,20 @@
                     <ItemsControl>
                         <TextBox x:Name="txbWelcome" HorizontalAlignment="Center" Height="37" FontSize="20" FontWeight="DemiBold"/>
                     </ItemsControl>
-                    <Button x:Name="btnPlay" Content="Ô Ăn Quan" FontSize="50" Foreground="Green" HorizontalAlignment="Left" Height="116" Margin="226,126,0,0" VerticalAlignment="Top" Width="317" Click="btnPlay_Click" Background="#FFAA959D" BorderBrush="#FF707070" BorderThickness="5" FontFamily="Yu Gothic" FontWeight="Bold"/>
+                    <Button x:Name="btnPlay" Content="Ô Ăn Quan" FontSize="50" Foreground="Green" HorizontalAlignment="Center" Height="116" Margin="0,126,0,0" VerticalAlignment="Top" Width="317" Click="btnPlay_Click" Background="BurlyWood" BorderBrush="#FF707070" BorderThickness="5" FontFamily="Yu Gothic" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="20" Margin="335,222,0,0" VerticalAlignment="Top" Width="100" Text="Cliquer pour jouer"/>
+                    <Button x:Name="btnPlaySavedGame" Content="Reprendre la partie sauvegardée" FontSize="20" Foreground="CadetBlue" HorizontalAlignment="Center" Height="48" Margin="0,269,0,0" VerticalAlignment="Top" Click="btnPlaySavedGame_Click" Background="Bisque" BorderBrush="Aqua" BorderThickness="2" FontFamily="Yu Gothic" FontWeight="DemiBold"/>
                 </Grid>
             </TabItem>
 
             <TabItem Header="Votre compte" Name="tbiPlayer">
                 <Grid>
-                    <Label Content="{Binding Pseudo}" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="24" HorizontalAlignment="Center" Margin="295,33,286,0" VerticalAlignment="Top" Width="205"/>
-                    <Label Content="{Binding FullName}" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="24" HorizontalAlignment="Center" Margin="295,65,286,0" VerticalAlignment="Top" Width="205"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Pseudo}" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding FullName}" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center" Margin="0,50,0,0" />
                     <Label Content="Administrateur : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,136,333,0" VerticalAlignment="Top" Width="213"/>
                     <Label Name="lblIsAdmin"  FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,133,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
-                    <Button x:Name="btnAdmin" Content="Gérer des joueurs" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center" Margin="520,136,112,0" VerticalAlignment="Top" Width="154" Foreground="CornflowerBlue" Click="btnAdmin_Click"/>
-                    
+                    <Button x:Name="btnAdmin" Content="Gérer des joueurs" FontWeight="Bold" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center" Margin="538,136,88,0" VerticalAlignment="Top" Width="154" Foreground="CadetBlue" BorderBrush="GreenYellow" Click="btnAdmin_Click"/>
+
                     <Label Content="Disponible : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,173,333,0" VerticalAlignment="Top" Width="213"/>
                     <Label Name="lblIsDisabled" FontWeight="Bold" HorizontalContentAlignment="Left" FontSize="18" HorizontalAlignment="Center" Margin="459,171,233,0" VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.5,0.5"/>
                     <Label Content="Nombre de parties jouées : " FontWeight="Bold" HorizontalContentAlignment="Right" FontSize="15" HorizontalAlignment="Center" Margin="240,206,333,0" VerticalAlignment="Top" Width="213"/>

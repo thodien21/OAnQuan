@@ -52,9 +52,9 @@ namespace OAnQuan.IHM
             playerInfo.Show();
         }
 
-        private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void btnPlaySavedGame_Click(object sender, RoutedEventArgs e)
         {
-            e.Handled = true;
+
         }
     }
 }

@@ -5,7 +5,12 @@ namespace OAnQuan.DataAccess
     public static class BoardDb
     {
         // We use the data source:
-        const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True; ";
+        //for laptop 
+        //const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //for fix at home
+        const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //for fix at school
+        //const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
 
         /// <summary>
         /// Check if the player has saved a game
@@ -27,16 +32,12 @@ namespace OAnQuan.DataAccess
                     using (SQLiteDataReader dataReader = cmd.ExecuteReader())
                     {
                         if (dataReader.Read()) // Read() returns true if there is still a result line to read
-                        {
                             contains = true;
-                        }
                     }
                 }
             }
             return contains;
         }
-
-
 
         /// <summary>
         /// Save board
@@ -70,7 +71,7 @@ namespace OAnQuan.DataAccess
         /// <param name="turn"></param>
         /// <param name="player2Pseudo"></param>
         /// <param name="playerId"></param>
-        public static void Update(long turn, string player2Pseudo, long playerId)
+        public static void Update(long playerId, string player2Pseudo, long turn)
         {
             // create a new database connection:
             using (SQLiteConnection conn = new SQLiteConnection(connString))

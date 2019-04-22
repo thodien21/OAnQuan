@@ -87,12 +87,12 @@ namespace OAnQuan.Business
         }
 
         /// <summary>
-        /// If it's the first time player saves the game -> Save board, if not -> Update board
+        /// If it's the first time player saves the game -> Save board, if not the first time-> Update board
         /// </summary>
         /// <param name="turn">turn of which player?</param>
         /// <param name="player2Pseudo">pseudo of player number 2</param>
         /// <param name="playerId">player identity</param>
-        public static void SaveOrUpdateGame(long playerId, string player2Pseudo, long turn, Board board)
+        public void SaveOrUpdateGame(long playerId, string player2Pseudo, long turn, Board board)
         {
             bool contains = BoardDb.CheckIfBoardDbContainsPlayerId(playerId);
             if (contains)
@@ -114,7 +114,7 @@ namespace OAnQuan.Business
         /// </summary>
         /// <param name="board"></param>
         /// <param name="playerId"></param>
-        public void UpdateResult(long playerId, Board board)
+        public void UpdateResult(Board board)
         {
             var result = board.GetResult();
             switch (result)

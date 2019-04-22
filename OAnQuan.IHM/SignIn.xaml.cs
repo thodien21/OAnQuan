@@ -26,10 +26,14 @@ namespace OAnQuan.IHM
             }
             else
             {
-                //this.Hide();
                 Services.GetPlayer(txbPeuso.Text, txbPassword.Password);//Immediately get player 
                 Home click = new Home();
+                MessageBox.Show(click, "Login réussi !");
+                this.Hide();
                 click.ShowDialog();
+
+                //PlayGame game = new PlayGame();
+                //MessageBox.Show(game, "caption");
             }
         }
     }

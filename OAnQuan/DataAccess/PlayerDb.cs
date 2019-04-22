@@ -281,7 +281,10 @@ namespace OAnQuan.DataAccess
                         "Pseudo = @pso, " +
                         "FullName = @full, " +
                         "IsAdmin = @ad, " +
-                        "IsEnabled = @en " +
+                        "IsEnabled = @en, " +
+                        "WinGameQty = @win, " +
+                        "DrawGameQty = @draw, " +
+                        "LoseGameQty = @lose " +
                     "WHERE PlayerId = @playerId";
 
                     cmd.Parameters.AddWithValue("@playerId", player.PlayerId);
@@ -289,6 +292,9 @@ namespace OAnQuan.DataAccess
                     cmd.Parameters.AddWithValue("@full", player.FullName);
                     cmd.Parameters.AddWithValue("@ad", player.IsAdmin);
                     cmd.Parameters.AddWithValue("@en", player.IsEnabled);
+                    cmd.Parameters.AddWithValue("@win", player.WinGameQty);
+                    cmd.Parameters.AddWithValue("@draw", player.DrawGameQty);
+                    cmd.Parameters.AddWithValue("@lose", player.LoseGameQty);
                     cmd.ExecuteNonQuery();
                 }
                 // We are ready, now lets cleanup and close our connection:
