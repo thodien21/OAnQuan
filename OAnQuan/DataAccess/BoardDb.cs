@@ -1,4 +1,5 @@
 ﻿using OAnQuan.Business;
+using System;
 using System.Data.SQLite;
 
 namespace OAnQuan.DataAccess
@@ -9,9 +10,9 @@ namespace OAnQuan.DataAccess
         //for laptop 
         //const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
         //for fix at home
-        //const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
         //for fix at school
-        const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
 
         /// <summary>
         /// Check if the player has saved a game
@@ -112,7 +113,7 @@ namespace OAnQuan.DataAccess
                         {
                             return new Board()
                             {
-                                TurnDb = (long)dataReader["Turn"],
+                                Turn = Convert.ToInt32((long)dataReader["Turn"]),
                                 Player2Pseudo = (string)dataReader["Player2Pseudo"]
                             };
                         }
@@ -120,6 +121,61 @@ namespace OAnQuan.DataAccess
                     } 
                 }
             }
+        }
+       
+        /// <summary>
+        /// Get pseudo of player 2
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        static public string GetPlayer2PseudoFromDb(long playerId)
+        {
+            string player2Pseudo = "tata";
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                // create a new SQL command:
+                using (SQLiteCommand cmd = conn.CreateCommand())
+                {
+                    // First lets build a SQL-Query again:
+                    cmd.CommandText = "SELECT * FROM T_Board WHERE PlayerId = @playerId";
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+
+                    // Now the SQLiteCommand object can give us a DataReader-Object:
+                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
+                    {
+                        if (dataReader.Read())
+                            player2Pseudo = (string)dataReader["Player2Pseudo"];
+                    }
+                }
+            }
+            return player2Pseudo;
+        }
+
+        static public int GetTurnFromDb(long playerId)
+        {
+            int turn = 0;
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                // create a new SQL command:
+                using (SQLiteCommand cmd = conn.CreateCommand())
+                {
+                    // First lets build a SQL-Query again:
+                    cmd.CommandText = "SELECT * FROM T_Board WHERE PlayerId = @playerId";
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+
+                    // Now the SQLiteCommand object can give us a DataReader-Object:
+                    using (SQLiteDataReader dataReader = cmd.ExecuteReader())
+                    {
+                        if (dataReader.Read())
+                            turn = Convert.ToInt32((long)dataReader["Turn"]);
+                    }
+                }
+            }
+            return turn;
         }
     }
 }

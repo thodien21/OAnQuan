@@ -45,7 +45,6 @@ namespace OAnQuan.IHM
 
             //Initialize the board at the beginning of the game
             SetBoardWithEllipes();
-
             //Set pools
             AddEllipsesInPool(1, board.PlayersList[0].Pool);
             AddEllipsesInPool(2, board.PlayersList[1].Pool);
@@ -80,9 +79,7 @@ namespace OAnQuan.IHM
                     }
                     if (board.SquaresList[0].TokenQty == 0 && board.SquaresList[6].TokenQty == 0)
                         EndGame();
-
-                    //If the row of player is all empty, the pool suply 1 small token for each square
-                    else if (board.SquaresList.Where(s => s.PlayerNumber == board.Turn).All(s => s.TokenQty == 0))
+                    else if (board.SquaresList.Where(s => s.PlayerNumber == board.Turn).All(s => s.TokenQty == 0))//If the row of player is all empty, the pool suply 1 small token for each square
                     {
                         int smallTokenQtyInPool = board.PlayersList[board.Turn - 1].Pool.Count(t => t.Value == 1);
                         if (smallTokenQtyInPool >= 5)
@@ -296,7 +293,8 @@ namespace OAnQuan.IHM
             for (int k = 0; k < 2; k++)
             {
                 long bigTokenQty = board.SquaresList[n].BigTokenQty;
-                AddBigEllipse(n);//There is always maximum 1 big token in big square so don't need to use loop
+                if(bigTokenQty ==1)
+                    AddBigEllipse(n);//There is only maximum 1 big token in big square so don't need to use loop
                 AddSmallEllipsesInBigSquare(n, board.SquaresList[n].SmallTokenQty);//Set big squares with small tokens
                 n = n + 6;
             }
@@ -401,24 +399,24 @@ namespace OAnQuan.IHM
             int smallTokenQty = eatenTokens.Count(t => t.Value == 1);
             int bigTokenQty = eatenTokens.Count(t => t.Value == 5);
 
-            AddBigEllipseInPool(bigTokenQty);
+            AddBigEllipseInPool(playerNumber, bigTokenQty);
             AddSmallEllipsesInPool(playerNumber, smallTokenQty);
             btnListPool[playerNumber - 1].Content = board.PlayersList[playerNumber - 1].Score;
         }
 
-        public void AddBigEllipseInPool(int bigTokenQty)
+        public void AddBigEllipseInPool(int playerNumber, int bigTokenQty)
         {
             for (int i = 0; i < bigTokenQty; i++)
             {
                 ellipse = CreateAnEllipse(u / 2, u / 4);
                 Canvas.SetLeft(ellipse, rand.Next(50, 150));
 
-                if (board.Turn == 1)
+                if (playerNumber == 1)
                     Canvas.SetBottom(ellipse, rand.Next(20, 160));
                 else
                     Canvas.SetTop(ellipse, rand.Next(20, 160));
 
-                canListPool[board.Turn - 1].Children.Add(ellipse);
+                canListPool[playerNumber - 1].Children.Add(ellipse);
             }
         }
 

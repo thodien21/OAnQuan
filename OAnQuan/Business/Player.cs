@@ -112,20 +112,14 @@ namespace OAnQuan.Business
 
         public Board GetSavedGameFromDb()
         {
-            Board board = BoardDb.GetSavedBoardFromDb(PlayerId);
-            board.Turn = Convert.ToInt32(board.TurnDb);
+            Board board = new Board();
+            board.Turn = BoardDb.GetTurnFromDb(PlayerId);
+            board.Player2Pseudo = BoardDb.GetPlayer2PseudoFromDb(PlayerId);
+            board.PlayersList = new List<Player> { this, new Player(board.Player2Pseudo) };
 
-            //board.SquaresList = SquareListDb.GetSquareListDb(PlayerId);
-            //foreach(var item in board.SquaresList)
-            //{
-            //    for (int i = 0; i < item.SmallTokenQty; i++)
-            //        item.Tokens.Add(new SmallToken());
-            //    for (int i = 0; i < item.BigTokenQty; i++)
-            //        item.Tokens.Add(new BigToken());
-            //}
-
+            //recover squareList with SmallTokenQty and BigTokenQty by reserving all other properties
             var squaresListDb = SquareListDb.GetSquareListDb(PlayerId);
-            for(int i=0; i<board.SquaresList.Count; i++)
+            for (int i = 0; i < 12; i++)
             {
                 board.SquaresList[i].Tokens = new List<Token>();
                 board.SquaresList[i].SmallTokenQty = squaresListDb[i].SmallTokenQty;
@@ -135,9 +129,6 @@ namespace OAnQuan.Business
                 for (int j = 0; j < board.SquaresList[i].BigTokenQty; j++)
                     board.SquaresList[i].Tokens.Add(new BigToken());
             }
-
-
-            board.PlayersList = new List<Player> { this, new Player(board.Player2Pseudo) };
 
             var poolList = PoolDb.GetPoolListDb(PlayerId);
             //Recover pool of each player

@@ -20,8 +20,6 @@ namespace OAnQuan.Business
         /// Number of player whose turn is on
         /// </summary>
         public int Turn { get; set; }
-
-        public long TurnDb { get; set; }
                 
         public List<int> ClickedSquares { get; set; }
         public string Player2Pseudo { get; set; }

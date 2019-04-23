@@ -11,6 +11,7 @@ namespace OAnQuan.Business
         /// </summary>
         public BigSquare()
         {
+            BigTokenQty = 1;
             Tokens.Add(new BigToken());
             //Tokens = new List<Token>() { new BigToken() };
         }
