@@ -20,7 +20,7 @@ namespace OAnQuan.IHM
             if (PlayerDb.GetPlayer(txbPeuso.Text, txbPassword.Password) == null)
             {
                 MessageBox.Show("Pseudo ou Mot de passe sont incorrect. Réessayez !");
-                //this.Hide();
+                this.Hide();
                 SignIn signIn = new SignIn();
                 signIn.ShowDialog();
             }
@@ -31,9 +31,6 @@ namespace OAnQuan.IHM
                 MessageBox.Show(click, "Login réussi !");
                 this.Hide();
                 click.ShowDialog();
-
-                //PlayGame game = new PlayGame();
-                //MessageBox.Show(game, "caption");
             }
         }
     }

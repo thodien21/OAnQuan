@@ -10,9 +10,11 @@ namespace OAnQuan.Business
         /// Dafault constructor
         /// </summary>
         public SmallSquare()
-        {            
-            Tokens = new List<Token>() { new SmallToken(), new SmallToken(), new SmallToken(), new SmallToken(), new SmallToken() };
-            Player = new Player("");
+        {
+            SmallTokenQty = 5;
+            for (int i = 0; i < SmallTokenQty; i++)
+                Tokens.Add(new SmallToken());
+            Player = new Player();
         }
     }
 }

@@ -17,5 +17,14 @@ namespace OAnQuan.Business
         public long PlayerNumber { get; set; }
 
         public int TokenQty => Tokens.Count;
+
+        public Square()
+        {
+            Tokens = new List<Token>();
+            //for (int i = 0; i < SmallTokenQty; i++)
+            //    Tokens.Add(new SmallToken());
+            //for (int i = 0; i < BigTokenQty; i++)
+            //    Tokens.Add(new BigToken());
+        }
     }
 }

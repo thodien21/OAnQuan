@@ -22,5 +22,13 @@ namespace OAnQuan
         {
             Player = PlayerDb.GetPlayer(pseudo, pass);
         }
+
+        //To know if the game is new or taken from saved game
+        public static NoveltyOfGame NoveltyOfGame { get; set; }
+
+        /// <summary>
+        /// To require when player 1 plays
+        /// </summary>
+        public static string PseudoPlayer2 { get; set; }
     }
 }

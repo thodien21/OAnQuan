@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OAnQuan.DataAccess;
+using System;
 using System.Collections.Generic;
 
 namespace OAnQuan.Business
@@ -35,13 +36,8 @@ namespace OAnQuan.Business
             SquaresList = new List<Square>();
             ClickedSquares = new List<int>();
             PlayersList = new List<Player>();
-            for (int i=0; i< PlayerQty; i++)
-            {
-                PlayersList.Add(new Player("toto"));
-            }
 
-            Turn = new Random().Next(1,3); //Board decides who plays first (1 or 2).
-
+            //Establish board with big square et small squares
             for(int i=0; i<PlayerQty; i++)
             {
                 SquaresList.Add(new BigSquare());
@@ -61,6 +57,11 @@ namespace OAnQuan.Business
                 }
                 n = n + 6;
             }
+
+            PlayersList.Add(Services.Player);
+            Turn = new Random().Next(1, 3); //Board decides who plays first (1 or 2).
+            Player2Pseudo = Services.PseudoPlayer2;
+            PlayersList.Add(new Player(Player2Pseudo));
         }
 
         /// <summary>

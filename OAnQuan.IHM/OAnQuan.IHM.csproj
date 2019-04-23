@@ -76,6 +76,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AskPseudoPlayer2.xaml.cs">
+      <DependentUpon>AskPseudoPlayer2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlayerInfo.xaml.cs">
       <DependentUpon>PlayerInfo.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,10 @@
     <Compile Include="UpdateInfoPlayer.xaml.cs">
       <DependentUpon>UpdateInfoPlayer.xaml</DependentUpon>
     </Compile>
+    <Page Include="AskPseudoPlayer2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OAnQuan.IHM"
-        Title="Ô ĂN QUAN" Height="900" Width="1300">
+        Title="Ô ĂN QUAN" Height="940" Width="1300">
     <Grid>
         <Grid Margin="700,34,266,35" Height="800"  Width="240">
             <Canvas Name="canvasPool2">
@@ -52,9 +52,9 @@
             <Canvas Name="canvas11">
                 <Button FontSize="16" FontWeight="Bold" Padding="130,130,0,0" Height="160" Width="160" Name="button11" Canvas.Left="160"/>
             </Canvas>
-            <TextBlock HorizontalAlignment="Left" Margin="500,-250,-200,200" TextWrapping="Wrap" Name="TextBlock" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Margin="0,-300,0,0" TextWrapping="Wrap" Name="TextBlock2" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Margin="250,-275,0,0" TextWrapping="Wrap" Name="TextBlock3" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,-250,-200,200" TextWrapping="Wrap" Name="TextBlock" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,-300,0,0" TextWrapping="Wrap" Name="TextBlock2" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,-275,0,0" TextWrapping="Wrap" Name="TextBlock3" FontSize="15"/>
         </Grid>
         <Grid>
             <Button Name="btnSaveGame" Content="Savegarder la partie" FontSize="20" FontStyle="Oblique" FontWeight="DemiBold" Margin="-800,600,0,0" Width="252" Height="38" Click="BtnSaveGame_Click"/>

@@ -46,14 +46,14 @@ namespace OAnQuan.IHM
             }
             else
             {
-                //this.Hide();
-                PlayGame game = new PlayGame();
-                game.ShowDialog();
+                AskPseudoPlayer2 pseudoPlayer2 = new AskPseudoPlayer2();
+                pseudoPlayer2.ShowDialog();
             }
         }
         
         private void btnPlaySavedGame_Click(object sender, RoutedEventArgs e)
         {
+            Services.NoveltyOfGame = NoveltyOfGame.OLD;
             Services.Player.GetSavedGameFromDb();
             PlayGame game = new PlayGame();
             game.ShowDialog();

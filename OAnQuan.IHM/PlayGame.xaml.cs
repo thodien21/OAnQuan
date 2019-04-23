@@ -24,7 +24,9 @@ namespace OAnQuan.IHM
         List<Button> btnListPool = new List<Button>();
         List<Canvas> canListPool = new List<Canvas>();
 
-        Board board = new Board();
+        
+        Board board = (Services.NoveltyOfGame == NoveltyOfGame.NEW) ? new Board() : Services.Player.GetSavedGameFromDb();
+
         public const int u = 160;
         int numStep = 0;
         public PlayGame()
@@ -43,6 +45,10 @@ namespace OAnQuan.IHM
 
             //Initialize the board at the beginning of the game
             SetBoardWithEllipes();
+
+            //Set pools
+            AddEllipsesInPool(1, board.PlayersList[0].Pool);
+            AddEllipsesInPool(2, board.PlayersList[1].Pool);
 
             TextBlock.Text = "Turn of " + board.Turn;
             Storyboard story = new Storyboard();
@@ -287,24 +293,23 @@ namespace OAnQuan.IHM
         {
             //Set up big squares
             int n = 0;
-            int bigTokenQty = 1;
             for (int k = 0; k < 2; k++)
             {
-                AddBigEllipse(n);
-                //Set big squares with small tokens
-                AddSmallEllipsesInBigSquare(n, board.SquaresList[n].TokenQty - bigTokenQty);
+                long bigTokenQty = board.SquaresList[n].BigTokenQty;
+                AddBigEllipse(n);//There is always maximum 1 big token in big square so don't need to use loop
+                AddSmallEllipsesInBigSquare(n, board.SquaresList[n].SmallTokenQty);//Set big squares with small tokens
                 n = n + 6;
             }
 
             //Set up small squares
             for (int i = 1; i < 6; i++)
-                AddEllipsesInFirstRow(i, board.SquaresList[i].TokenQty);
+                AddEllipsesInFirstRow(i, board.SquaresList[i].SmallTokenQty);
             for (int i = 7; i < 12; i++)
-                AddEllipsesInSecondRow(i, board.SquaresList[i].TokenQty);
+                AddEllipsesInSecondRow(i, board.SquaresList[i].SmallTokenQty);
 
             //Display the quantity of tokens in each square(button)
             for (int i = 0; i < 12; i++)
-                btnList[i].Content = board.SquaresList[i].TokenQty;
+                btnList[i].Content = board.SquaresList[i].SmallTokenQty + board.SquaresList[i].BigTokenQty;
         }
 
         private void UpdateEllipsesInBoard()
@@ -347,7 +352,7 @@ namespace OAnQuan.IHM
             canList[squareIndex].Children.Add(ellipse);
         }
 
-        public void AddSmallEllipsesInBigSquare(int squareIndex, int smallTokenQty)
+        public void AddSmallEllipsesInBigSquare(int squareIndex, long smallTokenQty)
         {
             for (int j = 0; j < smallTokenQty; j++)
             {
@@ -362,9 +367,9 @@ namespace OAnQuan.IHM
         /// Where squareIndex=1-5
         /// </summary>
         /// <param name="squareIndex"></param>
-        public void AddEllipsesInFirstRow(int squareIndex, long tokenQty)
+        public void AddEllipsesInFirstRow(int squareIndex, long smallTokenQty)
         {
-            for (int j = 0; j < tokenQty; j++)
+            for (int j = 0; j < smallTokenQty; j++)
             {
                 ellipse = CreateAnEllipse(20, 20);
                 Canvas.SetLeft(ellipse, rand.Next(u * squareIndex + 50, u * squareIndex + u - 50));
@@ -377,9 +382,9 @@ namespace OAnQuan.IHM
         /// Where squareIndex=7-11
         /// </summary>
         /// <param name="squareIndex"></param>
-        public void AddEllipsesInSecondRow(int squareIndex, int tokenQty)
+        public void AddEllipsesInSecondRow(int squareIndex, long smallTokenQty)
         {
-            for (int j = 0; j < tokenQty; j++)
+            for (int j = 0; j < smallTokenQty; j++)
             {
                 ellipse = CreateAnEllipse(20, 20);
                 Canvas.SetLeft(ellipse, rand.Next(u * (12 - squareIndex) + 50, u * (12 - squareIndex) + u - 50));
