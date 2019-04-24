@@ -53,10 +53,23 @@
             <Canvas Name="canvas11">
                 <Button Padding="130,130,0,0" Height="160" Width="160" Name="button11" Canvas.Left="160"/>
             </Canvas>
-            <TextBlock HorizontalAlignment="Left" Margin="500,-255,-200,200" TextWrapping="Wrap" Name="TextBlock" VerticalAlignment="Top" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Margin="0,-275,0,0" TextWrapping="Wrap" Name="TextBlock2" VerticalAlignment="Top" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Margin="250,-275,0,0" TextWrapping="Wrap" Name="TextBlock3" VerticalAlignment="Top" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" Margin="500,-250,-200,200" TextWrapping="Wrap" Name="TextBlock" VerticalAlignment="Top" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" Margin="250,-150,0,0" TextWrapping="Wrap" Name="TextBlock2" VerticalAlignment="Top" FontSize="15"/>
+            <TextBlock HorizontalAlignment="Left" Margin="250,-200,0,0" TextWrapping="Wrap" Name="TextBlock3" VerticalAlignment="Top" FontSize="15"/>
         </Grid>
+
+        <StackPanel Width="180" Height="27" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ComboBox x:Name="cmbColors" SelectionChanged="cmbColors_SelectionChanged" Height="25">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="16" Height="16"/>
+                            <TextBlock Margin="10,0,0,0" Text="{Binding Name}" FontSize="14" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
     </Grid>
 
 </Window>

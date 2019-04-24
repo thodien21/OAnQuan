@@ -60,5 +60,18 @@
             <Button Name="btnSaveGame" Content="Savegarder la partie" FontSize="20" FontStyle="Oblique" FontWeight="DemiBold" Margin="-800,600,0,0" Width="252" Height="38" Click="BtnSaveGame_Click"/>
             <Button Name="btnExitGame" Content="Quitter sans sauvegarder" FontSize="20" FontStyle="Oblique" Margin="-800,700,0,0" Width="252" Height="38" Click="BtnExitGame_Click"/>
         </Grid>
+        
+        <StackPanel Width="180" Height="27" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ComboBox x:Name="cmbColors" SelectionChanged="cmbColors_SelectionChanged" Height="25">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="16" Height="16"/>
+                            <TextBlock Margin="10,0,0,0" Text="{Binding Name}" FontSize="14" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
     </Grid>
 </Window>

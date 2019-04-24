@@ -3,6 +3,7 @@ using OAnQuan.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,7 +29,6 @@ namespace OAnQuan.IHM
         Board board = (Services.NoveltyOfGame == NoveltyOfGame.NEW) ? new Board() : Services.Player.GetSavedGameFromDb();
 
         public const int u = 160;
-        int numStep = 0;
         public PlayGame()
         {
             InitializeComponent();
@@ -49,7 +49,7 @@ namespace OAnQuan.IHM
             AddEllipsesInPool(1, board.PlayersList[0].Pool);
             AddEllipsesInPool(2, board.PlayersList[1].Pool);
 
-            TextBlock.Text = "Turn of " + board.Turn;
+            TextBlock.Text = "Tour de " + board.PlayersList[board.Turn - 1].Pseudo;
             Storyboard story = new Storyboard();
             foreach (var item in btnList)
             {
@@ -89,6 +89,11 @@ namespace OAnQuan.IHM
                     }
                 };
             }
+
+
+//This one is for changing the backgound color of the game
+            cmbColors.SelectedIndex = 1;
+            cmbColors.ItemsSource = typeof(Colors).GetProperties();
         }
 
         public void EndGame()
@@ -145,9 +150,8 @@ namespace OAnQuan.IHM
                 direction = Direction.LEFT;
             else
                 MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
-
-            numStep++;
-            TextBlock2.Text = TextBlock2.Text + "\n" + numStep + "    " + board.Turn + "---" + squareId + direction;
+            
+            TextBlock2.Text = "Tour de" + board.PlayersList[board.Turn -1].Pseudo + "---" + squareId + " " +direction;
             //Play in chosen direction
             if (direction == Direction.LEFT || direction == Direction.RIGHT)
             {
@@ -173,12 +177,11 @@ namespace OAnQuan.IHM
                     squareId = board.CalculateNextSquareId(nextSquareId, direction);
                     tokenQty = board.SquaresList[squareId].TokenQty;
                     nextSquareId = board.CalculateNextSquareId(squareId, direction);
-                    TextBlock2.Text = TextBlock2.Text + "---" + board.PlayersList[board.Turn - 1].Score.ToString();
+                    TextBlock2.Text = TextBlock2.Text + "---score:" + board.PlayersList[board.Turn - 1].Score.ToString();
                 }
 
                 //Change turn
                 board.Turn = (board.Turn == 1) ? 2 : 1;
-                TextBlock.Text = "Next turn is " + board.Turn;
             }
         }
 
@@ -541,6 +544,17 @@ namespace OAnQuan.IHM
                 case MessageBoxResult.Cancel:
                     break;
             }
+        }
+
+        /// <summary>
+        /// Change background color
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmbColors_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            Color selectedColor = (Color)(cmbColors.SelectedItem as PropertyInfo).GetValue(null, null);
+            this.Background = new SolidColorBrush(selectedColor);
         }
     }
 }

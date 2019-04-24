@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -25,6 +26,8 @@ namespace WGame
         public MainWindow()
         {
             InitializeComponent();
+            cmbColors.SelectedIndex = 1;
+            cmbColors.ItemsSource = typeof(Colors).GetProperties();
 
             //Set canlist and btnList for Board
             SetButtonListForBoard();
@@ -471,6 +474,12 @@ namespace WGame
                 Stroke = borderBrush,
                 Fill = fillBrush
             };
+        }
+
+        private void cmbColors_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            Color selectedColor = (Color)(cmbColors.SelectedItem as PropertyInfo).GetValue(null, null);
+            this.Background = new SolidColorBrush(selectedColor);
         }
     }
 }
