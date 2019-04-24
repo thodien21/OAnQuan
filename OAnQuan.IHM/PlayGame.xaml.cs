@@ -24,7 +24,6 @@ namespace OAnQuan.IHM
         List<Canvas> canList = new List<Canvas>();
         List<Button> btnListPool = new List<Button>();
         List<Canvas> canListPool = new List<Canvas>();
-
         
         Board board = (Services.NoveltyOfGame == NoveltyOfGame.NEW) ? new Board() : Services.Player.GetSavedGameFromDb();
 
@@ -32,6 +31,8 @@ namespace OAnQuan.IHM
         public PlayGame()
         {
             InitializeComponent();
+            tblPseudoPlayer1.Text = board.PlayersList[0].Pseudo;
+            tblPseudoPlayer2.Text = board.Player2Pseudo;
 
             //Set canlist and btnList for Board
             SetButtonListForBoard();
@@ -49,7 +50,7 @@ namespace OAnQuan.IHM
             AddEllipsesInPool(1, board.PlayersList[0].Pool);
             AddEllipsesInPool(2, board.PlayersList[1].Pool);
 
-            TextBlock.Text = "Tour de " + board.PlayersList[board.Turn - 1].Pseudo;
+            tblPlayerTurn.Text = "Tour de " + board.PlayersList[board.Turn - 1].Pseudo;
             Storyboard story = new Storyboard();
             foreach (var item in btnList)
             {
@@ -69,12 +70,10 @@ namespace OAnQuan.IHM
                         }
                         if (board.ClickedSquares.Count == 2)
                         {
-                            TextBlock.Text = "Turn of " + board.Turn;
                             Go();
                             story.Stop();//stop animation of neighbor squares
                             story.Children.Clear();//clear storyboard of neighbor squares
                             board.ClickedSquares.Clear();//Clear the list of clicked squares after each go
-                            TextBlock3.Text = "Player 1 has " + board.PlayersList[0].Score + " points\nPlayer 2 has " + board.PlayersList[1].Score + " points";
                         }
                     }
                     if (board.SquaresList[0].TokenQty == 0 && board.SquaresList[6].TokenQty == 0)
@@ -111,8 +110,8 @@ namespace OAnQuan.IHM
             Services.Player.UpdateResult(board);
             PlayerDb.UpdatePlayerDb(Services.Player);
 
-            MessageBoxResult result = MessageBox.Show("Player 1 has " + board.PlayersList[0].Score 
-                + " points\nPlayer 2 has " + board.PlayersList[1].Score + " points\n" 
+            MessageBoxResult result = MessageBox.Show(board.PlayersList[0].Pseudo + " a " + board.PlayersList[0].Score + " points\n"
+                + board.PlayersList[1].Pseudo + " a " + board.PlayersList[1].Score + " points\n"
                 + Services.Player.Pseudo + " " + board.GetResult().ToString()
                 + "\nVous voulez rejouer ?",
                 "Résultat", 
@@ -150,8 +149,6 @@ namespace OAnQuan.IHM
                 direction = Direction.LEFT;
             else
                 MessageBox.Show("Vous ne pouvez choisir que 2 cases de suite");
-            
-            TextBlock2.Text = "Tour de" + board.PlayersList[board.Turn -1].Pseudo + "---" + squareId + " " +direction;
             //Play in chosen direction
             if (direction == Direction.LEFT || direction == Direction.RIGHT)
             {
@@ -177,11 +174,11 @@ namespace OAnQuan.IHM
                     squareId = board.CalculateNextSquareId(nextSquareId, direction);
                     tokenQty = board.SquaresList[squareId].TokenQty;
                     nextSquareId = board.CalculateNextSquareId(squareId, direction);
-                    TextBlock2.Text = TextBlock2.Text + "---score:" + board.PlayersList[board.Turn - 1].Score.ToString();
                 }
 
                 //Change turn
                 board.Turn = (board.Turn == 1) ? 2 : 1;
+                tblPlayerTurn.Text = "Tour de " + board.PlayersList[board.Turn - 1].Pseudo;
             }
         }
 
@@ -480,7 +477,6 @@ namespace OAnQuan.IHM
                     AddEllipsesInSecondRow(j, 1);
                 }
             }
-            TextBlock2.Text = TextBlock2.Text + "                            -5 = " + board.PlayersList[board.Turn - 1].Score.ToString();
         }
         #endregion
 
@@ -508,8 +504,8 @@ namespace OAnQuan.IHM
 
         private void BtnSaveGame_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Player 1 has " + board.PlayersList[0].Score
-                + " points\nPlayer 2 has " + board.PlayersList[1].Score + " points\n"
+            MessageBoxResult result = MessageBox.Show(board.PlayersList[0].Pseudo +" a " + board.PlayersList[0].Score + " points\n" 
+                + board.PlayersList[1].Pseudo + " a " + board.PlayersList[1].Score + " points\n"
                 + "\nVous voulez savegarder la partie ?",
                 "Sauvegarder",
                 MessageBoxButton.OKCancel,
@@ -529,8 +525,8 @@ namespace OAnQuan.IHM
 
         private void BtnExitGame_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Player 1 has " + board.PlayersList[0].Score
-                + " points\nPlayer 2 has " + board.PlayersList[1].Score + " points\n"
+            MessageBoxResult result = MessageBox.Show(board.PlayersList[0].Pseudo + " a " + board.PlayersList[0].Score + " points\n"
+                + board.PlayersList[1].Pseudo + " a " + board.PlayersList[1].Score + " points\n"
                 + "\nVous voulez vraiment quitter la partie sans sauvegarder?",
                 "Quitter",
                 MessageBoxButton.OKCancel,
