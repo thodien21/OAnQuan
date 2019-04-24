@@ -1,11 +1,15 @@
 ﻿using OAnQuan.Business;
 using OAnQuan.DataAccess;
+using System;
 using System.Collections.Generic;
 
 namespace OAnQuan
 {
     public static class Services
     {
+        //Require path of database
+        public static String DbPath {get; set;}
+
         /// <summary>
         /// Player who login/sign up
         /// </summary>

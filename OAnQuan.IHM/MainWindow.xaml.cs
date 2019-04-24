@@ -23,6 +23,8 @@ namespace OAnQuan.IHM
         public MainWindow()
         {
             InitializeComponent();
+            AskDatabasePath path = new AskDatabasePath();
+            path.ShowDialog();
         }
 
         private void BtnSignUp_Click(object sender, RoutedEventArgs e)

@@ -15,7 +15,7 @@
                     </ItemsControl>
                     <Button x:Name="btnPlay" Content="Ô Ăn Quan" FontSize="50" Foreground="Green" HorizontalAlignment="Center" Height="116" Margin="0,126,0,0" VerticalAlignment="Top" Width="317" Click="btnPlay_Click" Background="BurlyWood" BorderBrush="#FF707070" BorderThickness="5" FontFamily="Yu Gothic" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="20" Margin="335,222,0,0" VerticalAlignment="Top" Width="100" Text="Cliquer pour jouer"/>
-                    <Button x:Name="btnPlaySavedGame" Content="Reprendre la partie sauvegardée" FontSize="20" Foreground="CadetBlue" HorizontalAlignment="Center" Height="48" Margin="0,269,0,0" VerticalAlignment="Top" Click="btnPlaySavedGame_Click" Background="Bisque" BorderBrush="Aqua" BorderThickness="2" FontFamily="Yu Gothic" FontWeight="DemiBold"/>
+                    <Button x:Name="btnPlaySavedGame" Content="  Reprendre la partie sauvegardée  " FontSize="20" Foreground="CadetBlue" HorizontalAlignment="Center" Height="48" Margin="0,269,0,0" VerticalAlignment="Top" Click="btnPlaySavedGame_Click" Background="Bisque" BorderBrush="Aqua" BorderThickness="2" FontFamily="Yu Gothic" FontWeight="DemiBold"/>
                 </Grid>
             </TabItem>
 
