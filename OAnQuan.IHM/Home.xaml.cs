@@ -53,10 +53,15 @@ namespace OAnQuan.IHM
         
         private void btnPlaySavedGame_Click(object sender, RoutedEventArgs e)
         {
-            Services.NoveltyOfGame = NoveltyOfGame.OLD;
-            Services.Player.GetSavedGameFromDb();
-            PlayGame game = new PlayGame();
-            game.ShowDialog();
+            if (BoardDb.CheckIfBoardDbContainsPlayerId(Services.Player.PlayerId))
+            {
+                Services.NoveltyOfGame = NoveltyOfGame.OLD;
+                Services.Player.GetSavedGameFromDb();
+                PlayGame game = new PlayGame();
+                game.ShowDialog();
+            }
+            else
+                MessageBox.Show("Vous n'avez pas encore de partie sauvegardée");
         }
     }
 }

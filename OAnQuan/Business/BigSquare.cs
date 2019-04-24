@@ -13,7 +13,6 @@ namespace OAnQuan.Business
         {
             BigTokenQty = 1;
             Tokens.Add(new BigToken());
-            //Tokens = new List<Token>() { new BigToken() };
         }
     }
 }

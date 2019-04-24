@@ -33,11 +33,13 @@ namespace OAnQuan.Test
             // Setup game
             //setup board   
             Board board = new Board();
-            var player1 = board.PlayersList[0];
-            player1.Pseudo = "";
+            Services.Player = PlayerDb.GetPlayerFromPseudo("Ngo");
+            Services.PseudoPlayer2 = "HaloInvitée";
 
+            var player1 = board.PlayersList[0];
             var player2 = board.PlayersList[1];
-            player2.Pseudo = "OurPlayer2";
+            Assert.AreEqual(board.PlayersList[0].Pseudo, "Ngo");
+            Assert.AreEqual(board.PlayersList[1].Pseudo, "HaloInvitée");
 
             var mySquares = board.SquaresList;
             Assert.AreEqual(mySquares.Count, 12);
@@ -61,7 +63,6 @@ namespace OAnQuan.Test
 
             Assert.That(board.PlayersList[0], Is.Not.Null);
             Assert.That(board.PlayersList[0].Pseudo, Is.Not.Null);
-            Assert.AreEqual(board.PlayersList[0].Pseudo,"");
             Assert.AreEqual(board.PlayersList[0].Pool.Count, 0);
             Assert.AreEqual(player2.Pool.Count, 0);
 

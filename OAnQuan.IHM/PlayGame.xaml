@@ -8,10 +8,10 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,50,0,0" TextWrapping="Wrap" Name="tblPlayerTurn" FontSize="24" FontWeight="Bold"/>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,300,0" TextWrapping="Wrap" Name="tblPseudoPlayer2" FontSize="24" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,300,150" TextWrapping="Wrap" Name="tblPseudoPlayer1" FontSize="24" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,100,0" TextWrapping="Wrap" Name="tblPseudoPlayer2" FontSize="24" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,100,150" TextWrapping="Wrap" Name="tblPseudoPlayer1" FontSize="24" FontWeight="Bold"/>
 
-        <Grid Margin="500,10,0,0" Height="760"  Width="240">
+        <Grid Margin="300,10,0,0" Height="760"  Width="240">
             <Canvas Name="canvasPool2">
                 <Button Padding="220,160,0,0" Height="180" Width="240" Name="buttonPool2"/>
             </Canvas>

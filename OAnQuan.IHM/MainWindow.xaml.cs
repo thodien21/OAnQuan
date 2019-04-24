@@ -23,8 +23,12 @@ namespace OAnQuan.IHM
         public MainWindow()
         {
             InitializeComponent();
-            AskDatabasePath path = new AskDatabasePath();
-            path.ShowDialog();
+            String path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            Services.DbPath = "Data Source= " + path + "/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+            
+            //When database path doesn't work:
+            //AskDatabasePath pathDB = new AskDatabasePath();
+            //pathDB.ShowDialog();
         }
 
         private void BtnSignUp_Click(object sender, RoutedEventArgs e)

@@ -21,10 +21,6 @@ namespace OAnQuan.Business
         public Square()
         {
             Tokens = new List<Token>();
-            //for (int i = 0; i < SmallTokenQty; i++)
-            //    Tokens.Add(new SmallToken());
-            //for (int i = 0; i < BigTokenQty; i++)
-            //    Tokens.Add(new BigToken());
         }
     }
 }
