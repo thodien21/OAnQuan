@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OAnQuan.IHM"
         mc:Ignorable="d"
-        Title="Administration" Height="481.765" Width="902.353">
+        Title="Administration" Height="481.765" Width="920">
 
     <DockPanel>
         <DataGrid x:Name="dgrListPlayer" AutoGenerateColumns="False">
@@ -23,7 +23,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="btnModify" Content="{Binding Pseudo}" Click="btnModify_Click"/>
+                                <Button Width="60" x:Name="btnModify" Content="Editer" Click="btnModify_Click"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

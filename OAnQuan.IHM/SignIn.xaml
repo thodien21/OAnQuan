@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OAnQuan.IHM"
         mc:Ignorable="d"
-        Title="SignIn" Height="450" Width="800">
+        Title="SignIn" Height="350" Width="800">
     <Grid>
-        <TextBox x:Name="txbPeuso" HorizontalAlignment="Left" Height="33" Margin="269,73,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272"/>
-        <PasswordBox x:Name="txbPassword" HorizontalAlignment="Left" Height="36" Margin="269,167,0,0" VerticalAlignment="Top" Width="272"/>
-        <Button x:Name="btnLogin" Content="Valider" HorizontalAlignment="Left" Height="42" Margin="311,269,0,0" VerticalAlignment="Top" Width="183" Click="BtnLogin_Click"/>
+        <Label Content="Pseudo" HorizontalAlignment="Left" Margin="102,74,0,0" VerticalAlignment="Top" Width="138" FontSize="16" FontWeight="Bold"/>
+        <TextBox x:Name="txbPeuso" HorizontalAlignment="Left" Height="36" Margin="282,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Background="White" FontSize="16" BorderThickness="1,1,1,3" BorderBrush="#FF44AA23"/>
+
+        <PasswordBox x:Name="txbPassword" HorizontalAlignment="Left" Height="36" Margin="282,123,0,0" VerticalAlignment="Top" Width="400" Background="White" FontSize="16" BorderThickness="1,1,1,3" BorderBrush="#FF44AA23"/>
+        <Label Content="Mot de passe" HorizontalAlignment="Left" Margin="102,134,0,0" VerticalAlignment="Top" Width="138" FontSize="16" FontWeight="Bold"/>
+
+        <Button x:Name="btnLogin" Content="Valider" HorizontalAlignment="Left" Height="42" Margin="311,220,0,0" VerticalAlignment="Top" Width="183" Click="BtnLogin_Click" FontSize="16" FontWeight="Bold" Background="#FF499B2A"/>
     </Grid>
 </Window>
