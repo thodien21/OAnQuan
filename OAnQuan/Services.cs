@@ -8,7 +8,7 @@ namespace OAnQuan
     public static class Services
     {
         //Require path of database
-        public static String DbPath {get; set;}
+        public const string DbPath = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
 
         /// <summary>
         /// Player who login/sign up
