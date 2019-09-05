@@ -24,13 +24,13 @@ namespace OAnQuan.IHM
             InitializeComponent();
         }
 
-        private void ButtonOK_Click(object sender, RoutedEventArgs e)
-        {
-            if(txbDBPath.Text.Contains("/DatabaseOAQ.db"))
-                Services.DbPath = "Data Source= " + txbDBPath.Text + ";Version=3;New=True;Compress=True;";
-            else
-                Services.DbPath = "Data Source= " + txbDBPath.Text + "/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
-            this.Hide();
-        }
+        //private void ButtonOK_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if(txbDBPath.Text.Contains("/DatabaseOAQ.db"))
+        //        Services.DbPath = "Data Source= " + txbDBPath.Text + ";Version=3;New=True;Compress=True;";
+        //    else
+        //        Services.DbPath = "Data Source= " + txbDBPath.Text + "/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+        //    this.Hide();
+        //}
     }
 }

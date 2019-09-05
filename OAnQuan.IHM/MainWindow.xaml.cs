@@ -24,7 +24,7 @@ namespace OAnQuan.IHM
         {
             InitializeComponent();
             String path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData).Replace(":\\", ":/");
-            Services.DbPath = "Data Source= " + path + "/OAnQuan/OAnQuan/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
+            //Services.DbPath = "Data Source= " + path + "/OAnQuan/OAnQuan/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
             
             //When database path doesn't work:
             //AskDatabasePath pathDB = new AskDatabasePath();

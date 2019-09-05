@@ -8,6 +8,7 @@
         Title="Saisissez votre chemin de base de donnée" Height="160" Width="1000">
     <StackPanel Margin="10">
         <TextBox Name="txbDBPath" Margin="20"/>
-        <Button Content="OK" Width="60" Margin="10" Click="ButtonOK_Click"/>
+        <Button Content="OK" Width="60" Margin="10"/>
+        <!--Click="ButtonOK_Click"-->
     </StackPanel>
 </Window>
