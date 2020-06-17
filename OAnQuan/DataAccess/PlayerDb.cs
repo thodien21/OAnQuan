@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,15 +11,8 @@ namespace OAnQuan.DataAccess
     public class PlayerDb
     {
         // We use the data source:
-        //for laptop 
-        //const string connString = "Data Source= C:/Users/ttran/Documents/Visual Studio 2017/Projects/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
-        //for fix at home
-        //const string connString = "Data Source= C:/Users/Arien/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
-        //for fix at school
-        //const string connString = "Data Source= C:/Users/adai106/source/repos/thodien21/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
-        //const string connString = "Data Source= C:/Users/adai106/source/repos/OAnQuan/OAnQuan/DataAccess/DatabaseOAQ.db;Version=3;New=True;Compress=True;";
-        static string connString = Services.DbPath;
-
+        static string connString = Services.GetConnectionString();
+        
         /// <summary>
         /// Creat the table of player
         /// </summary>
